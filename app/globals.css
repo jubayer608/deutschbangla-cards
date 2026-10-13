@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Bangla text uses the Noto Sans Bengali webfont loaded in the layout,
+   with system fallbacks (Android ships Noto Sans Bengali built in). */
+.font-bangla {
+  font-family: var(--font-bengali), "Noto Sans Bengali", "Hind Siliguri", sans-serif;
+}
+
+/* --- 3D flashcard flip --- */
+.dbc-perspective {
+  perspective: 1200px;
+}
+
+.dbc-flip-inner {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.dbc-flipped {
+  transform: rotateY(180deg);
+}
+
+.dbc-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.dbc-back {
+  transform: rotateY(180deg);
+}

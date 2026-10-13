@@ -47,3 +47,38 @@ body {
 .dbc-back {
   transform: rotateY(180deg);
 }
+
+/* --- shake animation (wrong-answer feedback) --- */
+@keyframes dbc-shake {
+  10%,
+  90% {
+    transform: translateX(-2px);
+  }
+  20%,
+  80% {
+    transform: translateX(4px);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translateX(-6px);
+  }
+  40%,
+  60% {
+    transform: translateX(6px);
+  }
+}
+
+.animate-shake {
+  animation: dbc-shake 0.5s;
+}
+
+/* hide scrollbars while keeping scrollability */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

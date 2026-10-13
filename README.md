@@ -1,63 +1,58 @@
-# 🇩🇪🇧🇩 DeutschBangla Cards
+# 🇩🇪🇧🇩 DeutschBangla Cards — v2
 
-A German vocabulary flashcard & quiz app for **Bangla speakers** — built with Next.js.
+A complete **A1-level German learning site for Bangla speakers** — built with Next.js 16, TypeScript, Tailwind CSS v4 and Framer Motion.
 
-Most German learning apps explain everything in English. DeutschBangla Cards gives you A1-level German words with **Bangla meanings** and **Bangla translations of example sentences**, so you can learn German in the language you think in.
+Most German learning apps explain everything in English. DeutschBangla Cards teaches German **in Bangla**: every word, grammar rule, exercise and quiz explanation has a Bangla translation.
 
 ## ✨ Features
 
-- 🃏 **Flashcards** — tap a card to flip it and reveal the Bangla meaning + a German example sentence with its Bangla translation. Navigate with ← / →, or hit 🔀 Shuffle.
-- ✍️ **Quiz** — 10 random multiple-choice questions per round (German word → pick the correct Bangla meaning from 4 options), with score tracking and a result screen.
-- 🔥 **Daily streak** + 📚 **words-reviewed counter**, persisted in `localStorage` and shown on the home page.
-- 📱 Mobile-friendly, clean UI — Tailwind CSS only, no UI library.
+- **📊 Dashboard** — greeting, animated streak flame, XP, continue-learning card, lesson grid with progress rings, *Wort des Tages* (deterministic daily word)
+- **📖 Lektionen (12)** — full A1 curriculum: Lernziele in Bangla, vocabulary, grammar blocks with tables, example sentences, and interactive exercises ordered **easy → hard** (MCQ, fill-in-the-blank, translation, word-order)
+- **🃏 Wortschatz (~192 words)** — 14 categories, search, animated grid, swipe-based study mode (swipe right = known, left = unknown), plus a **Redemittel** phrase collection for everyday situations
+- **📐 Grammatik (13 topics)** — Artikel, Plural, Pronomen, Konjugation, Satzbau, Negation, Akkusativ/Dativ, Possessivartikel, Modalverben, trennbare Verben, Adjektive, Präpositionen, Uhrzeit & Datum — all with Bangla explanations and tables
+- **✍️ Quiz** — modes (Wortschatz / Grammatik / Gemischt) × difficulty (**easy / medium / hard / mixed**), animated answer feedback (spring + shake), count-up score, confetti celebrations, best scores
+- **📈 Fortschritt** — XP + levels, streak, per-category mastery bars, weekly activity chart, lesson checklist
+- **🏆 Gamification** — XP for everything (difficulty-weighted), daily streaks, per-word known/unknown tracking, all in `localStorage`
 
-## 🗂️ Project structure
+## 🛠 Tech
+
+- Next.js 16 (App Router) + React 19 + TypeScript (strict)
+- Tailwind CSS v4, Framer Motion (route transitions, gestures, springs), canvas-confetti
+- Noto Sans Bengali webfont for Bangla text; mobile-first responsive design
+
+## 🗂 Project structure
 
 ```
 app/
-  page.tsx        → flashcard home page (/)
-  quiz/page.tsx   → multiple-choice quiz (/quiz)
-  layout.tsx      → root layout, fonts, navbar
-  globals.css     → Tailwind + card-flip animation
+  page.tsx              → dashboard
+  template.tsx          → AnimatePresence route transitions
+  lektionen/page.tsx    → lesson list
+  lektionen/[id]/page.tsx → lesson detail + interactive exercises
+  wortschatz/page.tsx   → vocabulary + study mode + Redemittel
+  grammatik/page.tsx    → grammar index
+  grammatik/[slug]/page.tsx → grammar topic detail
+  quiz/page.tsx         → quiz (mode × difficulty)
+  fortschritt/page.tsx  → progress dashboard
 components/
-  Flashcard.tsx   → 3D flip card
-  Navbar.tsx      → top navigation
+  Flashcard.tsx         → tap-flip + swipe (framer-motion)
+  Navbar.tsx            → top bar + mobile bottom nav
+  ProgressRing.tsx / CountUp.tsx / EmptyState.tsx
 data/
-  words.ts        → vocabulary list (~30 A1 words: German + article,
-                    part of speech, Bangla meaning, example DE/BN)
+  words.ts              → 192 A1 words, 14 categories
+  lessons.ts            → 12 lessons (96 exercises)
+  grammar.ts            → 13 topics (78 quiz questions)
+  phrases.ts            → 73 everyday phrases, 10 situations
 lib/
-  progress.ts     → streak + reviewed counter (localStorage)
+  progress.ts           → streak, XP, known words, lessons, quiz bests (localStorage)
+  confetti.ts           → canvas-confetti helpers
 ```
 
 ## 🚀 Run it
 
-Requires Node.js 18+.
-
 ```bash
 npm install
-npm run dev
+npm run dev     # http://localhost:3000
+npm run build   # production build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-To build for production:
-
-```bash
-npm run build
-npm start
-```
-
-## 🛠️ Tech
-
-- [Next.js](https://nextjs.org) 16 (App Router) + TypeScript
-- [Tailwind CSS](https://tailwindcss.com) v4
-- React 19
-
-## 🌱 Ideas for later
-
-- More word decks (A2, verbs with conjugations, themed sets)
-- Spaced-repetition scheduling
-- Audio pronunciation (TTS)
-- Score history & weekly stats
-
-Viel Erfolg beim Deutschlernen! 🎓
+Viel Erfolg beim Lernen! 🎉

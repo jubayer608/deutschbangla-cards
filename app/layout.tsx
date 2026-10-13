@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Geist, Geist_Mono, Noto_Sans_Bengali } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
@@ -31,8 +32,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${geistSans.variable} ${geistMono.variable} ${bengali.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-gradient-to-b from-indigo-50 via-white to-amber-50">
-        <Navbar />
-        <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-6">{children}</main>
+        <Suspense fallback={null}>
+          <Navbar />
+        </Suspense>
+        <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-6 pb-28 md:pb-8">
+          <Suspense fallback={null}>{children}</Suspense>
+        </main>
         <footer className="pb-6 text-center text-xs text-slate-400">
           DeutschBangla Cards 🇩🇪🇧🇩 — Viel Erfolg beim Lernen!
         </footer>

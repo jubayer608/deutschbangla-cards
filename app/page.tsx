@@ -1,112 +1,184 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import { words } from "@/data/words";
+import { lessons } from "@/data/lessons";
+import { getFullProgress, type ProgressState } from "@/lib/progress";
+import ProgressRing from "@/components/ProgressRing";
+import CountUp from "@/components/CountUp";
 import Flashcard from "@/components/Flashcard";
-import { words, shuffle } from "@/data/words";
-import { getProgress, recordReview, type Progress } from "@/lib/progress";
 
-export default function Home() {
-  // Start with a stable order so server prerender and client hydration match;
-  // shuffle on the client after mount.
-  const [order, setOrder] = useState(words);
-  const [index, setIndex] = useState(0);
-  const [flipped, setFlipped] = useState(false);
-  const [progress, setProgress] = useState<Progress>({ streak: 0, reviewed: 0 });
+function dayKey(d: Date = new Date()): string {
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${d.getFullYear()}-${m}-${day}`;
+}
+
+function hashStr(s: string): number {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (Math.imul(h, 31) + s.charCodeAt(i)) | 0;
+  return Math.abs(h);
+}
+
+function greeting(): string {
+  const h = new Date().getHours();
+  if (h < 12) return "Guten Morgen! ☀️";
+  if (h < 18) return "Guten Tag! 🌤️";
+  return "Guten Abend! 🌙";
+}
+
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.06 } },
+};
+const item = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 260, damping: 24 } },
+};
+
+export default function Dashboard() {
+  const [progress, setProgress] = useState<ProgressState | null>(null);
+  const [wordOfDay, setWordOfDay] = useState<(typeof words)[number] | null>(null);
 
   useEffect(() => {
-    setOrder(shuffle(words));
-    setProgress(getProgress());
+    setProgress(getFullProgress());
+    setWordOfDay(words[hashStr(dayKey()) % words.length]);
   }, []);
 
-  const word = order[index];
-
-  const goTo = useCallback(
-    (next: number) => {
-      setIndex((next + order.length) % order.length);
-      setFlipped(false);
-    },
-    [order.length]
-  );
-
-  const handleFlip = () => {
-    if (!flipped) {
-      // Count a review the first time the meaning is revealed
-      setProgress(recordReview());
-    }
-    setFlipped((f) => !f);
-  };
-
-  const handleShuffle = () => {
-    setOrder(shuffle(words));
-    setIndex(0);
-    setFlipped(false);
-  };
+  const nextLesson = progress
+    ? lessons.find((l) => !progress.lessonsDone.includes(l.id)) ?? null
+    : null;
+  const knownCount = progress?.knownWords.length ?? 0;
 
   return (
-    <div className="flex flex-col gap-5">
+    <motion.div variants={container} initial="hidden" animate="show" className="flex flex-col gap-5">
+      {/* Header */}
+      <motion.div variants={item} className="flex items-end justify-between">
+        <div>
+          <p className="font-bangla text-sm font-semibold text-indigo-500">স্বাগতম! আজ শিখতে প্রস্তুত?</p>
+          <h1 className="text-3xl font-extrabold tracking-tight text-indigo-950">{greeting()}</h1>
+        </div>
+        <motion.div
+          animate={{ scale: [1, 1.25, 1], rotate: [0, -8, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="text-4xl"
+          aria-label="streak"
+        >
+          🔥
+        </motion.div>
+      </motion.div>
+
       {/* Stats */}
-      <div className="flex items-center justify-center gap-3">
-        <div className="flex items-center gap-2 rounded-full bg-white px-4 py-2 shadow-sm ring-1 ring-orange-100">
-          <span className="text-lg" aria-hidden>
-            🔥
-          </span>
-          <span className="text-sm font-bold text-slate-700">
-            {progress.streak} day{progress.streak === 1 ? "" : "s"} streak
-          </span>
+      <motion.div variants={item} className="grid grid-cols-3 gap-3">
+        <div className="rounded-3xl bg-white p-4 text-center shadow-sm ring-1 ring-indigo-100">
+          <p className="text-2xl font-extrabold text-indigo-700">
+            {progress ? <CountUp value={progress.streak} /> : "–"}
+          </p>
+          <p className="font-bangla text-xs font-semibold text-slate-500">দিনের স্ট্রিক</p>
         </div>
-        <div className="flex items-center gap-2 rounded-full bg-white px-4 py-2 shadow-sm ring-1 ring-indigo-100">
-          <span className="text-lg" aria-hidden>
-            📚
-          </span>
-          <span className="text-sm font-bold text-slate-700">
-            {progress.reviewed} reviewed
-          </span>
+        <div className="rounded-3xl bg-white p-4 text-center shadow-sm ring-1 ring-indigo-100">
+          <p className="text-2xl font-extrabold text-violet-700">
+            {progress ? <CountUp value={progress.xp} /> : "–"}
+          </p>
+          <p className="font-bangla text-xs font-semibold text-slate-500">মোট XP</p>
         </div>
-      </div>
+        <div className="rounded-3xl bg-white p-4 text-center shadow-sm ring-1 ring-indigo-100">
+          <p className="text-2xl font-extrabold text-emerald-600">
+            {progress ? <CountUp value={knownCount} /> : "–"}
+          </p>
+          <p className="font-bangla text-xs font-semibold text-slate-500">জানা শব্দ</p>
+        </div>
+      </motion.div>
 
-      {/* Card counter */}
-      <p className="text-center text-sm font-semibold text-slate-500">
-        Card {index + 1} / {order.length}
-      </p>
+      {/* Continue learning */}
+      {nextLesson && (
+        <motion.div variants={item}>
+          <Link
+            href={`/lektionen/${nextLesson.id}`}
+            className="group flex items-center gap-4 rounded-3xl bg-gradient-to-br from-indigo-600 to-violet-700 p-5 text-white shadow-xl shadow-indigo-200"
+          >
+            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/20 text-2xl font-extrabold">
+              {nextLesson.id}
+            </span>
+            <span className="flex-1">
+              <span className="font-bangla text-xs font-semibold uppercase tracking-widest text-indigo-200">
+                চালিয়ে যাও
+              </span>
+              <span className="block text-lg font-extrabold leading-tight">
+                Lektion {nextLesson.id}: {nextLesson.title}
+              </span>
+              <span className="font-bangla block text-sm text-indigo-200">{nextLesson.titleBangla}</span>
+            </span>
+            <motion.span
+              animate={{ x: [0, 6, 0] }}
+              transition={{ duration: 1.6, repeat: Infinity }}
+              className="text-2xl"
+            >
+              →
+            </motion.span>
+          </Link>
+        </motion.div>
+      )}
 
-      {/* Flashcard */}
-      <Flashcard word={word} flipped={flipped} onFlip={handleFlip} />
+      {/* Word of the day */}
+      <motion.div variants={item} className="flex flex-col gap-2">
+        <h2 className="font-bangla text-lg font-extrabold text-indigo-950">
+          📅 আজকের শব্দ <span className="text-sm font-semibold text-slate-400">— ট্যাপ করে উল্টাও</span>
+        </h2>
+        {wordOfDay ? (
+          <Flashcard word={wordOfDay} compact />
+        ) : (
+          <div className="h-44 animate-pulse rounded-3xl bg-indigo-50" />
+        )}
+      </motion.div>
 
-      {/* Controls */}
-      <div className="flex items-center justify-center gap-3">
-        <button
-          type="button"
-          onClick={() => goTo(index - 1)}
-          className="rounded-full bg-white px-6 py-3 text-lg font-bold text-indigo-700 shadow-md ring-1 ring-indigo-100 transition active:scale-95"
-          aria-label="Previous card"
+      {/* Lessons grid */}
+      <motion.div variants={item} className="flex flex-col gap-3">
+        <div className="flex items-center justify-between">
+          <h2 className="font-bangla text-lg font-extrabold text-indigo-950">📖 পাঠসমূহ</h2>
+          <Link href="/lektionen" className="font-bangla text-sm font-bold text-indigo-600">
+            সবগুলো →
+          </Link>
+        </div>
+        <div className="grid grid-cols-3 gap-3">
+          {lessons.map((l) => {
+            const done = progress?.lessonsDone.includes(l.id) ?? false;
+            return (
+              <Link
+                key={l.id}
+                href={`/lektionen/${l.id}`}
+                className={`flex flex-col items-center gap-1 rounded-3xl p-4 text-center shadow-sm ring-1 transition active:scale-95 ${
+                  done ? "bg-emerald-50 ring-emerald-200" : "bg-white ring-indigo-100"
+                }`}
+              >
+                <ProgressRing value={done ? 1 : 0} size={44} stroke={5} label={done ? "✓" : `${l.id}`} />
+                <p className="text-xs font-bold leading-tight text-indigo-950">{l.title}</p>
+                <p className="font-bangla text-[11px] leading-tight text-slate-500">{l.titleBangla}</p>
+              </Link>
+            );
+          })}
+        </div>
+      </motion.div>
+
+      {/* Quick actions */}
+      <motion.div variants={item} className="grid grid-cols-2 gap-3">
+        <Link
+          href="/quiz"
+          className="rounded-3xl bg-amber-400 p-5 text-center shadow-md shadow-amber-200 transition active:scale-95"
         >
-          ←
-        </button>
-        <button
-          type="button"
-          onClick={handleShuffle}
-          className="rounded-full bg-white px-6 py-3 text-sm font-bold text-indigo-700 shadow-md ring-1 ring-indigo-100 transition active:scale-95"
+          <p className="text-3xl">✍️</p>
+          <p className="font-bangla mt-1 font-extrabold text-amber-950">কুইজ খেলো</p>
+        </Link>
+        <Link
+          href="/wortschatz"
+          className="rounded-3xl bg-white p-5 text-center shadow-sm ring-1 ring-indigo-100 transition active:scale-95"
         >
-          🔀 Shuffle
-        </button>
-        <button
-          type="button"
-          onClick={() => goTo(index + 1)}
-          className="rounded-full bg-indigo-600 px-6 py-3 text-lg font-bold text-white shadow-md shadow-indigo-200 transition active:scale-95"
-          aria-label="Next card"
-        >
-          →
-        </button>
-      </div>
-
-      {/* Quiz CTA */}
-      <Link
-        href="/quiz"
-        className="mx-auto mt-2 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 px-8 py-4 text-center text-base font-extrabold text-white shadow-lg shadow-emerald-200 transition active:scale-95"
-      >
-        ✍️ Test yourself — take the quiz
-      </Link>
-    </div>
+          <p className="text-3xl">🃏</p>
+          <p className="font-bangla mt-1 font-extrabold text-indigo-950">শব্দভাণ্ডার</p>
+        </Link>
+      </motion.div>
+    </motion.div>
   );
 }

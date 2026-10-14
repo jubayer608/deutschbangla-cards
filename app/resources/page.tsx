@@ -7,6 +7,7 @@ import {
   resourceCategories,
   type ResourceCategory,
 } from "@/data/resources";
+import { ArrowUpRight, Globe, Lightbulb, Search, SearchX, Sparkles } from "lucide-react";
 
 const container = {
   hidden: {},
@@ -49,8 +50,8 @@ export default function ResourcesPage() {
     >
       {/* Header */}
       <motion.div variants={item}>
-        <p className="font-bangla text-sm font-semibold text-emerald-600">
-          আরও শিখতে চাও? 🌐
+        <p className="font-bangla inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-600">
+          আরও শিখতে চাও? <Globe className="h-4 w-4" aria-hidden />
         </p>
         <h1 className="text-3xl font-extrabold tracking-tight text-emerald-950">
           Ressourcen
@@ -63,37 +64,43 @@ export default function ResourcesPage() {
 
       {/* Search */}
       <motion.div variants={item}>
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="🔍 খুঁজো… (যেমন: অভিধান, ভিডিও)"
-          className="font-bangla w-full rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-emerald-950 shadow-sm ring-1 ring-emerald-100 outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-emerald-400"
-        />
+        <div className="relative">
+          <Search
+            className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+            aria-hidden
+          />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="খুঁজো… (যেমন: অভিধান, ভিডিও)"
+            className="font-bangla w-full rounded-2xl bg-white py-3 pl-11 pr-4 text-sm font-semibold text-emerald-950 shadow-sm ring-1 ring-emerald-100 outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-emerald-400"
+          />
+        </div>
       </motion.div>
 
       {/* Category pills */}
       <motion.div variants={item} className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pb-1">
         <button
           onClick={() => setActiveCat("alle")}
-          className={`font-bangla shrink-0 rounded-full px-4 py-2 text-sm font-bold transition active:scale-95 ${
+          className={`font-bangla inline-flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold transition active:scale-95 ${
             activeCat === "alle"
               ? "bg-brand-gradient text-white shadow-md shadow-emerald-200"
               : "bg-white text-emerald-800 ring-1 ring-emerald-100"
           }`}
         >
-          ✨ সবগুলো
+          <Sparkles className="h-4 w-4" aria-hidden /> সবগুলো
         </button>
         {resourceCategories.map((c) => (
           <button
             key={c.id}
             onClick={() => setActiveCat(c.id)}
-            className={`font-bangla shrink-0 rounded-full px-4 py-2 text-sm font-bold transition active:scale-95 ${
+            className={`font-bangla inline-flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold transition active:scale-95 ${
               activeCat === c.id
                 ? "bg-brand-gradient text-white shadow-md shadow-emerald-200"
                 : "bg-white text-emerald-800 ring-1 ring-emerald-100"
             }`}
           >
-            {c.icon} {c.bangla}
+            <c.Icon className="h-4 w-4" aria-hidden /> {c.bangla}
           </button>
         ))}
       </motion.div>
@@ -116,16 +123,16 @@ export default function ResourcesPage() {
                 rel="noopener noreferrer"
                 className="group flex items-start gap-4 rounded-3xl bg-white p-5 shadow-sm ring-1 ring-emerald-100 transition hover:shadow-lg hover:ring-emerald-200 active:scale-[0.99]"
               >
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 text-2xl ring-1 ring-emerald-100">
-                  {r.icon}
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 ring-1 ring-emerald-100">
+                  <r.Icon className="h-6 w-6 text-emerald-600" aria-hidden />
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="flex flex-wrap items-center gap-2">
                     <span className="text-base font-extrabold text-emerald-950">
                       {r.name}
                     </span>
-                    <span className="font-bangla rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-bold text-emerald-700 ring-1 ring-emerald-100">
-                      {c.icon} {c.bangla}
+                    <span className="font-bangla inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-bold text-emerald-700 ring-1 ring-emerald-100">
+                      <c.Icon className="h-3 w-3" aria-hidden /> {c.bangla}
                     </span>
                     <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-bold text-amber-700">
                       {r.level}
@@ -135,7 +142,7 @@ export default function ResourcesPage() {
                     {r.bangla}
                   </span>
                   <span className="font-bangla mt-2 inline-flex items-center gap-1 text-sm font-bold text-emerald-600 transition group-hover:gap-2 group-hover:text-emerald-700">
-                    Visit <span aria-hidden>↗</span>
+                    Visit <ArrowUpRight className="h-4 w-4" aria-hidden />
                   </span>
                 </span>
               </motion.a>
@@ -146,7 +153,7 @@ export default function ResourcesPage() {
 
       {filtered.length === 0 && (
         <div className="rounded-3xl bg-white p-8 text-center shadow-sm ring-1 ring-emerald-100">
-          <p className="text-3xl">🔍</p>
+          <SearchX className="mx-auto h-10 w-10 text-slate-300" aria-hidden />
           <p className="font-bangla mt-2 font-bold text-emerald-900">
             কিছু পাওয়া গেল না
           </p>
@@ -161,10 +168,13 @@ export default function ResourcesPage() {
         variants={item}
         className="rounded-3xl bg-amber-50 p-5 ring-1 ring-amber-100"
       >
-        <p className="font-bangla text-sm leading-relaxed text-amber-800">
-          💡 <strong>নোট:</strong> এগুলো সব বাইরের ফ্রি রিসোর্স — DeutschBangla
-          Cards-এর সাথে প্রতিদিন ১৫–২০ মিনিট এগুলো ব্যবহার করলে A1 অনেক দ্রুত
-          শেষ হবে।
+        <p className="font-bangla flex items-start gap-2 text-sm leading-relaxed text-amber-800">
+          <Lightbulb className="h-4 w-4 shrink-0 text-amber-600" aria-hidden />
+          <span>
+            <strong>নোট:</strong> এগুলো সব বাইরের ফ্রি রিসোর্স — DeutschBangla
+            Cards-এর সাথে প্রতিদিন ১৫–২০ মিনিট এগুলো ব্যবহার করলে A1 অনেক দ্রুত
+            শেষ হবে।
+          </span>
         </p>
       </motion.div>
     </motion.div>

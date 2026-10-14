@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { lessons } from "@/data/lessons";
 import { getFullProgress, type ProgressState } from "@/lib/progress";
+import { ArrowRight, BookOpen, Check } from "lucide-react";
 import ProgressRing from "@/components/ProgressRing";
 import EmptyState from "@/components/EmptyState";
 
@@ -22,7 +23,9 @@ export default function LektionenPage() {
       <div className="flex items-end justify-between">
         <div>
           <p className="font-bangla text-sm font-semibold text-emerald-500">A1 কারিকুলাম</p>
-          <h1 className="text-3xl font-extrabold tracking-tight text-emerald-950">📖 Lektionen</h1>
+          <h1 className="inline-flex items-center gap-2 text-3xl font-extrabold tracking-tight text-emerald-950">
+            <BookOpen className="h-7 w-7 text-emerald-600" aria-hidden /> Lektionen
+          </h1>
         </div>
         {progress && (
           <div className="flex items-center gap-2">
@@ -32,7 +35,7 @@ export default function LektionenPage() {
       </div>
 
       {lessons.length === 0 ? (
-        <EmptyState icon="📖" title="কোনো পাঠ নেই" message="শীঘ্রই পাঠ যোগ করা হবে।" />
+        <EmptyState Icon={BookOpen} title="কোনো পাঠ নেই" message="শীঘ্রই পাঠ যোগ করা হবে।" />
       ) : (
         <motion.div
           initial="hidden"
@@ -61,7 +64,7 @@ export default function LektionenPage() {
                       done ? "bg-emerald-500 text-white" : "bg-gradient-to-br from-emerald-600 to-teal-600 text-white"
                     }`}
                   >
-                    {done ? "✓" : l.id}
+                    {done ? <Check className="h-6 w-6" strokeWidth={3} aria-hidden /> : l.id}
                   </span>
                   <span className="flex-1">
                     <span className="block font-extrabold text-emerald-950">
@@ -72,7 +75,7 @@ export default function LektionenPage() {
                       {l.vocabIds.length} শব্দ · {l.uebungen.length} অনুশীলন
                     </span>
                   </span>
-                  <span className="text-xl text-slate-300">→</span>
+                  <ArrowRight className="h-5 w-5 shrink-0 text-slate-300" aria-hidden />
                 </Link>
               </motion.div>
             );

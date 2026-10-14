@@ -7,6 +7,7 @@ import {
   readingMinutes,
   formatDate,
 } from "@/data/blog";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import BlogRenderer from "@/components/BlogRenderer";
 
 interface Props {
@@ -33,7 +34,7 @@ export default function BlogPostClient({ post, prev, next }: Props) {
         href="/blog"
         className="font-bangla inline-flex w-fit items-center gap-1.5 text-sm font-bold text-emerald-700 transition hover:gap-2.5 hover:text-emerald-800"
       >
-        <span aria-hidden>←</span> সব পোস্ট
+        <ArrowLeft className="h-4 w-4" aria-hidden /> সব পোস্ট
       </Link>
 
       {/* Hero */}
@@ -85,7 +86,9 @@ export default function BlogPostClient({ post, prev, next }: Props) {
             href={`/blog/${prev.slug}`}
             className="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-emerald-100 transition hover:shadow-md hover:ring-emerald-200 active:scale-[0.98]"
           >
-            <p className="font-bangla text-xs font-bold text-slate-400">← আগের পোস্ট</p>
+            <p className="font-bangla inline-flex items-center gap-1 text-xs font-bold text-slate-400">
+              <ArrowLeft className="h-3.5 w-3.5" aria-hidden /> আগের পোস্ট
+            </p>
             <p className="font-bangla mt-1 text-sm font-extrabold leading-snug text-emerald-900">
               {prev.title}
             </p>
@@ -98,7 +101,9 @@ export default function BlogPostClient({ post, prev, next }: Props) {
             href={`/blog/${next.slug}`}
             className="rounded-3xl bg-white p-4 text-right shadow-sm ring-1 ring-emerald-100 transition hover:shadow-md hover:ring-emerald-200 active:scale-[0.98]"
           >
-            <p className="font-bangla text-xs font-bold text-slate-400">পরের পোস্ট →</p>
+            <p className="font-bangla inline-flex items-center justify-end gap-1 text-xs font-bold text-slate-400">
+              পরের পোস্ট <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+            </p>
             <p className="font-bangla mt-1 text-sm font-extrabold leading-snug text-emerald-900">
               {next.title}
             </p>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { ArrowRight, PenLine, Star } from "lucide-react";
 import { blogPosts, readingMinutes, formatDate } from "@/data/blog";
 
 const container = {
@@ -43,8 +44,8 @@ export default function BlogIndex() {
     >
       {/* Header */}
       <motion.div variants={item}>
-        <p className="font-bangla text-sm font-semibold text-emerald-600">
-          গাইড, টিপস আর কৌশল ✍️
+        <p className="font-bangla inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-600">
+          গাইড, টিপস আর কৌশল <PenLine className="h-4 w-4" aria-hidden />
         </p>
         <h1 className="text-3xl font-extrabold tracking-tight text-emerald-950">
           Blog
@@ -67,8 +68,8 @@ export default function BlogIndex() {
             aria-hidden
           />
           <div className="relative">
-            <span className="font-bangla inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-extrabold uppercase tracking-widest text-white backdrop-blur">
-              ⭐ Featured
+            <span className="font-bangla inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-extrabold uppercase tracking-widest text-white backdrop-blur">
+              <Star className="h-3.5 w-3.5 fill-amber-300 text-amber-300" aria-hidden /> Featured
             </span>
             <h2 className="font-bangla mt-3 text-2xl font-extrabold leading-snug text-white sm:text-[28px]">
               {featured.title}
@@ -80,7 +81,7 @@ export default function BlogIndex() {
               <Meta slug={featured.slug} />
             </div>
             <span className="font-bangla mt-5 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-extrabold text-emerald-800 transition group-hover:gap-3">
-              পড়ো <span aria-hidden>→</span>
+              পড়ো <ArrowRight className="h-4 w-4" aria-hidden />
             </span>
           </div>
         </Link>
@@ -110,9 +111,10 @@ export default function BlogIndex() {
                   <span className="font-bangla text-xs font-semibold text-slate-400">
                     {formatDate(p.date)} • {readingMinutes(p)} মিনিট
                   </span>
-                  <span className="text-sm font-extrabold text-emerald-600 transition group-hover:translate-x-1 group-hover:text-emerald-700">
-                    →
-                  </span>
+                  <ArrowRight
+                    className="h-5 w-5 text-emerald-600 transition group-hover:translate-x-1 group-hover:text-emerald-700"
+                    aria-hidden
+                  />
                 </div>
               </div>
             </Link>

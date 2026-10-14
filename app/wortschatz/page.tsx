@@ -8,6 +8,20 @@ import { getFullProgress, markWord, type ProgressState } from "@/lib/progress";
 import Flashcard from "@/components/Flashcard";
 import SpeakButton from "@/components/SpeakButton";
 import EmptyState from "@/components/EmptyState";
+import {
+  ArrowLeftRight,
+  CheckCircle2,
+  ChevronDown,
+  Layers,
+  Library,
+  MessageCircle,
+  MousePointerClick,
+  PartyPopper,
+  Play,
+  RotateCcw,
+  Search,
+  X,
+} from "lucide-react";
 
 type Tab = "words" | "phrases";
 
@@ -64,9 +78,9 @@ export default function WortschatzPage() {
           <button
             type="button"
             onClick={() => setStudyMode(false)}
-            className="font-bangla rounded-full bg-white px-5 py-2 font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-100"
+            className="font-bangla inline-flex items-center gap-1.5 rounded-full bg-white px-5 py-2 font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-100"
           >
-            ✕ বন্ধ করো
+            <X className="h-4 w-4" aria-hidden /> বন্ধ করো
           </button>
           <p className="font-bangla text-sm font-bold text-slate-500">
             {studyDone ? "শেষ!" : `${Math.min(deckIndex + 1, deck.length)} / ${deck.length}`}
@@ -75,7 +89,9 @@ export default function WortschatzPage() {
 
         {studyDone ? (
           <div className="flex flex-col items-center gap-4 py-10 text-center">
-            <p className="text-6xl">🎉</p>
+            <span className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 shadow-xl shadow-emerald-200">
+              <PartyPopper className="h-11 w-11 text-white" aria-hidden />
+            </span>
             <h2 className="font-bangla text-2xl font-extrabold text-emerald-950">শেষ! Gut gemacht!</h2>
             <p className="font-bangla text-slate-500">
               {deck.length}টি শব্দ রিভিউ করলে। ডানদিকে সোয়াইপ = জানি, বামদিকে = জানি না।
@@ -83,9 +99,9 @@ export default function WortschatzPage() {
             <button
               type="button"
               onClick={startStudy}
-              className="rounded-full bg-emerald-600 px-8 py-3 font-bold text-white shadow-md transition active:scale-95"
+              className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-8 py-3 font-bold text-white shadow-md transition active:scale-95"
             >
-              🔁 আবার পড়ো
+              <RotateCcw className="h-4 w-4" aria-hidden /> আবার পড়ো
             </button>
           </div>
         ) : (
@@ -100,8 +116,9 @@ export default function WortschatzPage() {
               <AnimatePresence mode="wait">
                 <Flashcard key={current.id} word={current} onSwipe={handleSwipe} />
               </AnimatePresence>
-              <p className="font-bangla text-center text-xs text-slate-400">
-                👈 বামে সোয়াইপ = জানি না &nbsp;·&nbsp; ডানে সোয়াইপ = জানি 👉
+              <p className="font-bangla inline-flex items-center justify-center gap-1.5 text-center text-xs text-slate-400">
+                <ArrowLeftRight className="h-3.5 w-3.5" aria-hidden /> বামে সোয়াইপ = জানি না
+                &nbsp;·&nbsp; ডানে সোয়াইপ = জানি
               </p>
             </>
           )
@@ -114,7 +131,9 @@ export default function WortschatzPage() {
     <div className="flex flex-col gap-5">
       <div>
         <p className="font-bangla text-sm font-semibold text-emerald-500">{words.length}টি A1 শব্দ</p>
-        <h1 className="text-3xl font-extrabold tracking-tight text-emerald-950">🃏 Wortschatz</h1>
+        <h1 className="inline-flex items-center gap-2 text-3xl font-extrabold tracking-tight text-emerald-950">
+          <Layers className="h-7 w-7 text-emerald-600" aria-hidden /> Wortschatz
+        </h1>
       </div>
 
       {/* Tabs */}
@@ -128,7 +147,15 @@ export default function WortschatzPage() {
               tab === t ? "bg-white text-emerald-700 shadow" : "text-slate-500"
             }`}
           >
-            {t === "words" ? "📚 শব্দ" : "💬 Redemittel"}
+            {t === "words" ? (
+              <span className="inline-flex items-center gap-1.5">
+                <Library className="h-4 w-4" aria-hidden /> শব্দ
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1.5">
+                <MessageCircle className="h-4 w-4" aria-hidden /> Redemittel
+              </span>
+            )}
           </button>
         ))}
       </div>
@@ -145,9 +172,9 @@ export default function WortschatzPage() {
             <button
               type="button"
               onClick={startStudy}
-              className="font-bangla shrink-0 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 px-5 font-extrabold text-white shadow-md transition active:scale-95"
+              className="font-bangla inline-flex shrink-0 items-center gap-1.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 px-5 font-extrabold text-white shadow-md transition active:scale-95"
             >
-              ▶️ পড়ো
+              <Play className="h-4 w-4 fill-current" aria-hidden /> পড়ো
             </button>
           </div>
 
@@ -176,7 +203,7 @@ export default function WortschatzPage() {
           </div>
 
           {filtered.length === 0 ? (
-            <EmptyState icon="🔍" title="কিছু পাওয়া যায়নি" message="অন্য শব্দ দিয়ে খুঁজে দেখো।" />
+            <EmptyState Icon={Search} title="কিছু পাওয়া যায়নি" message="অন্য শব্দ দিয়ে খুঁজে দেখো।" />
           ) : (
             <motion.div layout className="grid grid-cols-2 gap-3">
               <AnimatePresence>
@@ -196,7 +223,12 @@ export default function WortschatzPage() {
                         known ? "bg-emerald-50 ring-emerald-200" : "bg-white ring-emerald-100"
                       }`}
                     >
-                      {known && <span className="absolute bottom-3 right-3 text-sm">✅</span>}
+                      {known && (
+                        <CheckCircle2
+                          className="absolute bottom-3 right-3 h-5 w-5 text-emerald-600"
+                          aria-hidden
+                        />
+                      )}
                       {isFlipped ? (
                         <>
                           <p className="font-bangla text-lg font-extrabold text-emerald-900">{w.bangla}</p>
@@ -214,7 +246,9 @@ export default function WortschatzPage() {
                             <p className="text-lg font-extrabold text-emerald-950">{w.german}</p>
                             <SpeakButton text={w.german} className="h-7 w-7" />
                           </div>
-                          <p className="font-bangla mt-1 text-xs text-slate-400">ট্যাপ করো 👆</p>
+                          <p className="font-bangla mt-1 inline-flex items-center gap-1 text-xs text-slate-400">
+                            ট্যাপ করো <MousePointerClick className="h-3.5 w-3.5" aria-hidden />
+                          </p>
                         </>
                       )}
                     </motion.button>
@@ -244,7 +278,7 @@ export default function WortschatzPage() {
                     </span>
                   </span>
                   <motion.span animate={{ rotate: open ? 180 : 0 }} className="text-slate-400">
-                    ⌄
+                    <ChevronDown className="h-5 w-5" aria-hidden />
                   </motion.span>
                 </button>
                 <AnimatePresence initial={false}>

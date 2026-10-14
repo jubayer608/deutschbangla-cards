@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { words, categories } from "@/data/words";
 import { lessons } from "@/data/lessons";
 import { getFullProgress, type ProgressState } from "@/lib/progress";
+import { BarChart3, BookOpen, CalendarDays, Flame, Folders, Sprout } from "lucide-react";
 import ProgressRing from "@/components/ProgressRing";
 import CountUp from "@/components/CountUp";
 import EmptyState from "@/components/EmptyState";
@@ -65,12 +66,14 @@ export default function FortschrittPage() {
     <div className="flex flex-col gap-5">
       <div>
         <p className="font-bangla text-sm font-semibold text-emerald-500">তোমার অগ্রগতি</p>
-        <h1 className="text-3xl font-extrabold tracking-tight text-emerald-950">📊 Fortschritt</h1>
+        <h1 className="inline-flex items-center gap-2 text-3xl font-extrabold tracking-tight text-emerald-950">
+          <BarChart3 className="h-7 w-7 text-emerald-600" aria-hidden /> Fortschritt
+        </h1>
       </div>
 
       {!hasAny ? (
         <EmptyState
-          icon="🌱"
+          Icon={Sprout}
           title="এখনো শুরু করোনি"
           message="একটা পাঠ পড়ো বা কুইজ খেলো — তোমার XP, স্ট্রিক আর অগ্রগতি এখানে দেখা যাবে।"
         />
@@ -94,9 +97,9 @@ export default function FortschrittPage() {
               <motion.span
                 animate={{ scale: [1, 1.2, 1], rotate: [0, -8, 8, 0] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="text-5xl"
+                className="flex h-20 w-20 items-center justify-center rounded-full bg-white/15"
               >
-                🔥
+                <Flame className="h-11 w-11 text-amber-400" aria-hidden />
               </motion.span>
             </div>
             <div className="mt-4 h-2.5 overflow-hidden rounded-full bg-white/20">
@@ -136,7 +139,9 @@ export default function FortschrittPage() {
 
           {/* Weekly activity */}
           <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-emerald-100">
-            <h2 className="font-bangla text-lg font-extrabold text-emerald-950">📅 সাপ্তাহিক অ্যাক্টিভিটি</h2>
+            <h2 className="font-bangla inline-flex items-center gap-2 text-lg font-extrabold text-emerald-950">
+              <CalendarDays className="h-5 w-5 text-emerald-600" aria-hidden /> সাপ্তাহিক অ্যাক্টিভিটি
+            </h2>
             <div className="mt-4 flex items-end justify-between gap-2">
               {week.map((d) => (
                 <div key={d.key} className="flex flex-1 flex-col items-center gap-1.5">
@@ -155,7 +160,9 @@ export default function FortschrittPage() {
 
           {/* Category mastery */}
           <section className="flex flex-col gap-3">
-            <h2 className="font-bangla text-lg font-extrabold text-emerald-950">🗂️ বিভাগভিত্তিক দক্ষতা</h2>
+            <h2 className="font-bangla inline-flex items-center gap-2 text-lg font-extrabold text-emerald-950">
+              <Folders className="h-5 w-5 text-emerald-600" aria-hidden /> বিভাগভিত্তিক দক্ষতা
+            </h2>
             {mastery.map((m) => (
               <div key={m.id} className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-emerald-100">
                 <div className="flex items-center justify-between">
@@ -181,7 +188,9 @@ export default function FortschrittPage() {
 
           {/* Lessons checklist */}
           <section className="flex flex-col gap-3">
-            <h2 className="font-bangla text-lg font-extrabold text-emerald-950">📖 পাঠের অগ্রগতি</h2>
+            <h2 className="font-bangla inline-flex items-center gap-2 text-lg font-extrabold text-emerald-950">
+              <BookOpen className="h-5 w-5 text-emerald-600" aria-hidden /> পাঠের অগ্রগতি
+            </h2>
             <div className="grid grid-cols-3 gap-3">
               {lessons.map((l) => {
                 const done = progress.lessonsDone.includes(l.id);

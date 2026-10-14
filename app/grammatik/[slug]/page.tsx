@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { getTopic } from "@/data/grammar";
+import { ArrowLeft, BookOpen, Lightbulb, PenLine } from "lucide-react";
 import SpeakButton from "@/components/SpeakButton";
 import EmptyState from "@/components/EmptyState";
 
@@ -14,14 +15,17 @@ export default function GrammarDetailPage() {
   const topic = useMemo(() => getTopic(slug), [slug]);
 
   if (!topic) {
-    return <EmptyState icon="📖" title="বিষয় পাওয়া যায়নি" message="এই বিষয়ে কোনো ব্যাকরণ নোট নেই।" />;
+    return <EmptyState Icon={BookOpen} title="বিষয় পাওয়া যায়নি" message="এই বিষয়ে কোনো ব্যাকরণ নোট নেই।" />;
   }
 
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <Link href="/grammatik" className="font-bangla text-sm font-bold text-emerald-600">
-          ← সব ব্যাকরণ
+        <Link
+          href="/grammatik"
+          className="font-bangla inline-flex items-center gap-1.5 text-sm font-bold text-emerald-600 transition hover:gap-2.5"
+        >
+          <ArrowLeft className="h-4 w-4" aria-hidden /> সব ব্যাকরণ
         </Link>
         <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-emerald-950">{topic.title}</h1>
         <p className="font-bangla text-slate-500">{topic.titleBangla}</p>
@@ -84,7 +88,9 @@ export default function GrammarDetailPage() {
 
       {topic.tips.length > 0 && (
         <section className="rounded-3xl bg-amber-50 p-5 ring-1 ring-amber-200">
-          <h2 className="font-bangla text-lg font-extrabold text-amber-900">💡 মনে রেখো</h2>
+          <h2 className="font-bangla inline-flex items-center gap-2 text-lg font-extrabold text-amber-900">
+            <Lightbulb className="h-5 w-5" aria-hidden /> মনে রেখো
+          </h2>
           <ul className="font-bangla mt-2 flex flex-col gap-1.5 text-amber-900">
             {topic.tips.map((t, i) => (
               <li key={i} className="flex items-start gap-2">
@@ -99,7 +105,9 @@ export default function GrammarDetailPage() {
         href="/quiz"
         className="rounded-3xl bg-gradient-to-r from-emerald-600 to-teal-600 p-5 text-center text-white shadow-xl shadow-emerald-200 transition active:scale-[0.98]"
       >
-        <p className="text-lg font-extrabold">✍️ Teste dich im Quiz</p>
+        <p className="inline-flex items-center justify-center gap-2 text-lg font-extrabold">
+          <PenLine className="h-5 w-5" aria-hidden /> Teste dich im Quiz
+        </p>
         <p className="font-bangla text-sm text-emerald-200">ব্যাকরণ মোডে নিজেকে যাচাই করো</p>
       </Link>
     </div>

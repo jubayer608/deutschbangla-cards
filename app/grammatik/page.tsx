@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { ArrowRight, BookOpen } from "lucide-react";
 import { grammarTopics } from "@/data/grammar";
 
 export default function GrammatikPage() {
@@ -9,7 +10,9 @@ export default function GrammatikPage() {
     <div className="flex flex-col gap-5">
       <div>
         <p className="font-bangla text-sm font-semibold text-emerald-500">বাংলা ব্যাখ্যাসহ</p>
-        <h1 className="text-3xl font-extrabold tracking-tight text-emerald-950">📖 Grammatik</h1>
+        <h1 className="inline-flex items-center gap-2 text-3xl font-extrabold tracking-tight text-emerald-950">
+          <BookOpen className="h-7 w-7 text-emerald-600" aria-hidden /> Grammatik
+        </h1>
       </div>
 
       <motion.div
@@ -37,7 +40,7 @@ export default function GrammatikPage() {
                 <span className="block font-extrabold text-emerald-950">{t.title}</span>
                 <span className="font-bangla block text-sm text-slate-500">{t.titleBangla}</span>
               </span>
-              <span className="text-xl text-slate-300">→</span>
+              <ArrowRight className="h-5 w-5 shrink-0 text-slate-300" aria-hidden />
             </Link>
           </motion.div>
         ))}

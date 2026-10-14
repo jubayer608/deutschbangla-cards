@@ -26,11 +26,11 @@ interface FlashcardProps {
 }
 
 const posColors: Record<string, string> = {
-  noun: "bg-sky-100 text-sky-800",
+  noun: "bg-navy/10 text-navy",
   verb: "bg-rose-100 text-rose-800",
-  adjective: "bg-amber-100 text-amber-800",
-  adverb: "bg-teal-100 text-teal-800",
-  phrase: "bg-emerald-100 text-emerald-800",
+  adjective: "bg-sun/25 text-navy",
+  adverb: "bg-teal/10 text-teal",
+  phrase: "bg-teal/15 text-navy",
 };
 
 const SWIPE_THRESHOLD = 100;
@@ -41,7 +41,7 @@ const SWIPE_THRESHOLD = 100;
  * - "known" (swipe right): happy springy wiggle, then the card flies
  *   up-right toward the XP with a shrink flourish.
  * - "unknown" (swipe left): gentle shake, the card flips to reveal the
- *   answer, and a sympathetic sad Mascot pops in nearby.
+ *   answer, and a sympathetic angry Mascot pops in nearby.
  */
 type FeedbackFx = "known" | "unknown" | null;
 
@@ -145,7 +145,7 @@ export default function Flashcard({ word, flipped, onSwipe, onFlip, compact }: F
         }
       }}
     >
-      {/* Sad-mascot comfort overlay for a missed word */}
+      {/* Angry-mascot comfort overlay for a missed word */}
       {fx === "unknown" && (
         <motion.div
           initial={{ opacity: 0, scale: 0.6, y: 8 }}
@@ -154,10 +154,26 @@ export default function Flashcard({ word, flipped, onSwipe, onFlip, compact }: F
           className="absolute -top-9 right-1 z-20 flex items-end gap-1.5"
           aria-hidden
         >
-          <span className="font-bangla max-w-40 rounded-2xl rounded-br-sm bg-white px-3 py-2 text-xs font-bold text-slate-600 shadow-md ring-1 ring-emerald-100">
+          <span className="font-bangla max-w-40 rounded-2xl rounded-br-sm bg-cream px-3 py-2 text-xs font-bold text-navy shadow-md ring-1 ring-teal/20">
             ভুল হতেই পারে — উত্তরটা দেখে নাও!
           </span>
-          <Mascot mood="sad" size={52} />
+          <Mascot mood="angry" size={52} />
+        </motion.div>
+      )}
+
+      {/* Happy-mascot cheer overlay for a known word */}
+      {fx === "known" && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.6, y: 8 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ delay: reduce ? 0 : 0.15, type: "spring", stiffness: 300, damping: 18 }}
+          className="absolute -top-9 left-1 z-20 flex items-end gap-1.5"
+          aria-hidden
+        >
+          <Mascot mood="happy" size={52} />
+          <span className="font-bangla max-w-40 rounded-2xl rounded-bl-sm bg-cream px-3 py-2 text-xs font-bold text-navy shadow-md ring-1 ring-teal/20">
+            দারুণ! এই শব্দটা তোমার পকেটে!
+          </span>
         </motion.div>
       )}
 
@@ -167,7 +183,7 @@ export default function Flashcard({ word, flipped, onSwipe, onFlip, compact }: F
         className="pointer-events-none absolute inset-0 z-10 flex items-start justify-start p-5"
         aria-hidden
       >
-        <span className="font-bangla inline-flex items-center gap-2 rounded-2xl bg-emerald-500 px-4 py-2 text-lg font-extrabold text-white shadow-lg">
+        <span className="font-bangla inline-flex items-center gap-2 rounded-2xl bg-teal px-4 py-2 text-lg font-extrabold text-white shadow-lg">
           জানি <Check className="h-5 w-5" strokeWidth={3} aria-hidden />
         </span>
       </motion.div>
@@ -190,7 +206,7 @@ export default function Flashcard({ word, flipped, onSwipe, onFlip, compact }: F
         className={`relative ${compact ? "h-56" : "h-72 sm:h-80"} [transform-style:preserve-3d]`}
       >
         {/* Front: German word */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-3xl bg-gradient-to-br from-emerald-600 to-teal-600 p-6 text-white shadow-xl shadow-emerald-200 [backface-visibility:hidden]">
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-3xl bg-gradient-to-br from-navy to-teal p-6 text-cream shadow-xl shadow-navy/25 [backface-visibility:hidden]">
           {word.pos && (
             <span
               className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider ${
@@ -200,22 +216,22 @@ export default function Flashcard({ word, flipped, onSwipe, onFlip, compact }: F
               {word.pos}
             </span>
           )}
-          <p className="text-center text-4xl font-extrabold tracking-tight sm:text-5xl">{word.german}</p>
+          <p className="font-heading text-center text-4xl font-extrabold tracking-tight sm:text-5xl">{word.german}</p>
           <SpeakButton text={word.german} dark />
-          <p className="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-200">
+          <p className="inline-flex items-center gap-1.5 text-sm font-medium text-cream/70">
             <MousePointerClick className="h-4 w-4" aria-hidden /> Tap to reveal meaning
           </p>
         </div>
 
         {/* Back: Bangla meaning + example */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-3xl bg-white p-6 text-center shadow-xl shadow-emerald-200 ring-1 ring-emerald-100 [backface-visibility:hidden] [transform:rotateY(180deg)]">
-          <p className="font-bangla text-4xl font-extrabold text-emerald-950 sm:text-5xl">{word.bangla}</p>
-          <div className="mt-2 w-full rounded-2xl bg-emerald-50 p-4">
+        <div className="card absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-3xl bg-cream p-6 text-center shadow-xl shadow-navy/10 ring-1 ring-teal/20 [backface-visibility:hidden] [transform:rotateY(180deg)]">
+          <p className="font-bangla text-4xl font-extrabold text-navy sm:text-5xl">{word.bangla}</p>
+          <div className="mt-2 w-full rounded-2xl bg-white p-4 ring-1 ring-teal/10">
             <div className="flex items-start justify-between gap-2">
-              <p className="text-base font-semibold text-slate-800">{word.example}</p>
+              <p className="font-body text-base font-semibold text-navy">{word.example}</p>
               <SpeakButton text={word.example} className="h-7 w-7" />
             </div>
-            <p className="font-bangla mt-1 text-sm text-slate-600">{word.exampleBangla}</p>
+            <p className="font-bangla mt-1 text-sm text-navy/60">{word.exampleBangla}</p>
           </div>
         </div>
       </motion.div>

@@ -23,12 +23,13 @@ const bengali = Noto_Sans_Bengali({
 export const metadata: Metadata = {
   metadataBase: new URL("https://deutschbangla-cards.vercel.app"),
   title: {
-    default: "DeutschBangla Cards | বাংলায় A1 German শেখো",
-    template: "%s | DeutschBangla Cards",
+    default: "Ulluk | বাংলায় জার্মান শেখো",
+    template: "%s | Ulluk",
   },
   description:
     "Bangla-speaker-দের জন্য A1 German: 12টি পাঠ, 192টি শব্দ, ব্যাকরণ, কুইজ, রিসোর্স আর ব্লগ — flashcards দিয়ে মজায় শেখো।",
   keywords: [
+    "Ulluk",
     "German শেখো",
     "A1 German",
     "German for Bangla speakers",
@@ -38,17 +39,17 @@ export const metadata: Metadata = {
     "বাংলায় জার্মান",
   ],
   openGraph: {
-    title: "DeutschBangla Cards | বাংলায় A1 German শেখো",
+    title: "Ulluk | বাংলায় জার্মান শেখো",
     description:
       "Bangla-speaker-দের জন্য A1 German: পাঠ, শব্দভাণ্ডার, ব্যাকরণ, কুইজ আর ব্লগ — মজায় শেখো।",
     url: "https://deutschbangla-cards.vercel.app",
-    siteName: "DeutschBangla Cards",
+    siteName: "Ulluk",
     locale: "bn_BD",
     type: "website",
   },
   twitter: {
     card: "summary",
-    title: "DeutschBangla Cards | বাংলায় A1 German শেখো",
+    title: "Ulluk | বাংলায় জার্মান শেখো",
     description:
       "Bangla-speaker-দের জন্য A1 German: পাঠ, শব্দভাণ্ডার, ব্যাকরণ, কুইজ আর ব্লগ।",
   },

@@ -171,8 +171,7 @@ export default function ResourcesPage() {
         <p className="font-bangla flex items-start gap-2 text-sm leading-relaxed text-amber-800">
           <Lightbulb className="h-4 w-4 shrink-0 text-amber-600" aria-hidden />
           <span>
-            <strong>নোট:</strong> এগুলো সব বাইরের ফ্রি রিসোর্স — DeutschBangla
-            Cards-এর সাথে প্রতিদিন ১৫–২০ মিনিট এগুলো ব্যবহার করলে A1 অনেক দ্রুত
+            <strong>নোট:</strong> এগুলো সব বাইরের ফ্রি রিসোর্স — Ulluk-এর সাথে প্রতিদিন ১৫–২০ মিনিট এগুলো ব্যবহার করলে A1 অনেক দ্রুত
             শেষ হবে।
           </span>
         </p>

@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "DeutschBangla Cards — বাংলায় A1 German",
-    short_name: "DeutschBangla",
+    name: "Ulluk",
+    short_name: "Ulluk",
     description:
       "Bangla-speaker-দের জন্য A1 German: পাঠ, শব্দভাণ্ডার, ব্যাকরণ, কুইজ আর ব্লগ।",
     start_url: "/",

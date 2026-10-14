@@ -1,4 +1,4 @@
-# 🇩🇪🇧🇩 DeutschBangla Cards
+# 🦉 Ulluk — বাংলায় জার্মান শেখো
 
 [![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black.svg)](https://nextjs.org)
@@ -8,7 +8,7 @@
 
 A complete **A1-level German learning site for Bangla speakers** — built with Next.js 16, TypeScript, Tailwind CSS v4 and Framer Motion.
 
-Most German learning apps explain everything in English. DeutschBangla Cards teaches German **in Bangla**: every word, grammar rule, exercise, blog post and quiz explanation has a Bangla translation.
+Most German learning apps explain everything in English. Ulluk teaches German **in Bangla**: every word, grammar rule, exercise, blog post and quiz explanation has a Bangla translation.
 
 ## 🎨 Design
 

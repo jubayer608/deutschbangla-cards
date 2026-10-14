@@ -14,7 +14,6 @@ import {
   Globe,
   PenLine,
   TrendingUp,
-  Languages,
 } from "lucide-react";
 
 const links = [
@@ -42,17 +41,14 @@ export default function Navbar() {
       {/* Top bar */}
       <header className="sticky top-0 z-40 border-b border-emerald-100 bg-white/90 shadow-[0_1px_12px_rgba(6,95,70,0.06)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-2 px-4 py-2.5">
-          <Link href="/" className="group flex shrink-0 items-center gap-2.5">
-            <span className="bg-brand-gradient flex h-10 w-10 items-center justify-center rounded-2xl text-xl shadow-md shadow-emerald-200 transition group-active:scale-95">
-              <Languages className="h-5 w-5 text-white" aria-hidden />
-            </span>
-            <span className="leading-tight">
-              <span className="block text-[17px] font-extrabold tracking-tight text-emerald-950">
-                DeutschBangla <span className="text-brand-gradient">Cards</span>
-              </span>
-              <span className="font-bangla hidden text-[11px] font-semibold text-slate-400 sm:block">
-                বাংলায় জার্মান শেখো
-              </span>
+          <Link href="/" className="group flex shrink-0 flex-col items-start gap-0.5">
+            <img
+              src="/logo.svg"
+              alt="Ulluk"
+              className="h-9 w-auto transition group-active:scale-95"
+            />
+            <span className="font-bangla hidden text-[11px] font-semibold text-slate-400 sm:block">
+              বাংলায় জার্মান শেখো
             </span>
           </Link>
 

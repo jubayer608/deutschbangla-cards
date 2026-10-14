@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Calendar, Flame, Languages, Sparkles } from "lucide-react";
+import { ArrowRight, Calendar, Flame, Sparkles } from "lucide-react";
 import { words, type VocabWord } from "@/data/words";
 
 function dayKey(d: Date = new Date()): string {
@@ -52,12 +52,7 @@ export default function Footer() {
             className="sm:col-span-2 md:col-span-1"
           >
             <Link href="/" className="flex items-center gap-2.5">
-              <span className="bg-brand-gradient flex h-10 w-10 items-center justify-center rounded-2xl text-xl shadow-md shadow-emerald-200">
-                <Languages className="h-5 w-5 text-white" aria-hidden />
-              </span>
-              <span className="text-lg font-extrabold tracking-tight text-emerald-950">
-                DeutschBangla <span className="text-brand-gradient">Cards</span>
-              </span>
+              <img src="/logo.svg" alt="Ulluk" className="h-10 w-auto" />
             </Link>
             <p className="font-bangla mt-3 text-sm leading-relaxed text-slate-500">
               Bangla-speaker-দের জন্য A1 German শেখার সবকিছু — flashcards, পাঠ, ব্যাকরণ আর কুইজ, এক
@@ -156,7 +151,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-emerald-100 pt-6 text-center sm:flex-row sm:text-left">
           <p className="text-xs font-semibold text-slate-400">
-            © 2026 DeutschBangla Cards
+            © 2026 Ulluk
           </p>
           <p className="font-bangla text-xs font-semibold text-slate-400">
             <span className="inline-flex items-center gap-1">

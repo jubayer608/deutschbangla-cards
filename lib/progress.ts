@@ -223,3 +223,41 @@ export function xpForDifficulty(d: "easy" | "medium" | "hard", kind: "quiz" | "e
   }
   return d === "easy" ? XP.EXERCISE_EASY : d === "medium" ? XP.EXERCISE_MEDIUM : XP.EXERCISE_HARD;
 }
+
+/**
+ * Phase 0 — overwrite the whole local progress snapshot with the merged
+ * DB state returned by /api/sync-progress (max-wins merge). Used once
+ * after sign-in so the browser prefers DB state from then on. The
+ * per-mode `dbc-quizbest-score-*` keys are written from `quizBestScores`
+ * when provided.
+ */
+export function writeFullProgress(
+  state: ProgressState,
+  quizBestScores?: Record<string, number>,
+): void {
+  if (typeof window === "undefined") return;
+  const prevStreak = readStreak();
+  try {
+    localStorage.setItem(
+      STREAK_KEY,
+      JSON.stringify({ count: state.streak, lastVisit: prevStreak?.lastVisit ?? dayKey() }),
+    );
+    localStorage.setItem(REVIEWED_KEY, String(state.reviewed));
+  } catch {
+    /* storage unavailable */
+  }
+  writeJSON(XP_KEY, state.xp);
+  writeJSON(KNOWN_KEY, state.knownWords);
+  writeJSON(LESSONS_KEY, state.lessonsDone);
+  writeJSON(QUIZBEST_KEY, state.quizBest);
+  writeJSON(ACTIVITY_KEY, state.activity);
+  if (quizBestScores) {
+    for (const [modeKey, score] of Object.entries(quizBestScores)) {
+      try {
+        localStorage.setItem(`dbc-quizbest-score-${modeKey}`, String(score));
+      } catch {
+        /* storage unavailable */
+      }
+    }
+  }
+}

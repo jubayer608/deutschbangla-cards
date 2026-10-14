@@ -1,5 +1,6 @@
 "use client";
 
+import AuthButton from "./AuthButton";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -46,7 +47,7 @@ function isActiveLink(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(href + "/");
 }
 
-export default function Navbar() {
+export default function Navbar({ authConfigured }: { authConfigured: boolean }) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuActive = menuLinks.some((l) => isActiveLink(pathname, l.href));
@@ -78,16 +79,18 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Streak chip (mobile) */}
-          <span
-            className="rounded-full bg-sun/30 px-3 py-1.5 text-sm font-bold text-navy lg:hidden"
-            aria-label="streak"
-          >
-            <Flame className="h-4 w-4 text-sun" aria-hidden />
-          </span>
+          {/* Right cluster: streak chip (mobile) + nav (desktop) + auth */}
+          <div className="flex items-center gap-2">
+            {/* Streak chip (mobile) */}
+            <span
+              className="rounded-full bg-sun/30 px-3 py-1.5 text-sm font-bold text-navy lg:hidden"
+              aria-label="streak"
+            >
+              <Flame className="h-4 w-4 text-sun" aria-hidden />
+            </span>
 
-          {/* Desktop nav */}
-          <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Main">
+            {/* Desktop nav */}
+            <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Main">
             {coreLinks.map((l) => {
               const active = isActiveLink(pathname, l.href);
               return (
@@ -190,6 +193,8 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
           </nav>
+          <AuthButton authConfigured={authConfigured} />
+        </div>
         </div>
       </header>
 

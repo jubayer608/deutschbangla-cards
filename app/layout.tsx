@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { Geist, Geist_Mono, Noto_Sans_Bengali, Nunito, Poppins } from "next/font/google";
+import { SessionProvider } from "next-auth/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ProgressSync from "@/components/ProgressSync";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -72,19 +74,31 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // Phase 0 — auth is fully configured only when all env vars are set.
+  // Reading process.env here does NOT make the layout dynamic; the
+  // session itself still loads client-side via SessionProvider.
+  const authConfigured = Boolean(
+    process.env.DATABASE_URL &&
+      process.env.AUTH_SECRET &&
+      process.env.GOOGLE_CLIENT_ID &&
+      process.env.GOOGLE_CLIENT_SECRET,
+  );
   return (
     <html
       lang="bn"
       className={`${geistSans.variable} ${geistMono.variable} ${bengali.variable} ${poppins.variable} ${nunito.variable} h-full antialiased`}
     >
       <body className="font-body flex min-h-full flex-col bg-gradient-to-b from-cream via-white to-cream">
-        <Suspense fallback={null}>
-          <Navbar />
-        </Suspense>
-        <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-6 pb-28 lg:pb-10">
-          <Suspense fallback={null}>{children}</Suspense>
-        </main>
-        <Footer />
+        <SessionProvider>
+          <Suspense fallback={null}>
+            <Navbar authConfigured={authConfigured} />
+          </Suspense>
+          <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-6 pb-28 lg:pb-10">
+            <Suspense fallback={null}>{children}</Suspense>
+          </main>
+          <Footer />
+          <ProgressSync />
+        </SessionProvider>
       </body>
     </html>
   );

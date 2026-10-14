@@ -22,9 +22,9 @@ export default function LektionenPage() {
     <div className="flex flex-col gap-5">
       <div className="flex items-end justify-between">
         <div>
-          <p className="font-bangla text-sm font-semibold text-emerald-500">A1 কারিকুলাম</p>
-          <h1 className="inline-flex items-center gap-2 text-3xl font-extrabold tracking-tight text-emerald-950">
-            <BookOpen className="h-7 w-7 text-emerald-600" aria-hidden /> Lektionen
+          <p className="font-bangla text-sm font-semibold text-teal">A1 কারিকুলাম</p>
+          <h1 className="section-heading inline-flex items-center gap-2 text-3xl">
+            <BookOpen className="h-7 w-7 text-teal" aria-hidden /> Lektionen
           </h1>
         </div>
         {progress && (
@@ -55,27 +55,27 @@ export default function LektionenPage() {
               >
                 <Link
                   href={`/lektionen/${l.id}`}
-                  className={`flex items-center gap-4 rounded-3xl p-4 shadow-sm ring-1 transition active:scale-[0.98] ${
-                    done ? "bg-emerald-50 ring-emerald-200" : "bg-white ring-emerald-100 hover:ring-emerald-300"
+                  className={`card card-hover flex items-center gap-4 rounded-3xl p-4 transition active:scale-[0.98] ${
+                    done ? "bg-cream ring-teal/30" : "bg-white ring-slate-200 hover:ring-teal/40"
                   }`}
                 >
                   <span
                     className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-xl font-extrabold ${
-                      done ? "bg-emerald-500 text-white" : "bg-gradient-to-br from-emerald-600 to-teal-600 text-white"
+                      done ? "bg-teal text-white" : "bg-gradient-to-br from-navy to-teal text-white"
                     }`}
                   >
                     {done ? <Check className="h-6 w-6" strokeWidth={3} aria-hidden /> : l.id}
                   </span>
                   <span className="flex-1">
-                    <span className="block font-extrabold text-emerald-950">
+                    <span className="block font-extrabold text-navy">
                       Lektion {l.id}: {l.title}
                     </span>
                     <span className="font-bangla block text-sm text-slate-500">{l.titleBangla}</span>
-                    <span className="font-bangla mt-1 block text-xs text-slate-400">
+                    <span className="font-bangla mt-1 block text-xs text-mist">
                       {l.vocabIds.length} শব্দ · {l.uebungen.length} অনুশীলন
                     </span>
                   </span>
-                  <ArrowRight className="h-5 w-5 shrink-0 text-slate-300" aria-hidden />
+                  <ArrowRight className="h-5 w-5 shrink-0 text-mist" aria-hidden />
                 </Link>
               </motion.div>
             );

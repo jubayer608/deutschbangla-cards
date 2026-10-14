@@ -78,7 +78,7 @@ export default function WortschatzPage() {
           <button
             type="button"
             onClick={() => setStudyMode(false)}
-            className="font-bangla inline-flex items-center gap-1.5 rounded-full bg-white px-5 py-2 font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-100"
+            className="btn btn-ghost font-bangla inline-flex items-center gap-1.5 rounded-full px-5 py-2"
           >
             <X className="h-4 w-4" aria-hidden /> বন্ধ করো
           </button>
@@ -89,17 +89,17 @@ export default function WortschatzPage() {
 
         {studyDone ? (
           <div className="flex flex-col items-center gap-4 py-10 text-center">
-            <span className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 shadow-xl shadow-emerald-200">
+            <span className="flex h-24 w-24 items-center justify-center rounded-full bg-navy shadow-xl shadow-navy/10">
               <PartyPopper className="h-11 w-11 text-white" aria-hidden />
             </span>
-            <h2 className="font-bangla text-2xl font-extrabold text-emerald-950">শেষ! Gut gemacht!</h2>
+            <h2 className="font-bangla text-2xl font-extrabold text-navy">শেষ! Gut gemacht!</h2>
             <p className="font-bangla text-slate-500">
               {deck.length}টি শব্দ রিভিউ করলে। ডানদিকে সোয়াইপ = জানি, বামদিকে = জানি না।
             </p>
             <button
               type="button"
               onClick={startStudy}
-              className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-8 py-3 font-bold text-white shadow-md transition active:scale-95"
+              className="btn btn-primary inline-flex items-center gap-2 rounded-full px-8 py-3"
             >
               <RotateCcw className="h-4 w-4" aria-hidden /> আবার পড়ো
             </button>
@@ -107,16 +107,16 @@ export default function WortschatzPage() {
         ) : (
           current && (
             <>
-              <div className="h-2 overflow-hidden rounded-full bg-emerald-100">
+              <div className="progress-track h-2 overflow-hidden rounded-full">
                 <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-500"
+                  className="progress-fill h-full rounded-full"
                   animate={{ width: `${((deckIndex + 1) / deck.length) * 100}%` }}
                 />
               </div>
               <AnimatePresence mode="wait">
                 <Flashcard key={current.id} word={current} onSwipe={handleSwipe} />
               </AnimatePresence>
-              <p className="font-bangla inline-flex items-center justify-center gap-1.5 text-center text-xs text-slate-400">
+              <p className="font-bangla inline-flex items-center justify-center gap-1.5 text-center text-xs text-mist">
                 <ArrowLeftRight className="h-3.5 w-3.5" aria-hidden /> বামে সোয়াইপ = জানি না
                 &nbsp;·&nbsp; ডানে সোয়াইপ = জানি
               </p>
@@ -130,21 +130,21 @@ export default function WortschatzPage() {
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <p className="font-bangla text-sm font-semibold text-emerald-500">{words.length}টি A1 শব্দ</p>
-        <h1 className="inline-flex items-center gap-2 text-3xl font-extrabold tracking-tight text-emerald-950">
-          <Layers className="h-7 w-7 text-emerald-600" aria-hidden /> Wortschatz
+        <p className="font-bangla text-sm font-semibold text-teal">{words.length}টি A1 শব্দ</p>
+        <h1 className="section-heading inline-flex items-center gap-2 text-3xl">
+          <Layers className="h-7 w-7 text-teal" aria-hidden /> Wortschatz
         </h1>
       </div>
 
       {/* Tabs */}
-      <div className="grid grid-cols-2 gap-2 rounded-3xl bg-emerald-50 p-1.5">
+      <div className="grid grid-cols-2 gap-2 rounded-3xl bg-cream p-1.5">
         {(["words", "phrases"] as Tab[]).map((t) => (
           <button
             key={t}
             type="button"
             onClick={() => setTab(t)}
             className={`font-bangla rounded-2xl py-2.5 font-extrabold transition ${
-              tab === t ? "bg-white text-emerald-700 shadow" : "text-slate-500"
+              tab === t ? "bg-white text-teal shadow" : "text-slate-500"
             }`}
           >
             {t === "words" ? (
@@ -167,12 +167,12 @@ export default function WortschatzPage() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Suche… / খুঁজো…"
-              className="font-bangla min-w-0 flex-1 rounded-2xl border-2 border-emerald-100 bg-white px-4 py-3 font-semibold outline-none focus:border-emerald-400"
+              className="font-bangla min-w-0 flex-1 rounded-2xl border-2 border-slate-200 bg-white px-4 py-3 font-semibold outline-none focus:border-teal"
             />
             <button
               type="button"
               onClick={startStudy}
-              className="font-bangla inline-flex shrink-0 items-center gap-1.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 px-5 font-extrabold text-white shadow-md transition active:scale-95"
+              className="btn btn-primary font-bangla inline-flex shrink-0 items-center gap-1.5 rounded-2xl px-5"
             >
               <Play className="h-4 w-4 fill-current" aria-hidden /> পড়ো
             </button>
@@ -183,7 +183,7 @@ export default function WortschatzPage() {
               type="button"
               onClick={() => setCat("alle")}
               className={`font-bangla shrink-0 rounded-full px-4 py-2 text-sm font-bold transition ${
-                cat === "alle" ? "bg-emerald-600 text-white" : "bg-white text-slate-600 ring-1 ring-emerald-100"
+                cat === "alle" ? "bg-navy text-white" : "bg-white text-slate-600 ring-1 ring-slate-200"
               }`}
             >
               সব
@@ -194,7 +194,7 @@ export default function WortschatzPage() {
                 type="button"
                 onClick={() => setCat(c.id)}
                 className={`shrink-0 rounded-full px-4 py-2 text-sm font-bold transition ${
-                  cat === c.id ? "bg-emerald-600 text-white" : "bg-white text-slate-600 ring-1 ring-emerald-100"
+                  cat === c.id ? "bg-navy text-white" : "bg-white text-slate-600 ring-1 ring-slate-200"
                 }`}
               >
                 <span className="font-bangla">{c.bangla}</span>
@@ -219,19 +219,19 @@ export default function WortschatzPage() {
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.9 }}
                       onClick={() => setFlipped((f) => ({ ...f, [w.id]: !f[w.id] }))}
-                      className={`relative min-h-28 rounded-3xl p-4 text-left shadow-sm ring-1 transition active:scale-95 ${
-                        known ? "bg-emerald-50 ring-emerald-200" : "bg-white ring-emerald-100"
+                      className={`card card-hover relative min-h-28 rounded-3xl p-4 text-left transition active:scale-95 ${
+                        known ? "bg-cream ring-teal/30" : "bg-white ring-slate-200"
                       }`}
                     >
                       {known && (
                         <CheckCircle2
-                          className="absolute bottom-3 right-3 h-5 w-5 text-emerald-600"
+                          className="absolute bottom-3 right-3 h-5 w-5 text-teal"
                           aria-hidden
                         />
                       )}
                       {isFlipped ? (
                         <>
-                          <p className="font-bangla text-lg font-extrabold text-emerald-900">{w.bangla}</p>
+                          <p className="font-bangla text-lg font-extrabold text-navy">{w.bangla}</p>
                           <div className="mt-1 flex items-start justify-between gap-2">
                             <div>
                               <p className="text-xs italic text-slate-500">{w.example}</p>
@@ -243,10 +243,10 @@ export default function WortschatzPage() {
                       ) : (
                         <>
                           <div className="flex items-start justify-between gap-2">
-                            <p className="text-lg font-extrabold text-emerald-950">{w.german}</p>
+                            <p className="text-lg font-extrabold text-navy">{w.german}</p>
                             <SpeakButton text={w.german} className="h-7 w-7" />
                           </div>
-                          <p className="font-bangla mt-1 inline-flex items-center gap-1 text-xs text-slate-400">
+                          <p className="font-bangla mt-1 inline-flex items-center gap-1 text-xs text-mist">
                             ট্যাপ করো <MousePointerClick className="h-3.5 w-3.5" aria-hidden />
                           </p>
                         </>
@@ -265,19 +265,19 @@ export default function WortschatzPage() {
           {phraseGroups.map((g) => {
             const open = openGroup === g.id;
             return (
-              <div key={g.id} className="overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-emerald-100">
+              <div key={g.id} className="card overflow-hidden rounded-3xl">
                 <button
                   type="button"
                   onClick={() => setOpenGroup(open ? null : g.id)}
                   className="flex w-full items-center justify-between p-4 text-left"
                 >
                   <span>
-                    <span className="block font-extrabold text-emerald-950">{g.situation}</span>
+                    <span className="block font-extrabold text-navy">{g.situation}</span>
                     <span className="font-bangla block text-sm text-slate-500">
                       {g.situationBangla} · {g.items.length}টি বাক্য
                     </span>
                   </span>
-                  <motion.span animate={{ rotate: open ? 180 : 0 }} className="text-slate-400">
+                  <motion.span animate={{ rotate: open ? 180 : 0 }} className="text-mist">
                     <ChevronDown className="h-5 w-5" aria-hidden />
                   </motion.span>
                 </button>
@@ -289,11 +289,11 @@ export default function WortschatzPage() {
                       exit={{ height: 0, opacity: 0 }}
                       className="overflow-hidden"
                     >
-                      <ul className="flex flex-col gap-2 border-t border-emerald-50 p-4">
+                      <ul className="flex flex-col gap-2 border-t border-slate-100 p-4">
                         {g.items.map((p, i) => (
-                          <li key={i} className="rounded-2xl bg-emerald-50/60 px-3 py-2">
+                          <li key={i} className="rounded-2xl bg-cream/60 px-3 py-2">
                             <div className="flex items-start justify-between gap-2">
-                              <p className="font-bold text-emerald-900">{p.german}</p>
+                              <p className="font-bold text-navy">{p.german}</p>
                               <SpeakButton text={p.german} className="h-7 w-7" />
                             </div>
                             <p className="font-bangla text-sm text-slate-600">{p.bangla}</p>

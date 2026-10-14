@@ -92,7 +92,7 @@ function HeroMiniCard() {
 
   return (
     <div className="relative">
-      <div aria-hidden className="bloom pointer-events-none absolute -inset-8 rounded-full" />
+      <div aria-hidden className="hero-glow pointer-events-none absolute -inset-8 rounded-full" />
       <motion.div
         initial={{ opacity: 0, y: 24, rotate: 1.5 }}
         animate={{ opacity: 1, y: 0, rotate: 0 }}
@@ -105,8 +105,8 @@ function HeroMiniCard() {
           onFlip={() => setTouched(true)}
           onSwipe={() => setTouched(true)}
         />
-        <p className="font-bangla mt-3 flex items-center justify-center gap-1.5 text-center text-xs font-semibold text-slate-500">
-          <MousePointerClick className="h-4 w-4 text-emerald-600" aria-hidden />
+        <p className="font-bangla mt-3 flex items-center justify-center gap-1.5 text-center text-xs font-semibold text-white/70">
+          <MousePointerClick className="h-4 w-4 text-teal" aria-hidden />
           ট্যাপ করে অর্থ দেখো — {touched ? "তুমি এখন নিয়ন্ত্রণে" : "প্রতি কয়েক সেকেন্ডে নতুন শব্দ"}
         </p>
       </motion.div>
@@ -116,10 +116,10 @@ function HeroMiniCard() {
 
 function Hero() {
   return (
-    <section className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden">
-      {/* Static mesh gradient (always there) + WebGL atmosphere (progressive) */}
-      <div aria-hidden className="mesh-gradient-animated absolute inset-0" />
+    <section className="bg-navy relative left-1/2 w-screen -translate-x-1/2 overflow-hidden">
+      {/* WebGL atmosphere (progressive) over the navy hero */}
       <HeroScene />
+      <div aria-hidden className="hero-glow pointer-events-none absolute inset-0" />
 
       <div className="relative mx-auto grid max-w-6xl gap-10 px-5 pb-20 pt-14 sm:pt-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-14 lg:px-8 lg:pb-28">
         {/* Copy column */}
@@ -131,35 +131,40 @@ function Hero() {
         >
           <motion.span
             variants={item}
-            className="font-bangla inline-flex items-center gap-2.5 rounded-full bg-white/70 py-1.5 pl-3 pr-4 text-sm font-bold text-emerald-900 shadow-sm ring-1 ring-emerald-200/60 backdrop-blur"
+            className="font-bangla inline-flex items-center gap-2.5 rounded-full bg-white/10 py-1.5 pl-3 pr-4 text-sm font-bold text-white shadow-sm ring-1 ring-white/20 backdrop-blur"
           >
             <span className="relative flex h-2.5 w-2.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal opacity-75" />
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-teal" />
             </span>
-            A1 • বাংলায় জার্মান
+            A1 • বাংলায় জার্মান শেখো
           </motion.span>
 
-          <motion.h1
-            variants={item}
-            className="text-[clamp(3rem,8vw,6rem)] font-extrabold leading-[1.02] tracking-tight text-emerald-950"
-          >
-            জার্মান শেখো,
-            <br />
-            <span className="text-gradient-animated">মজা করে।</span>
-          </motion.h1>
-
-          <motion.p
-            variants={item}
-            className="font-bangla max-w-md text-lg leading-relaxed text-slate-600"
-          >
-            ফ্ল্যাশকার্ড, কুইজ আর Redemittel দিয়ে A1 জার্মান শেখো — সব বাংলায়, সম্পূর্ণ ফ্রি।
-          </motion.p>
+          {/* Mascot beside the headline */}
+          <motion.div variants={item} className="flex items-end gap-4">
+            <div className="min-w-0">
+              <motion.h1
+                variants={item}
+                className="font-heading text-[clamp(2.75rem,7vw,5rem)] font-extrabold leading-[1.04] tracking-tight text-white"
+              >
+                Learn German.
+                <br />
+                <span className="text-teal">Stay Weird.</span>
+              </motion.h1>
+              <motion.p
+                variants={item}
+                className="font-bangla mt-3 text-lg font-bold text-white/85"
+              >
+                বাংলায় জার্মান শেখো — ফ্ল্যাশকার্ড, কুইজ আর Redemittel দিয়ে A1, সম্পূর্ণ ফ্রি।
+              </motion.p>
+            </div>
+            <Mascot mood="study" size={96} animate className="hidden shrink-0 drop-shadow-lg sm:block" />
+          </motion.div>
 
           <motion.div variants={item} className="flex flex-wrap items-center gap-3">
             <Link
               href="/lektionen"
-              className="bg-brand-gradient group inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-base font-extrabold text-white shadow-xl shadow-emerald-600/25 transition hover:shadow-2xl hover:shadow-emerald-600/30 active:scale-95"
+              className="btn btn-primary group inline-flex items-center gap-2 px-7 py-3.5 text-base"
             >
               <Play className="h-5 w-5 fill-current" aria-hidden />
               শেখা শুরু করো
@@ -170,28 +175,28 @@ function Hero() {
             </Link>
             <Link
               href="/quiz"
-              className="glass-card inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-base font-extrabold text-emerald-800 transition hover:bg-white/85 active:scale-95"
+              className="btn btn-secondary inline-flex items-center gap-2 px-7 py-3.5 text-base"
             >
               <Gamepad2 className="h-5 w-5" aria-hidden />
               কুইজ খেলো
             </Link>
           </motion.div>
 
-          {/* Ulluk the mascot — playful companion next to the CTAs */}
+          {/* Ulluk the mascot — speech bubble under the CTAs */}
           <motion.div variants={item} className="flex items-center gap-3">
-            <Mascot mood="happy" size={84} className="shrink-0 drop-shadow-md" />
-            <p className="font-bangla glass-card max-w-52 rounded-2xl rounded-bl-sm px-4 py-2.5 text-sm font-bold text-emerald-900">
+            <Mascot mood="study" size={56} animate className="shrink-0 drop-shadow-md sm:hidden" />
+            <p className="font-bangla max-w-52 rounded-2xl rounded-bl-sm bg-white/10 px-4 py-2.5 text-sm font-bold text-white ring-1 ring-white/20 backdrop-blur">
               আমি উল্লুক! চলো, আজকে কিছু নতুন শিখি!
             </p>
           </motion.div>
 
           <motion.p
             variants={item}
-            className="font-bangla flex flex-wrap items-center gap-x-4 gap-y-1 text-sm font-semibold text-slate-500"
+            className="font-bangla flex flex-wrap items-center gap-x-4 gap-y-1 text-sm font-semibold text-white/70"
           >
             {["ফ্রি", "সাইন-আপ লাগবে না", "২ মিনিটে শুরু"].map((t) => (
               <span key={t} className="inline-flex items-center gap-1.5">
-                <Check className="h-4 w-4 text-emerald-600" strokeWidth={3} aria-hidden />
+                <Check className="h-4 w-4 text-teal" strokeWidth={3} aria-hidden />
                 {t}
               </span>
             ))}
@@ -224,9 +229,9 @@ function StatCard({
   active: boolean;
 }) {
   return (
-    <div className="glass-card flex flex-col items-center gap-1 rounded-3xl p-4 text-center sm:p-5">
-      <Icon className="mb-1 h-5 w-5 text-emerald-600" aria-hidden />
-      <p className="text-2xl font-extrabold text-emerald-800 sm:text-3xl">
+    <div className="card card-hover flex flex-col items-center gap-1 rounded-3xl p-4 text-center sm:p-5">
+      <Icon className="mb-1 h-5 w-5 text-teal" aria-hidden />
+      <p className="text-2xl font-extrabold text-navy sm:text-3xl">
         {active ? <CountUp value={value} /> : "–"}
       </p>
       <p className="font-bangla text-xs font-bold text-slate-500 sm:text-sm">{label}</p>
@@ -268,16 +273,16 @@ function SocialProof({ wordOfDay }: { wordOfDay: VocabWord | null }) {
       {wordOfDay && (
         <Link
           href="/wortschatz"
-          className="group glass-card flex items-center gap-4 rounded-3xl p-4 transition hover:bg-white/85 active:scale-[0.99]"
+          className="card card-hover group flex items-center gap-4 rounded-3xl p-4 transition active:scale-[0.99]"
         >
-          <span className="bg-brand-gradient flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-white shadow-md shadow-emerald-600/20">
+          <span className="bg-brand-gradient flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-white shadow-md shadow-navy/20">
             <Sparkles className="h-6 w-6" aria-hidden />
           </span>
           <span className="min-w-0 flex-1">
-            <span className="font-bangla block text-xs font-bold uppercase tracking-widest text-emerald-600">
+            <span className="font-bangla block text-xs font-bold uppercase tracking-widest text-teal">
               আজকের শব্দ
             </span>
-            <span className="block truncate text-lg font-extrabold text-emerald-950">
+            <span className="block truncate text-lg font-extrabold text-navy">
               {wordOfDay.german}
               <span className="font-bangla ml-2 font-semibold text-slate-500">
                 — {wordOfDay.bangla}
@@ -285,7 +290,7 @@ function SocialProof({ wordOfDay }: { wordOfDay: VocabWord | null }) {
             </span>
           </span>
           <ArrowRight
-            className="h-5 w-5 shrink-0 text-emerald-600 transition-transform group-hover:translate-x-1"
+            className="h-5 w-5 shrink-0 text-teal transition-transform group-hover:translate-x-1"
             aria-hidden
           />
         </Link>
@@ -317,7 +322,7 @@ export default function LandingPage() {
 
       {/* Skewed gradient divider (Stripe-style, subtle) */}
       <div aria-hidden className="relative left-1/2 z-10 w-screen -translate-x-1/2">
-        <div className="-my-5 h-12 -rotate-1 scale-x-105 bg-gradient-to-r from-emerald-500 via-teal-500 to-amber-400 opacity-90 shadow-lg shadow-emerald-900/10 sm:h-16" />
+        <div className="-my-5 h-12 -rotate-1 scale-x-105 bg-gradient-to-r from-teal via-teal to-sun opacity-90 shadow-lg shadow-navy/10 sm:h-16" />
       </div>
 
       {/* Social proof */}
@@ -342,11 +347,11 @@ export default function LandingPage() {
         {/* Header */}
         <motion.div variants={item} className="flex items-end justify-between">
           <div>
-            <p className="font-bangla text-sm font-semibold text-emerald-500">
+            <p className="font-bangla text-sm font-semibold text-teal">
               স্বাগতম! আজ শিখতে প্রস্তুত?
             </p>
-            <h2 className="flex items-center gap-2 text-3xl font-extrabold tracking-tight text-emerald-950">
-              <GreetIcon className="h-7 w-7 text-amber-500" aria-hidden />
+            <h2 className="flex items-center gap-2 text-3xl font-extrabold tracking-tight text-navy">
+              <GreetIcon className="h-7 w-7 text-navy" aria-hidden />
               {greetText}
             </h2>
           </div>
@@ -362,20 +367,20 @@ export default function LandingPage() {
 
         {/* Stats */}
         <motion.div variants={item} className="grid grid-cols-3 gap-3">
-          <div className="rounded-3xl bg-white p-4 text-center shadow-sm ring-1 ring-emerald-100">
-            <p className="text-2xl font-extrabold text-emerald-700">
+          <div className="card rounded-3xl p-4 text-center">
+            <p className="text-2xl font-extrabold text-teal">
               {progress ? <CountUp value={progress.streak} /> : "–"}
             </p>
             <p className="font-bangla text-xs font-semibold text-slate-500">দিনের স্ট্রিক</p>
           </div>
-          <div className="rounded-3xl bg-white p-4 text-center shadow-sm ring-1 ring-emerald-100">
-            <p className="text-2xl font-extrabold text-teal-700">
+          <div className="card rounded-3xl p-4 text-center">
+            <p className="text-2xl font-extrabold text-teal">
               {progress ? <CountUp value={progress.xp} /> : "–"}
             </p>
             <p className="font-bangla text-xs font-semibold text-slate-500">মোট XP</p>
           </div>
-          <div className="rounded-3xl bg-white p-4 text-center shadow-sm ring-1 ring-emerald-100">
-            <p className="text-2xl font-extrabold text-emerald-600">
+          <div className="card rounded-3xl p-4 text-center">
+            <p className="text-2xl font-extrabold text-teal">
               {progress ? <CountUp value={knownCount} /> : "–"}
             </p>
             <p className="font-bangla text-xs font-semibold text-slate-500">জানা শব্দ</p>
@@ -387,19 +392,19 @@ export default function LandingPage() {
           <motion.div variants={item}>
             <Link
               href={`/lektionen/${nextLesson.id}`}
-              className="group flex items-center gap-4 rounded-3xl bg-gradient-to-br from-emerald-600 to-teal-700 p-5 text-white shadow-xl shadow-emerald-200"
+              className="btn btn-primary group flex items-center gap-4 rounded-3xl p-5 text-left shadow-xl"
             >
               <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/20 text-2xl font-extrabold">
                 {nextLesson.id}
               </span>
               <span className="flex-1">
-                <span className="font-bangla text-xs font-semibold uppercase tracking-widest text-emerald-200">
+                <span className="font-bangla text-xs font-semibold uppercase tracking-widest text-white/70">
                   চালিয়ে যাও
                 </span>
                 <span className="block text-lg font-extrabold leading-tight">
                   Lektion {nextLesson.id}: {nextLesson.title}
                 </span>
-                <span className="font-bangla block text-sm text-emerald-200">
+                <span className="font-bangla block text-sm text-white/70">
                   {nextLesson.titleBangla}
                 </span>
               </span>
@@ -413,28 +418,28 @@ export default function LandingPage() {
 
         {/* Word of the day */}
         <motion.div variants={item} id="wort-des-tages" className="flex flex-col gap-2 scroll-mt-24">
-          <h2 className="font-bangla flex items-center gap-2 text-lg font-extrabold text-emerald-950">
-            <CalendarDays className="h-5 w-5 text-emerald-600" aria-hidden />
+          <h2 className="section-heading font-bangla flex items-center gap-2 text-lg">
+            <CalendarDays className="h-5 w-5 text-teal" aria-hidden />
             আজকের শব্দ
-            <span className="text-sm font-semibold text-slate-400">— ট্যাপ করে উল্টাও</span>
+            <span className="text-sm font-semibold text-mist">— ট্যাপ করে উল্টাও</span>
           </h2>
           {wordOfDay ? (
             <Flashcard word={wordOfDay} compact />
           ) : (
-            <div className="h-44 animate-pulse rounded-3xl bg-emerald-50" />
+            <div className="h-44 animate-pulse rounded-3xl bg-cream" />
           )}
         </motion.div>
 
         {/* Lessons grid */}
         <motion.div variants={item} className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <h2 className="font-bangla flex items-center gap-2 text-lg font-extrabold text-emerald-950">
-              <BookOpen className="h-5 w-5 text-emerald-600" aria-hidden />
+            <h2 className="section-heading font-bangla flex items-center gap-2 text-lg">
+              <BookOpen className="h-5 w-5 text-teal" aria-hidden />
               পাঠসমূহ
             </h2>
             <Link
               href="/lektionen"
-              className="font-bangla inline-flex items-center gap-1 text-sm font-bold text-emerald-600"
+              className="font-bangla inline-flex items-center gap-1 text-sm font-bold text-teal"
             >
               সবগুলো <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
@@ -446,12 +451,12 @@ export default function LandingPage() {
                 <Link
                   key={l.id}
                   href={`/lektionen/${l.id}`}
-                  className={`flex flex-col items-center gap-1 rounded-3xl p-4 text-center shadow-sm ring-1 transition active:scale-95 ${
-                    done ? "bg-emerald-50 ring-emerald-200" : "bg-white ring-emerald-100"
+                  className={`card card-hover flex flex-col items-center gap-1 rounded-3xl p-4 text-center transition active:scale-95 ${
+                    done ? "bg-cream ring-teal/30" : "bg-white ring-slate-200"
                   }`}
                 >
                   <ProgressRing value={done ? 1 : 0} size={44} stroke={5} label={done ? "✓" : `${l.id}`} />
-                  <p className="text-xs font-bold leading-tight text-emerald-950">{l.title}</p>
+                  <p className="text-xs font-bold leading-tight text-navy">{l.title}</p>
                   <p className="font-bangla text-[11px] leading-tight text-slate-500">{l.titleBangla}</p>
                 </Link>
               );
@@ -463,31 +468,31 @@ export default function LandingPage() {
         <motion.div variants={item} className="grid grid-cols-2 gap-3">
           <Link
             href="/quiz"
-            className="rounded-3xl bg-amber-400 p-5 text-center shadow-md shadow-amber-200 transition active:scale-95"
+            className="card card-hover rounded-3xl bg-sun p-5 text-center transition active:scale-95"
           >
-            <Gamepad2 className="mx-auto h-8 w-8 text-amber-950" aria-hidden />
-            <p className="font-bangla mt-1 font-extrabold text-amber-950">কুইজ খেলো</p>
+            <Gamepad2 className="mx-auto h-8 w-8 text-navy" aria-hidden />
+            <p className="font-bangla mt-1 font-extrabold text-navy">কুইজ খেলো</p>
           </Link>
           <Link
             href="/wortschatz"
-            className="rounded-3xl bg-white p-5 text-center shadow-sm ring-1 ring-emerald-100 transition active:scale-95"
+            className="card card-hover rounded-3xl p-5 text-center transition active:scale-95"
           >
-            <Layers className="mx-auto h-8 w-8 text-emerald-700" aria-hidden />
-            <p className="font-bangla mt-1 font-extrabold text-emerald-950">শব্দভাণ্ডার</p>
+            <Layers className="mx-auto h-8 w-8 text-teal" aria-hidden />
+            <p className="font-bangla mt-1 font-extrabold text-navy">শব্দভাণ্ডার</p>
           </Link>
           <Link
             href="/resources"
-            className="rounded-3xl bg-white p-5 text-center shadow-sm ring-1 ring-emerald-100 transition active:scale-95"
+            className="card card-hover rounded-3xl p-5 text-center transition active:scale-95"
           >
-            <Globe className="mx-auto h-8 w-8 text-emerald-700" aria-hidden />
-            <p className="font-bangla mt-1 font-extrabold text-emerald-950">রিসোর্স</p>
+            <Globe className="mx-auto h-8 w-8 text-teal" aria-hidden />
+            <p className="font-bangla mt-1 font-extrabold text-navy">রিসোর্স</p>
           </Link>
           <Link
             href="/blog"
-            className="rounded-3xl bg-white p-5 text-center shadow-sm ring-1 ring-emerald-100 transition active:scale-95"
+            className="card card-hover rounded-3xl p-5 text-center transition active:scale-95"
           >
-            <Newspaper className="mx-auto h-8 w-8 text-emerald-700" aria-hidden />
-            <p className="font-bangla mt-1 font-extrabold text-emerald-950">ব্লগ</p>
+            <Newspaper className="mx-auto h-8 w-8 text-teal" aria-hidden />
+            <p className="font-bangla mt-1 font-extrabold text-navy">ব্লগ</p>
           </Link>
         </motion.div>
       </motion.div>

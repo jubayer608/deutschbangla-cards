@@ -21,13 +21,13 @@ import {
   CheckCircle2,
   Flag,
   Layers,
-  Lightbulb,
   MessageCircle,
   PartyPopper,
   PenLine,
   Target,
 } from "lucide-react";
 import SpeakButton from "@/components/SpeakButton";
+import Mascot from "@/components/Mascot";
 import EmptyState from "@/components/EmptyState";
 
 function normalize(s: string): string {
@@ -40,9 +40,9 @@ function normalize(s: string): string {
 
 const diffLabel: Record<Difficulty, string> = { easy: "সহজ", medium: "মাঝারি", hard: "কঠিন" };
 const diffColor: Record<Difficulty, string> = {
-  easy: "bg-emerald-100 text-emerald-700",
-  medium: "bg-amber-100 text-amber-700",
-  hard: "bg-rose-100 text-rose-700",
+  easy: "badge bg-teal/15 text-teal",
+  medium: "badge bg-sun/30 text-navy",
+  hard: "badge bg-navy text-white",
 };
 
 function ExerciseCard({
@@ -113,20 +113,20 @@ function ExerciseCard({
   return (
     <motion.div
       key={shakeKey}
-      className={`rounded-3xl bg-white p-5 shadow-sm ring-1 ${
-        done ? (correct ? "ring-emerald-300" : "ring-rose-300") : "ring-emerald-100"
+      className={`card rounded-3xl p-5 ${
+        done ? (correct ? "ring-teal/50" : "ring-rose-300") : "ring-slate-200"
       } ${shakeKey > 0 && !correct && done ? "animate-shake" : ""}`}
       initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
     >
       <div className="flex items-center justify-between gap-2">
-        <p className="text-sm font-extrabold text-slate-400">#{index + 1}</p>
+        <p className="text-sm font-extrabold text-mist">#{index + 1}</p>
         <span className={`rounded-full px-3 py-1 text-xs font-bold ${diffColor[ex.difficulty]}`}>
           {diffLabel[ex.difficulty]} · +{xp} XP
         </span>
       </div>
-      <p className="mt-2 text-lg font-bold text-emerald-950">{ex.prompt}</p>
+      <p className="mt-2 text-lg font-bold text-navy">{ex.prompt}</p>
       {ex.promptBangla && <p className="font-bangla mt-1 text-sm text-slate-500">{ex.promptBangla}</p>}
 
       {/* MCQ */}
@@ -135,10 +135,10 @@ function ExerciseCard({
           {ex.options?.map((opt) => {
             const isAns = normalize(opt) === normalize(ex.answer);
             const isPick = mcqPick === opt;
-            let cls = "bg-emerald-50/50 text-slate-800 ring-1 ring-emerald-100 hover:ring-emerald-300";
-            if (done && isAns) cls = "bg-emerald-500 text-white";
+            let cls = "bg-cream/50 text-slate-800 ring-1 ring-slate-200 hover:ring-teal/50";
+            if (done && isAns) cls = "bg-teal text-white";
             else if (done && isPick) cls = "bg-rose-500 text-white";
-            else if (done) cls = "bg-slate-50 text-slate-400 ring-1 ring-slate-100";
+            else if (done) cls = "bg-slate-50 text-mist ring-1 ring-slate-100";
             return (
               <motion.button
                 key={opt}
@@ -165,14 +165,14 @@ function ExerciseCard({
             onChange={(e) => setText(e.target.value)}
             disabled={done}
             placeholder={ex.type === "fillblank" ? "উত্তর লিখো…" : "Auf Deutsch schreiben…"}
-            className="font-bangla min-w-0 flex-1 rounded-2xl border-2 border-emerald-100 px-4 py-3 font-semibold outline-none focus:border-emerald-400 disabled:bg-slate-50"
+            className="font-bangla min-w-0 flex-1 rounded-2xl border-2 border-slate-200 px-4 py-3 font-semibold outline-none focus:border-teal disabled:bg-slate-50"
             onKeyDown={(e) => e.key === "Enter" && checkText()}
           />
           <button
             type="button"
             onClick={checkText}
             disabled={done}
-            className="flex items-center rounded-2xl bg-emerald-600 px-5 font-bold text-white shadow-md transition active:scale-95 disabled:opacity-40"
+            className="btn btn-primary flex items-center rounded-2xl px-5 disabled:opacity-40"
           >
             <Check className="h-5 w-5" strokeWidth={3} aria-hidden />
           </button>
@@ -182,15 +182,15 @@ function ExerciseCard({
       {/* Order */}
       {ex.type === "order" && (
         <div className="mt-4 flex flex-col gap-3">
-          <div className="flex min-h-14 flex-wrap gap-2 rounded-2xl bg-emerald-50/60 p-3 ring-1 ring-emerald-100">
-            {picked.length === 0 && <span className="text-sm text-slate-400">শব্দগুলো ট্যাপ করে সাজাও…</span>}
+          <div className="flex min-h-14 flex-wrap gap-2 rounded-2xl bg-cream/60 p-3 ring-1 ring-slate-200">
+            {picked.length === 0 && <span className="text-sm text-mist">শব্দগুলো ট্যাপ করে সাজাও…</span>}
             {picked.map((w, i) => (
               <button
                 key={`${w}-${i}`}
                 type="button"
                 disabled={done}
                 onClick={() => toggleWord(w, true)}
-                className="rounded-xl bg-emerald-600 px-3 py-2 font-bold text-white shadow-sm"
+                className="rounded-xl bg-teal px-3 py-2 font-bold text-white shadow-sm"
               >
                 {w}
               </button>
@@ -203,7 +203,7 @@ function ExerciseCard({
                 type="button"
                 disabled={done}
                 onClick={() => toggleWord(w, false)}
-                className="rounded-xl bg-white px-3 py-2 font-bold text-slate-700 shadow-sm ring-1 ring-emerald-100 transition active:scale-95"
+                className="rounded-xl bg-white px-3 py-2 font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 transition active:scale-95"
               >
                 {w}
               </button>
@@ -213,7 +213,7 @@ function ExerciseCard({
             type="button"
             onClick={checkOrder}
             disabled={done || picked.length === 0}
-            className="inline-flex items-center gap-1.5 self-start rounded-full bg-emerald-600 px-6 py-2.5 font-bold text-white shadow-md transition active:scale-95 disabled:opacity-40"
+            className="btn btn-primary inline-flex items-center gap-1.5 self-start rounded-full px-6 py-2.5 disabled:opacity-40"
           >
             Prüfen <Check className="h-4 w-4" strokeWidth={3} aria-hidden />
           </button>
@@ -227,19 +227,19 @@ function ExerciseCard({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             className={`font-bangla mt-3 overflow-hidden rounded-2xl p-3 text-sm ${
-              correct ? "bg-emerald-50 text-emerald-800" : "bg-rose-50 text-rose-800"
+              correct ? "bg-cream text-navy" : "bg-rose-50 text-rose-800"
             }`}
           >
             {correct ? (
               <p className="flex items-start gap-2">
-                <PartyPopper className="h-5 w-5 shrink-0 text-emerald-600" aria-hidden />
+                <Mascot mood="happy" size={32} className="shrink-0" />
                 <span>
                   <b>সঠিক!</b> +{xp} XP — {ex.explanation}
                 </span>
               </p>
             ) : (
               <p className="flex items-start gap-2">
-                <Lightbulb className="h-5 w-5 shrink-0 text-rose-500" aria-hidden />
+                <Mascot mood="angry" size={32} className="shrink-0" />
                 <span>
                   <b>সঠিক উত্তর:</b> {ex.answer}
                   <br />
@@ -295,37 +295,37 @@ export default function LessonDetailPage() {
       <div>
         <Link
           href="/lektionen"
-          className="font-bangla inline-flex items-center gap-1.5 text-sm font-bold text-emerald-600 transition hover:gap-2.5"
+          className="font-bangla inline-flex items-center gap-1.5 text-sm font-bold text-teal transition hover:gap-2.5"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden /> সব পাঠ
         </Link>
         <div className="mt-2 flex items-center gap-3">
-          <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-600 text-2xl font-extrabold text-white shadow-lg">
+          <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-navy text-2xl font-extrabold text-white shadow-lg">
             {lesson.id}
           </span>
           <div>
-            <h1 className="text-2xl font-extrabold tracking-tight text-emerald-950">
+            <h1 className="text-2xl font-extrabold tracking-tight text-navy">
               Lektion {lesson.id}: {lesson.title}
             </h1>
             <p className="font-bangla text-slate-500">{lesson.titleBangla}</p>
           </div>
         </div>
         {isDone && (
-          <p className="font-bangla mt-3 inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-4 py-1.5 text-sm font-bold text-emerald-700">
+          <p className="font-bangla mt-3 inline-flex items-center gap-1.5 badge rounded-full bg-teal/15 px-4 py-1.5 text-sm text-teal">
             <CheckCircle2 className="h-4 w-4" aria-hidden /> এই পাঠ শেষ করেছো!
           </p>
         )}
       </div>
 
       {/* Lernziele */}
-      <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-emerald-100">
-        <h2 className="font-bangla inline-flex items-center gap-2 text-lg font-extrabold text-emerald-950">
-          <Target className="h-5 w-5 text-emerald-600" aria-hidden /> Lernziele — শেখার লক্ষ্য
+      <section className="card rounded-3xl p-5">
+        <h2 className="section-heading font-bangla inline-flex items-center gap-2 text-lg">
+          <Target className="h-5 w-5 text-teal" aria-hidden /> Lernziele — শেখার লক্ষ্য
         </h2>
         <ul className="font-bangla mt-3 flex flex-col gap-2">
           {lesson.ziele.map((z, i) => (
             <li key={i} className="flex items-start gap-2 text-slate-700">
-              <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" strokeWidth={3} aria-hidden />{" "}
+              <Check className="mt-0.5 h-4 w-4 shrink-0 text-teal" strokeWidth={3} aria-hidden />{" "}
               {z}
             </li>
           ))}
@@ -334,15 +334,15 @@ export default function LessonDetailPage() {
 
       {/* Wortschatz */}
       <section className="flex flex-col gap-3">
-        <h2 className="font-bangla inline-flex items-center gap-2 text-lg font-extrabold text-emerald-950">
-          <Layers className="h-5 w-5 text-emerald-600" aria-hidden /> Wortschatz — শব্দভাণ্ডার (
+        <h2 className="section-heading font-bangla inline-flex items-center gap-2 text-lg">
+          <Layers className="h-5 w-5 text-teal" aria-hidden /> Wortschatz — শব্দভাণ্ডার (
           {vocabWords.length})
         </h2>
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           {vocabWords.map((w) => (
-            <div key={w.id} className="rounded-2xl bg-white p-3 shadow-sm ring-1 ring-emerald-100">
+            <div key={w.id} className="card rounded-2xl p-3">
               <div className="flex items-center justify-between gap-2">
-                <p className="font-extrabold text-emerald-900">{w.german}</p>
+                <p className="font-extrabold text-navy">{w.german}</p>
                 <SpeakButton text={w.german} className="h-7 w-7" />
               </div>
               <p className="font-bangla text-sm text-slate-600">{w.bangla}</p>
@@ -353,12 +353,12 @@ export default function LessonDetailPage() {
 
       {/* Grammatik */}
       <section className="flex flex-col gap-3">
-        <h2 className="font-bangla inline-flex items-center gap-2 text-lg font-extrabold text-emerald-950">
-          <BookOpen className="h-5 w-5 text-emerald-600" aria-hidden /> Grammatik — ব্যাকরণ
+        <h2 className="section-heading font-bangla inline-flex items-center gap-2 text-lg">
+          <BookOpen className="h-5 w-5 text-teal" aria-hidden /> Grammatik — ব্যাকরণ
         </h2>
         {lesson.grammar.map((g, i) => (
-          <div key={i} className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-emerald-100">
-            <h3 className="font-extrabold text-emerald-900">{g.title}</h3>
+          <div key={i} className="card rounded-3xl p-5">
+            <h3 className="font-extrabold text-navy">{g.title}</h3>
             <p className="font-bangla mt-2 text-slate-700">{g.explanation}</p>
             {g.table && (
               <div className="mt-3 overflow-x-auto">
@@ -366,7 +366,7 @@ export default function LessonDetailPage() {
                   <thead>
                     <tr>
                       {g.table.headers.map((h, hi) => (
-                        <th key={hi} className="border border-emerald-200 bg-emerald-50 px-3 py-2 text-left font-bold text-emerald-900">
+                        <th key={hi} className="border border-teal/30 bg-cream px-3 py-2 text-left font-bold text-navy">
                           {h}
                         </th>
                       ))}
@@ -374,9 +374,9 @@ export default function LessonDetailPage() {
                   </thead>
                   <tbody>
                     {g.table.rows.map((row, ri) => (
-                      <tr key={ri} className={ri % 2 ? "bg-emerald-50/40" : ""}>
+                      <tr key={ri} className={ri % 2 ? "bg-cream/40" : ""}>
                         {row.map((cell, ci) => (
-                          <td key={ci} className="border border-emerald-100 px-3 py-2 text-slate-700">
+                          <td key={ci} className="border border-slate-200 px-3 py-2 text-slate-700">
                             {cell}
                           </td>
                         ))}
@@ -389,9 +389,9 @@ export default function LessonDetailPage() {
             {g.examples && (
               <ul className="mt-3 flex flex-col gap-1.5">
                 {g.examples.map((e, ei) => (
-                  <li key={ei} className="rounded-xl bg-emerald-50/60 px-3 py-2 text-sm">
+                  <li key={ei} className="rounded-xl bg-cream/60 px-3 py-2 text-sm">
                     <div className="flex items-start justify-between gap-2">
-                      <span className="font-bold text-emerald-900">{e.german}</span>
+                      <span className="font-bold text-navy">{e.german}</span>
                       <SpeakButton text={e.german} className="h-7 w-7" />
                     </div>
                     <span className="font-bangla block text-slate-600">{e.bangla}</span>
@@ -405,13 +405,13 @@ export default function LessonDetailPage() {
 
       {/* Beispielsätze */}
       <section className="flex flex-col gap-2">
-        <h2 className="font-bangla inline-flex items-center gap-2 text-lg font-extrabold text-emerald-950">
-          <MessageCircle className="h-5 w-5 text-emerald-600" aria-hidden /> Beispielsätze — উদাহরণ বাক্য
+        <h2 className="section-heading font-bangla inline-flex items-center gap-2 text-lg">
+          <MessageCircle className="h-5 w-5 text-teal" aria-hidden /> Beispielsätze — উদাহরণ বাক্য
         </h2>
         {lesson.saetze.map((s, i) => (
-          <div key={i} className="rounded-2xl bg-white p-3 shadow-sm ring-1 ring-emerald-100">
+          <div key={i} className="card rounded-2xl p-3">
             <div className="flex items-start justify-between gap-2">
-              <p className="font-bold text-emerald-900">{s.german}</p>
+              <p className="font-bold text-navy">{s.german}</p>
               <SpeakButton text={s.german} className="h-7 w-7" />
             </div>
             <p className="font-bangla text-sm text-slate-600">{s.bangla}</p>
@@ -422,12 +422,12 @@ export default function LessonDetailPage() {
       {/* Übungen */}
       <section className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
-          <h2 className="font-bangla inline-flex items-center gap-2 text-lg font-extrabold text-emerald-950">
-            <PenLine className="h-5 w-5 text-emerald-600" aria-hidden /> Übungen — অনুশীলন{" "}
-            <span className="text-sm font-semibold text-slate-400">(সহজ → কঠিন)</span>
+          <h2 className="section-heading font-bangla inline-flex items-center gap-2 text-lg">
+            <PenLine className="h-5 w-5 text-teal" aria-hidden /> Übungen — অনুশীলন{" "}
+            <span className="text-sm font-semibold text-mist">(সহজ → কঠিন)</span>
           </h2>
           {xpGained > 0 && (
-            <span className="rounded-full bg-amber-100 px-3 py-1 text-sm font-bold text-amber-700">
+            <span className="badge rounded-full bg-sun/30 px-3 py-1 text-sm text-navy">
               +{xpGained} XP
             </span>
           )}
@@ -440,7 +440,7 @@ export default function LessonDetailPage() {
       {/* Complete */}
       <div className="flex flex-col items-center gap-3 pb-4">
         {isDone ? (
-          <p className="font-bangla inline-flex items-center gap-2 font-bold text-emerald-700">
+          <p className="font-bangla inline-flex items-center gap-2 font-bold text-teal">
             <PartyPopper className="h-5 w-5" aria-hidden /> Lektion abgeschlossen! পরের পাঠে এগিয়ে
             যাও।
           </p>
@@ -448,7 +448,7 @@ export default function LessonDetailPage() {
           <button
             type="button"
             onClick={handleComplete}
-            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-10 py-4 text-lg font-extrabold text-white shadow-xl shadow-emerald-200 transition active:scale-95"
+            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-teal to-teal px-10 py-4 text-lg font-extrabold text-white shadow-xl shadow-navy/10 transition active:scale-95"
           >
             <Flag className="h-5 w-5" aria-hidden /> Lektion abschließen (+50 XP)
           </button>
@@ -457,7 +457,7 @@ export default function LessonDetailPage() {
           {lesson.id > 1 && (
             <Link
               href={`/lektionen/${lesson.id - 1}`}
-              className="font-bangla inline-flex items-center gap-1.5 rounded-full bg-white px-6 py-2.5 font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-100"
+              className="btn btn-ghost font-bangla inline-flex items-center gap-1.5 rounded-full px-6 py-2.5"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden /> আগের পাঠ
             </Link>
@@ -465,7 +465,7 @@ export default function LessonDetailPage() {
           {lesson.id < 12 && (
             <Link
               href={`/lektionen/${lesson.id + 1}`}
-              className="font-bangla inline-flex items-center gap-1.5 rounded-full bg-white px-6 py-2.5 font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-100"
+              className="btn btn-ghost font-bangla inline-flex items-center gap-1.5 rounded-full px-6 py-2.5"
             >
               পরের পাঠ <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>

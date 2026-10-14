@@ -1,4 +1,4 @@
-# 🇩🇪🇧🇩 DeutschBangla Cards — v3
+# 🇩🇪🇧🇩 DeutschBangla Cards — v4
 
 A complete **A1-level German learning site for Bangla speakers** — built with Next.js 16, TypeScript, Tailwind CSS v4 and Framer Motion.
 
@@ -14,7 +14,9 @@ Premium **emerald + amber** brand system (deep emerald primary, warm amber secon
 - **📖 Lektionen (12)** — full A1 curriculum: Lernziele in Bangla, vocabulary, grammar blocks with tables, example sentences, and interactive exercises ordered **easy → hard** (MCQ, fill-in-the-blank, translation, word-order)
 - **🃏 Wortschatz (~192 words)** — 14 categories, search, animated grid, swipe-based study mode (swipe right = known, left = unknown), plus a **Redemittel** phrase collection for everyday situations
 - **📐 Grammatik (13 topics)** — Artikel, Plural, Pronomen, Konjugation, Satzbau, Negation, Akkusativ/Dativ, Possessivartikel, Modalverben, trennbare Verben, Adjektive, Präpositionen, Uhrzeit & Datum — all with Bangla explanations and tables
-- **✍️ Quiz** — modes (Wortschatz / Grammatik / Gemischt) × difficulty (**easy / medium / hard / mixed**), animated answer feedback (spring + shake), count-up score, confetti celebrations, best scores
+- **✍️ Quiz** — modes (Wortschatz / Grammatik / Gemischt) × difficulty (**easy / medium / hard / mixed**), animated answer feedback (spring + shake), count-up score, confetti celebrations, best scores, and a **"ভুলগুলো আবার চেষ্টা করো" review round** for missed questions with improvement tracking
+- **🔊 Audio pronunciation** — German text-to-speech (Web Speech API, `de-DE` voice) via a subtle speaker button on flashcards, vocabulary cards, lesson vocab, example sentences, grammar examples and Redemittel phrases
+- **🔍 SEO + PWA** — per-route metadata + Open Graph, per-post blog metadata, `sitemap.xml`, `robots.txt`, SVG favicon (`app/icon.svg`), web app manifest + theme color (installable on Android)
 - **🌐 Resources** — curated external learning resources (YouTube channels, courses, apps, dictionaries, listening) with category filters + search; official homepage-level links only
 - **📝 Blog** — 5 in-depth Bangla guides (A1 roadmap, der/die/das techniques, pronunciation, exam format, daily routine); featured hero + card grid, reading progress bar, prev/next navigation
 - **📈 Fortschritt** — XP + levels, streak, per-category mastery bars, weekly activity chart, lesson checklist

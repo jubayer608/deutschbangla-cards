@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { getTopic } from "@/data/grammar";
+import SpeakButton from "@/components/SpeakButton";
 import EmptyState from "@/components/EmptyState";
 
 export default function GrammarDetailPage() {
@@ -69,7 +70,10 @@ export default function GrammarDetailPage() {
             <ul className="mt-3 flex flex-col gap-1.5">
               {s.examples.map((e, ei) => (
                 <li key={ei} className="rounded-xl bg-emerald-50/60 px-3 py-2 text-sm">
-                  <span className="font-bold text-emerald-900">{e.german}</span>
+                  <div className="flex items-start justify-between gap-2">
+                    <span className="font-bold text-emerald-900">{e.german}</span>
+                    <SpeakButton text={e.german} className="h-7 w-7" />
+                  </div>
                   <span className="font-bangla block text-slate-600">{e.bangla}</span>
                 </li>
               ))}

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useTransform, type PanInfo } from "framer-motion";
+import SpeakButton from "@/components/SpeakButton";
 
 interface FlashcardWord {
   id: string | number;
@@ -133,6 +134,7 @@ export default function Flashcard({ word, flipped, onSwipe, onFlip, compact }: F
             </span>
           )}
           <p className="text-center text-4xl font-extrabold tracking-tight sm:text-5xl">{word.german}</p>
+          <SpeakButton text={word.german} dark />
           <p className="text-sm font-medium text-emerald-200">👆 Tap to reveal meaning</p>
         </div>
 
@@ -140,7 +142,10 @@ export default function Flashcard({ word, flipped, onSwipe, onFlip, compact }: F
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-3xl bg-white p-6 text-center shadow-xl shadow-emerald-200 ring-1 ring-emerald-100 [backface-visibility:hidden] [transform:rotateY(180deg)]">
           <p className="font-bangla text-4xl font-extrabold text-emerald-950 sm:text-5xl">{word.bangla}</p>
           <div className="mt-2 w-full rounded-2xl bg-emerald-50 p-4">
-            <p className="text-base font-semibold text-slate-800">{word.example}</p>
+            <div className="flex items-start justify-between gap-2">
+              <p className="text-base font-semibold text-slate-800">{word.example}</p>
+              <SpeakButton text={word.example} className="h-7 w-7" />
+            </div>
             <p className="font-bangla mt-1 text-sm text-slate-600">{word.exampleBangla}</p>
           </div>
         </div>

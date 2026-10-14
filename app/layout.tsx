@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { Geist, Geist_Mono, Noto_Sans_Bengali } from "next/font/google";
 import Navbar from "@/components/Navbar";
@@ -21,9 +21,41 @@ const bengali = Noto_Sans_Bengali({
 });
 
 export const metadata: Metadata = {
-  title: "DeutschBangla Cards | বাংলায় A1 German শেখো",
+  metadataBase: new URL("https://deutschbangla-cards.vercel.app"),
+  title: {
+    default: "DeutschBangla Cards | বাংলায় A1 German শেখো",
+    template: "%s | DeutschBangla Cards",
+  },
   description:
     "Bangla-speaker-দের জন্য A1 German: 12টি পাঠ, 192টি শব্দ, ব্যাকরণ, কুইজ, রিসোর্স আর ব্লগ — flashcards দিয়ে মজায় শেখো।",
+  keywords: [
+    "German শেখো",
+    "A1 German",
+    "German for Bangla speakers",
+    "Deutsch lernen",
+    "German vocabulary",
+    "German grammar Bangla",
+    "বাংলায় জার্মান",
+  ],
+  openGraph: {
+    title: "DeutschBangla Cards | বাংলায় A1 German শেখো",
+    description:
+      "Bangla-speaker-দের জন্য A1 German: পাঠ, শব্দভাণ্ডার, ব্যাকরণ, কুইজ আর ব্লগ — মজায় শেখো।",
+    url: "https://deutschbangla-cards.vercel.app",
+    siteName: "DeutschBangla Cards",
+    locale: "bn_BD",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "DeutschBangla Cards | বাংলায় A1 German শেখো",
+    description:
+      "Bangla-speaker-দের জন্য A1 German: পাঠ, শব্দভাণ্ডার, ব্যাকরণ, কুইজ আর ব্লগ।",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#047857",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

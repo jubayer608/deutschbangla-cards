@@ -2,30 +2,43 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  Flame,
-  Home,
   BookOpen,
   Briefcase,
+  ChevronDown,
+  ChevronRight,
+  Flame,
+  Globe,
+  Home,
   Library,
+  Menu,
+  PenLine,
   Puzzle,
   Target,
-  Globe,
-  PenLine,
   TrendingUp,
+  X,
+  type LucideIcon,
 } from "lucide-react";
 
-const links = [
-  { href: "/", label: "হোম", short: "হোম", Icon: Home },
-  { href: "/lektionen", label: "পাঠ", short: "পাঠ", Icon: BookOpen },
-  { href: "/wortschatz", label: "শব্দ", short: "শব্দ", Icon: Library },
-  { href: "/grammatik", label: "ব্যাকরণ", short: "ব্যাকরণ", Icon: Puzzle },
-  { href: "/quiz", label: "কুইজ", short: "কুইজ", Icon: Target },
-  { href: "/resources", label: "রিসোর্স", short: "রিসোর্স", Icon: Globe },
-  { href: "/opportunities", label: "সুযোগ", short: "সুযোগ", Icon: Briefcase },
-  { href: "/blog", label: "ব্লগ", short: "ব্লগ", Icon: PenLine },
-  { href: "/fortschritt", label: "অগ্রগতি", short: "অগ্রগতি", Icon: TrendingUp },
+type NavLink = { href: string; label: string; Icon: LucideIcon; desc?: string };
+
+/** Daily learning loop — always visible */
+const coreLinks: NavLink[] = [
+  { href: "/", label: "হোম", Icon: Home },
+  { href: "/lektionen", label: "পাঠ", Icon: BookOpen },
+  { href: "/wortschatz", label: "শব্দ", Icon: Library },
+  { href: "/quiz", label: "কুইজ", Icon: Target },
+];
+
+/** Reference / periodic pages — live inside the menu */
+const menuLinks: NavLink[] = [
+  { href: "/grammatik", label: "ব্যাকরণ", Icon: Puzzle, desc: "গ্রামার টপিক" },
+  { href: "/fortschritt", label: "অগ্রগতি", Icon: TrendingUp, desc: "তোমার প্রগ্রেস" },
+  { href: "/opportunities", label: "সুযোগ", Icon: Briefcase, desc: "ক্যারিয়ার গাইড" },
+  { href: "/resources", label: "রিসোর্স", Icon: Globe, desc: "বাইরের রিসোর্স" },
+  { href: "/blog", label: "ব্লগ", Icon: PenLine, desc: "আর্টিকেল" },
 ];
 
 function isActiveLink(pathname: string, href: string): boolean {
@@ -35,6 +48,19 @@ function isActiveLink(pathname: string, href: string): boolean {
 
 export default function Navbar() {
   const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuActive = menuLinks.some((l) => isActiveLink(pathname, l.href));
+
+  useEffect(() => setMenuOpen(false), [pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
 
   return (
     <>
@@ -62,7 +88,7 @@ export default function Navbar() {
 
           {/* Desktop nav */}
           <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Main">
-            {links.map((l) => {
+            {coreLinks.map((l) => {
               const active = isActiveLink(pathname, l.href);
               return (
                 <Link
@@ -86,17 +112,105 @@ export default function Navbar() {
                 </Link>
               );
             })}
+
+            {/* More dropdown */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setMenuOpen((v) => !v)}
+                aria-expanded={menuOpen}
+                aria-haspopup="menu"
+                className="relative rounded-full px-3 py-2 text-[13px] font-bold transition"
+              >
+                {menuActive && (
+                  <motion.span
+                    layoutId="nav-pill"
+                    className="bg-brand-gradient absolute inset-0 rounded-full shadow-md shadow-emerald-200"
+                    transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                  />
+                )}
+                <span
+                  className={`font-bangla relative z-10 flex items-center gap-1 ${menuActive ? "text-white" : "text-emerald-800 hover:text-emerald-600"}`}
+                >
+                  আরো
+                  <ChevronDown
+                    className={`h-3.5 w-3.5 transition-transform ${menuOpen ? "rotate-180" : ""}`}
+                    aria-hidden
+                  />
+                </span>
+              </button>
+              <AnimatePresence>
+                {menuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 6, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 6, scale: 0.98 }}
+                    transition={{ duration: 0.16 }}
+                    role="menu"
+                    aria-label="আরো"
+                    className="absolute right-0 top-full z-50 mt-2 w-64 overflow-hidden rounded-2xl border border-emerald-100 bg-white shadow-xl shadow-emerald-100"
+                  >
+                    {menuLinks.map((l) => {
+                      const active = isActiveLink(pathname, l.href);
+                      return (
+                        <Link
+                          key={l.href}
+                          href={l.href}
+                          role="menuitem"
+                          aria-current={active ? "page" : undefined}
+                          className={`flex items-center gap-3 px-4 py-3 transition ${
+                            active ? "bg-emerald-50" : "hover:bg-emerald-50/60"
+                          }`}
+                        >
+                          <span
+                            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${
+                              active ? "bg-emerald-600 text-white" : "bg-emerald-100 text-emerald-700"
+                            }`}
+                          >
+                            <l.Icon className="h-[18px] w-[18px]" aria-hidden />
+                          </span>
+                          <span className="min-w-0 flex-1">
+                            <span
+                              className={`font-bangla block text-sm leading-tight ${
+                                active ? "font-extrabold text-emerald-800" : "font-bold text-slate-700"
+                              }`}
+                            >
+                              {l.label}
+                            </span>
+                            {l.desc && (
+                              <span className="font-bangla block text-xs text-slate-400">{l.desc}</span>
+                            )}
+                          </span>
+                          <ChevronRight className="h-4 w-4 shrink-0 text-slate-300" aria-hidden />
+                        </Link>
+                      );
+                    })}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </nav>
         </div>
       </header>
 
-      {/* Mobile bottom nav */}
+      {/* Click-catcher for the desktop dropdown */}
+      {menuOpen && (
+        <button
+          type="button"
+          aria-hidden
+          tabIndex={-1}
+          onClick={() => setMenuOpen(false)}
+          className="fixed inset-0 z-30 hidden cursor-default bg-transparent lg:block"
+        />
+      )}
+
+      {/* Mobile bottom nav — 4 core tabs + menu */}
       <nav
         className="fixed inset-x-0 bottom-0 z-40 border-t border-emerald-100 bg-white/95 shadow-[0_-4px_24px_rgba(6,95,70,0.08)] backdrop-blur-xl lg:hidden"
         aria-label="Main"
       >
-        <div className="grid grid-cols-9 pb-[env(safe-area-inset-bottom)]">
-          {links.map((l) => {
+        <div className="grid grid-cols-5 pb-[env(safe-area-inset-bottom)]">
+          {coreLinks.map((l) => {
             const active = isActiveLink(pathname, l.href);
             return (
               <Link
@@ -108,28 +222,138 @@ export default function Navbar() {
                 {active && (
                   <motion.span
                     layoutId="mnav-pill"
-                    className="absolute inset-x-1 inset-y-1 rounded-2xl bg-emerald-100"
+                    className="absolute inset-x-2 inset-y-1 rounded-2xl bg-emerald-100"
                     transition={{ type: "spring", stiffness: 420, damping: 34 }}
                   />
                 )}
                 <l.Icon
-                  className={`relative z-10 h-[18px] w-[18px] leading-none ${
+                  className={`relative z-10 h-5 w-5 leading-none ${
                     active ? "text-emerald-700" : "text-slate-400"
                   }`}
                   aria-hidden
                 />
                 <span
-                  className={`font-bangla relative z-10 text-[9px] leading-tight ${
+                  className={`font-bangla relative z-10 text-[10px] leading-tight ${
                     active ? "font-extrabold text-emerald-800" : "font-semibold text-slate-400"
                   }`}
                 >
-                  {l.short}
+                  {l.label}
                 </span>
               </Link>
             );
           })}
+          <button
+            type="button"
+            onClick={() => setMenuOpen(true)}
+            aria-expanded={menuOpen}
+            aria-label="মেনু খুলুন"
+            className="relative flex flex-col items-center gap-0.5 px-0.5 py-2 pt-2.5"
+          >
+            {menuActive && (
+              <motion.span
+                layoutId="mnav-pill"
+                className="absolute inset-x-2 inset-y-1 rounded-2xl bg-emerald-100"
+                transition={{ type: "spring", stiffness: 420, damping: 34 }}
+              />
+            )}
+            <Menu
+              className={`relative z-10 h-5 w-5 leading-none ${
+                menuActive ? "text-emerald-700" : "text-slate-400"
+              }`}
+              aria-hidden
+            />
+            <span
+              className={`font-bangla relative z-10 text-[10px] leading-tight ${
+                menuActive ? "font-extrabold text-emerald-800" : "font-semibold text-slate-400"
+              }`}
+            >
+              মেনু
+            </span>
+          </button>
         </div>
       </nav>
+
+      {/* Mobile bottom sheet menu */}
+      <AnimatePresence>
+        {menuOpen && (
+          <div key="sheet" className="lg:hidden">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.18 }}
+              onClick={() => setMenuOpen(false)}
+              className="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-[2px]"
+              aria-hidden
+            />
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", stiffness: 380, damping: 38 }}
+              role="dialog"
+              aria-modal="true"
+              aria-label="মেনু"
+              className="fixed inset-x-0 bottom-0 z-50 rounded-t-3xl border-t border-emerald-100 bg-white px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] pt-2 shadow-2xl"
+            >
+              <div className="mx-auto mb-1 h-1 w-10 rounded-full bg-slate-200" aria-hidden />
+              <div className="flex items-center justify-between py-2">
+                <span className="font-bangla text-base font-extrabold text-emerald-900">মেনু</span>
+                <button
+                  type="button"
+                  onClick={() => setMenuOpen(false)}
+                  aria-label="মেনু বন্ধ করুন"
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition active:scale-95"
+                >
+                  <X className="h-5 w-5" aria-hidden />
+                </button>
+              </div>
+              <div className="flex flex-col gap-1">
+                {menuLinks.map((l, i) => {
+                  const active = isActiveLink(pathname, l.href);
+                  return (
+                    <motion.div
+                      key={l.href}
+                      initial={{ opacity: 0, x: 12 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.05 + i * 0.04, duration: 0.18 }}
+                    >
+                      <Link
+                        href={l.href}
+                        aria-current={active ? "page" : undefined}
+                        className={`flex items-center gap-3 rounded-2xl px-3 py-3 transition active:scale-[0.99] ${
+                          active ? "bg-emerald-50" : "hover:bg-slate-50"
+                        }`}
+                      >
+                        <span
+                          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl ${
+                            active ? "bg-emerald-600 text-white" : "bg-emerald-100 text-emerald-700"
+                          }`}
+                        >
+                          <l.Icon className="h-5 w-5" aria-hidden />
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span
+                            className={`font-bangla block text-[15px] leading-tight ${
+                              active ? "font-extrabold text-emerald-800" : "font-bold text-slate-700"
+                            }`}
+                          >
+                            {l.label}
+                          </span>
+                          {l.desc && (
+                            <span className="font-bangla block text-xs text-slate-400">{l.desc}</span>
+                          )}
+                        </span>
+                        <ChevronRight className="h-4 w-4 shrink-0 text-slate-300" aria-hidden />
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

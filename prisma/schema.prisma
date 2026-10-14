@@ -1,0 +1,170 @@
+// ULLUK — Phase 0 (Foundation) database schema.
+//
+// Auth.js (NextAuth v5) models + app tables. Postgres (Neon) only.
+// Setup: `npx prisma db push` (or `prisma migrate dev`) after setting
+// DATABASE_URL — see SETUP.md. Never commit a real DATABASE_URL.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  // Direct (non-pooled) connection for `prisma migrate` / `db push` —
+  // pooled Neon URLs can break migrations (PgBouncer + prepared statements).
+  directUrl = env("DIRECT_URL")
+}
+
+// ── Auth.js (NextAuth v5) ────────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+
+  // Public profile handle for Phase 1 (/profile/[username]).
+  // Nullable: set later in settings; unique when present.
+  username String? @unique
+
+  accounts        Account[]
+  sessions        Session[]
+  progress        UserProgress?
+  xpEvents        XpEvent[]
+  badges          Badge[]
+  followers       Follow[]       @relation("Following")
+  following       Follow[]       @relation("Follower")
+  notifications   Notification[]
+  emailPreference EmailPreference?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ── App tables (Phase 0+) ────────────────────────────────────────────────
+
+model UserProgress {
+  id String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  xp        Int       @default(0)
+  // Level is derived: floor(xp / 200) + 1 (same formula as the site UI).
+  // Stored for cheap leaderboard/profile reads; recomputed on every merge.
+  level       Int       @default(1)
+  streak      Int       @default(0)
+  lastStudyDate DateTime?
+  reviewed    Int       @default(0)
+
+  // Merged from localStorage on first login (see /api/sync-progress):
+  // union of known word ids, union of completed lesson ids.
+  knownWords  String[]
+  lessonsDone Int[]
+
+  // Per-mode best scores, e.g. { "vocab-easy": 9, "grammar-hard": 7 }.
+  // Per-key MAX merge — never overwritten with a lower value.
+  quizBest Json @default("{}")
+  // Per-mode best single-round scores from `dbc-quizbest-score-*` keys.
+  quizBestScores Json @default("{}")
+  // "YYYY-MM-DD" -> xp earned that day. Per-day MAX merge (not sum:
+  // the same day's activity must not be double-counted across devices).
+  activity Json @default("{}")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model XpEvent {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount    Int
+  source    String // e.g. "quiz", "lesson", "word", "sync" (Phase 0: sync only)
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model Badge {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  key        String // e.g. "streak-7", "words-100", "grammar-master"
+  unlockedAt DateTime @default(now())
+
+  @@unique([userId, key])
+}
+
+model Follow {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+
+  follower  User @relation("Follower", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+  @@index([followingId])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String // e.g. "streak", "badge", "follow", "word-of-day"
+  title     String
+  body      String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId, read])
+}
+
+model EmailPreference {
+  id       String @id @default(cuid())
+  userId   String @unique
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  welcome       Boolean @default(true)
+  weeklyReport  Boolean @default(true)
+  streakNudge   Boolean @default(true)
+  wordOfDay     Boolean @default(false)
+}

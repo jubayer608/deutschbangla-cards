@@ -57,8 +57,8 @@ export default function Dashboard() {
       {/* Header */}
       <motion.div variants={item} className="flex items-end justify-between">
         <div>
-          <p className="font-bangla text-sm font-semibold text-indigo-500">স্বাগতম! আজ শিখতে প্রস্তুত?</p>
-          <h1 className="text-3xl font-extrabold tracking-tight text-indigo-950">{greeting()}</h1>
+          <p className="font-bangla text-sm font-semibold text-emerald-500">স্বাগতম! আজ শিখতে প্রস্তুত?</p>
+          <h1 className="text-3xl font-extrabold tracking-tight text-emerald-950">{greeting()}</h1>
         </div>
         <motion.div
           animate={{ scale: [1, 1.25, 1], rotate: [0, -8, 8, 0] }}
@@ -72,19 +72,19 @@ export default function Dashboard() {
 
       {/* Stats */}
       <motion.div variants={item} className="grid grid-cols-3 gap-3">
-        <div className="rounded-3xl bg-white p-4 text-center shadow-sm ring-1 ring-indigo-100">
-          <p className="text-2xl font-extrabold text-indigo-700">
+        <div className="rounded-3xl bg-white p-4 text-center shadow-sm ring-1 ring-emerald-100">
+          <p className="text-2xl font-extrabold text-emerald-700">
             {progress ? <CountUp value={progress.streak} /> : "–"}
           </p>
           <p className="font-bangla text-xs font-semibold text-slate-500">দিনের স্ট্রিক</p>
         </div>
-        <div className="rounded-3xl bg-white p-4 text-center shadow-sm ring-1 ring-indigo-100">
-          <p className="text-2xl font-extrabold text-violet-700">
+        <div className="rounded-3xl bg-white p-4 text-center shadow-sm ring-1 ring-emerald-100">
+          <p className="text-2xl font-extrabold text-teal-700">
             {progress ? <CountUp value={progress.xp} /> : "–"}
           </p>
           <p className="font-bangla text-xs font-semibold text-slate-500">মোট XP</p>
         </div>
-        <div className="rounded-3xl bg-white p-4 text-center shadow-sm ring-1 ring-indigo-100">
+        <div className="rounded-3xl bg-white p-4 text-center shadow-sm ring-1 ring-emerald-100">
           <p className="text-2xl font-extrabold text-emerald-600">
             {progress ? <CountUp value={knownCount} /> : "–"}
           </p>
@@ -97,19 +97,19 @@ export default function Dashboard() {
         <motion.div variants={item}>
           <Link
             href={`/lektionen/${nextLesson.id}`}
-            className="group flex items-center gap-4 rounded-3xl bg-gradient-to-br from-indigo-600 to-violet-700 p-5 text-white shadow-xl shadow-indigo-200"
+            className="group flex items-center gap-4 rounded-3xl bg-gradient-to-br from-emerald-600 to-teal-700 p-5 text-white shadow-xl shadow-emerald-200"
           >
             <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/20 text-2xl font-extrabold">
               {nextLesson.id}
             </span>
             <span className="flex-1">
-              <span className="font-bangla text-xs font-semibold uppercase tracking-widest text-indigo-200">
+              <span className="font-bangla text-xs font-semibold uppercase tracking-widest text-emerald-200">
                 চালিয়ে যাও
               </span>
               <span className="block text-lg font-extrabold leading-tight">
                 Lektion {nextLesson.id}: {nextLesson.title}
               </span>
-              <span className="font-bangla block text-sm text-indigo-200">{nextLesson.titleBangla}</span>
+              <span className="font-bangla block text-sm text-emerald-200">{nextLesson.titleBangla}</span>
             </span>
             <motion.span
               animate={{ x: [0, 6, 0] }}
@@ -124,21 +124,21 @@ export default function Dashboard() {
 
       {/* Word of the day */}
       <motion.div variants={item} className="flex flex-col gap-2">
-        <h2 className="font-bangla text-lg font-extrabold text-indigo-950">
+        <h2 className="font-bangla text-lg font-extrabold text-emerald-950">
           📅 আজকের শব্দ <span className="text-sm font-semibold text-slate-400">— ট্যাপ করে উল্টাও</span>
         </h2>
         {wordOfDay ? (
           <Flashcard word={wordOfDay} compact />
         ) : (
-          <div className="h-44 animate-pulse rounded-3xl bg-indigo-50" />
+          <div className="h-44 animate-pulse rounded-3xl bg-emerald-50" />
         )}
       </motion.div>
 
       {/* Lessons grid */}
       <motion.div variants={item} className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
-          <h2 className="font-bangla text-lg font-extrabold text-indigo-950">📖 পাঠসমূহ</h2>
-          <Link href="/lektionen" className="font-bangla text-sm font-bold text-indigo-600">
+          <h2 className="font-bangla text-lg font-extrabold text-emerald-950">📖 পাঠসমূহ</h2>
+          <Link href="/lektionen" className="font-bangla text-sm font-bold text-emerald-600">
             সবগুলো →
           </Link>
         </div>
@@ -150,11 +150,11 @@ export default function Dashboard() {
                 key={l.id}
                 href={`/lektionen/${l.id}`}
                 className={`flex flex-col items-center gap-1 rounded-3xl p-4 text-center shadow-sm ring-1 transition active:scale-95 ${
-                  done ? "bg-emerald-50 ring-emerald-200" : "bg-white ring-indigo-100"
+                  done ? "bg-emerald-50 ring-emerald-200" : "bg-white ring-emerald-100"
                 }`}
               >
                 <ProgressRing value={done ? 1 : 0} size={44} stroke={5} label={done ? "✓" : `${l.id}`} />
-                <p className="text-xs font-bold leading-tight text-indigo-950">{l.title}</p>
+                <p className="text-xs font-bold leading-tight text-emerald-950">{l.title}</p>
                 <p className="font-bangla text-[11px] leading-tight text-slate-500">{l.titleBangla}</p>
               </Link>
             );
@@ -173,10 +173,24 @@ export default function Dashboard() {
         </Link>
         <Link
           href="/wortschatz"
-          className="rounded-3xl bg-white p-5 text-center shadow-sm ring-1 ring-indigo-100 transition active:scale-95"
+          className="rounded-3xl bg-white p-5 text-center shadow-sm ring-1 ring-emerald-100 transition active:scale-95"
         >
           <p className="text-3xl">🃏</p>
-          <p className="font-bangla mt-1 font-extrabold text-indigo-950">শব্দভাণ্ডার</p>
+          <p className="font-bangla mt-1 font-extrabold text-emerald-950">শব্দভাণ্ডার</p>
+        </Link>
+        <Link
+          href="/resources"
+          className="rounded-3xl bg-white p-5 text-center shadow-sm ring-1 ring-emerald-100 transition active:scale-95"
+        >
+          <p className="text-3xl">🌐</p>
+          <p className="font-bangla mt-1 font-extrabold text-emerald-950">রিসোর্স</p>
+        </Link>
+        <Link
+          href="/blog"
+          className="rounded-3xl bg-white p-5 text-center shadow-sm ring-1 ring-emerald-100 transition active:scale-95"
+        >
+          <p className="text-3xl">✍️</p>
+          <p className="font-bangla mt-1 font-extrabold text-emerald-950">ব্লগ</p>
         </Link>
       </motion.div>
     </motion.div>

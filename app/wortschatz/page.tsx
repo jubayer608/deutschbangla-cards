@@ -63,7 +63,7 @@ export default function WortschatzPage() {
           <button
             type="button"
             onClick={() => setStudyMode(false)}
-            className="font-bangla rounded-full bg-white px-5 py-2 font-bold text-indigo-700 shadow-sm ring-1 ring-indigo-100"
+            className="font-bangla rounded-full bg-white px-5 py-2 font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-100"
           >
             ✕ বন্ধ করো
           </button>
@@ -75,14 +75,14 @@ export default function WortschatzPage() {
         {studyDone ? (
           <div className="flex flex-col items-center gap-4 py-10 text-center">
             <p className="text-6xl">🎉</p>
-            <h2 className="font-bangla text-2xl font-extrabold text-indigo-950">শেষ! Gut gemacht!</h2>
+            <h2 className="font-bangla text-2xl font-extrabold text-emerald-950">শেষ! Gut gemacht!</h2>
             <p className="font-bangla text-slate-500">
               {deck.length}টি শব্দ রিভিউ করলে। ডানদিকে সোয়াইপ = জানি, বামদিকে = জানি না।
             </p>
             <button
               type="button"
               onClick={startStudy}
-              className="rounded-full bg-indigo-600 px-8 py-3 font-bold text-white shadow-md transition active:scale-95"
+              className="rounded-full bg-emerald-600 px-8 py-3 font-bold text-white shadow-md transition active:scale-95"
             >
               🔁 আবার পড়ো
             </button>
@@ -90,9 +90,9 @@ export default function WortschatzPage() {
         ) : (
           current && (
             <>
-              <div className="h-2 overflow-hidden rounded-full bg-indigo-100">
+              <div className="h-2 overflow-hidden rounded-full bg-emerald-100">
                 <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-violet-500"
+                  className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-500"
                   animate={{ width: `${((deckIndex + 1) / deck.length) * 100}%` }}
                 />
               </div>
@@ -112,19 +112,19 @@ export default function WortschatzPage() {
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <p className="font-bangla text-sm font-semibold text-indigo-500">{words.length}টি A1 শব্দ</p>
-        <h1 className="text-3xl font-extrabold tracking-tight text-indigo-950">🃏 Wortschatz</h1>
+        <p className="font-bangla text-sm font-semibold text-emerald-500">{words.length}টি A1 শব্দ</p>
+        <h1 className="text-3xl font-extrabold tracking-tight text-emerald-950">🃏 Wortschatz</h1>
       </div>
 
       {/* Tabs */}
-      <div className="grid grid-cols-2 gap-2 rounded-3xl bg-indigo-50 p-1.5">
+      <div className="grid grid-cols-2 gap-2 rounded-3xl bg-emerald-50 p-1.5">
         {(["words", "phrases"] as Tab[]).map((t) => (
           <button
             key={t}
             type="button"
             onClick={() => setTab(t)}
             className={`font-bangla rounded-2xl py-2.5 font-extrabold transition ${
-              tab === t ? "bg-white text-indigo-700 shadow" : "text-slate-500"
+              tab === t ? "bg-white text-emerald-700 shadow" : "text-slate-500"
             }`}
           >
             {t === "words" ? "📚 শব্দ" : "💬 Redemittel"}
@@ -139,12 +139,12 @@ export default function WortschatzPage() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Suche… / খুঁজো…"
-              className="font-bangla min-w-0 flex-1 rounded-2xl border-2 border-indigo-100 bg-white px-4 py-3 font-semibold outline-none focus:border-indigo-400"
+              className="font-bangla min-w-0 flex-1 rounded-2xl border-2 border-emerald-100 bg-white px-4 py-3 font-semibold outline-none focus:border-emerald-400"
             />
             <button
               type="button"
               onClick={startStudy}
-              className="font-bangla shrink-0 rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 px-5 font-extrabold text-white shadow-md transition active:scale-95"
+              className="font-bangla shrink-0 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 px-5 font-extrabold text-white shadow-md transition active:scale-95"
             >
               ▶️ পড়ো
             </button>
@@ -155,7 +155,7 @@ export default function WortschatzPage() {
               type="button"
               onClick={() => setCat("alle")}
               className={`font-bangla shrink-0 rounded-full px-4 py-2 text-sm font-bold transition ${
-                cat === "alle" ? "bg-indigo-600 text-white" : "bg-white text-slate-600 ring-1 ring-indigo-100"
+                cat === "alle" ? "bg-emerald-600 text-white" : "bg-white text-slate-600 ring-1 ring-emerald-100"
               }`}
             >
               সব
@@ -166,7 +166,7 @@ export default function WortschatzPage() {
                 type="button"
                 onClick={() => setCat(c.id)}
                 className={`shrink-0 rounded-full px-4 py-2 text-sm font-bold transition ${
-                  cat === c.id ? "bg-indigo-600 text-white" : "bg-white text-slate-600 ring-1 ring-indigo-100"
+                  cat === c.id ? "bg-emerald-600 text-white" : "bg-white text-slate-600 ring-1 ring-emerald-100"
                 }`}
               >
                 <span className="font-bangla">{c.bangla}</span>
@@ -192,19 +192,19 @@ export default function WortschatzPage() {
                       exit={{ opacity: 0, scale: 0.9 }}
                       onClick={() => setFlipped((f) => ({ ...f, [w.id]: !f[w.id] }))}
                       className={`relative min-h-28 rounded-3xl p-4 text-left shadow-sm ring-1 transition active:scale-95 ${
-                        known ? "bg-emerald-50 ring-emerald-200" : "bg-white ring-indigo-100"
+                        known ? "bg-emerald-50 ring-emerald-200" : "bg-white ring-emerald-100"
                       }`}
                     >
                       {known && <span className="absolute right-3 top-3 text-sm">✅</span>}
                       {isFlipped ? (
                         <>
-                          <p className="font-bangla text-lg font-extrabold text-indigo-900">{w.bangla}</p>
+                          <p className="font-bangla text-lg font-extrabold text-emerald-900">{w.bangla}</p>
                           <p className="mt-1 text-xs italic text-slate-500">{w.example}</p>
                           <p className="font-bangla text-xs text-slate-500">{w.exampleBangla}</p>
                         </>
                       ) : (
                         <>
-                          <p className="text-lg font-extrabold text-indigo-950">{w.german}</p>
+                          <p className="text-lg font-extrabold text-emerald-950">{w.german}</p>
                           <p className="font-bangla mt-1 text-xs text-slate-400">ট্যাপ করো 👆</p>
                         </>
                       )}
@@ -222,14 +222,14 @@ export default function WortschatzPage() {
           {phraseGroups.map((g) => {
             const open = openGroup === g.id;
             return (
-              <div key={g.id} className="overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-indigo-100">
+              <div key={g.id} className="overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-emerald-100">
                 <button
                   type="button"
                   onClick={() => setOpenGroup(open ? null : g.id)}
                   className="flex w-full items-center justify-between p-4 text-left"
                 >
                   <span>
-                    <span className="block font-extrabold text-indigo-950">{g.situation}</span>
+                    <span className="block font-extrabold text-emerald-950">{g.situation}</span>
                     <span className="font-bangla block text-sm text-slate-500">
                       {g.situationBangla} · {g.items.length}টি বাক্য
                     </span>
@@ -246,10 +246,10 @@ export default function WortschatzPage() {
                       exit={{ height: 0, opacity: 0 }}
                       className="overflow-hidden"
                     >
-                      <ul className="flex flex-col gap-2 border-t border-indigo-50 p-4">
+                      <ul className="flex flex-col gap-2 border-t border-emerald-50 p-4">
                         {g.items.map((p, i) => (
-                          <li key={i} className="rounded-2xl bg-indigo-50/60 px-3 py-2">
-                            <p className="font-bold text-indigo-900">{p.german}</p>
+                          <li key={i} className="rounded-2xl bg-emerald-50/60 px-3 py-2">
+                            <p className="font-bold text-emerald-900">{p.german}</p>
                             <p className="font-bangla text-sm text-slate-600">{p.bangla}</p>
                           </li>
                         ))}

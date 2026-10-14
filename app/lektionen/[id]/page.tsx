@@ -99,7 +99,7 @@ function ExerciseCard({
     <motion.div
       key={shakeKey}
       className={`rounded-3xl bg-white p-5 shadow-sm ring-1 ${
-        done ? (correct ? "ring-emerald-300" : "ring-rose-300") : "ring-indigo-100"
+        done ? (correct ? "ring-emerald-300" : "ring-rose-300") : "ring-emerald-100"
       } ${shakeKey > 0 && !correct && done ? "animate-shake" : ""}`}
       initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -111,7 +111,7 @@ function ExerciseCard({
           {diffLabel[ex.difficulty]} · +{xp} XP
         </span>
       </div>
-      <p className="mt-2 text-lg font-bold text-indigo-950">{ex.prompt}</p>
+      <p className="mt-2 text-lg font-bold text-emerald-950">{ex.prompt}</p>
       {ex.promptBangla && <p className="font-bangla mt-1 text-sm text-slate-500">{ex.promptBangla}</p>}
 
       {/* MCQ */}
@@ -120,7 +120,7 @@ function ExerciseCard({
           {ex.options?.map((opt) => {
             const isAns = normalize(opt) === normalize(ex.answer);
             const isPick = mcqPick === opt;
-            let cls = "bg-indigo-50/50 text-slate-800 ring-1 ring-indigo-100 hover:ring-indigo-300";
+            let cls = "bg-emerald-50/50 text-slate-800 ring-1 ring-emerald-100 hover:ring-emerald-300";
             if (done && isAns) cls = "bg-emerald-500 text-white";
             else if (done && isPick) cls = "bg-rose-500 text-white";
             else if (done) cls = "bg-slate-50 text-slate-400 ring-1 ring-slate-100";
@@ -150,14 +150,14 @@ function ExerciseCard({
             onChange={(e) => setText(e.target.value)}
             disabled={done}
             placeholder={ex.type === "fillblank" ? "উত্তর লিখো…" : "Auf Deutsch schreiben…"}
-            className="font-bangla min-w-0 flex-1 rounded-2xl border-2 border-indigo-100 px-4 py-3 font-semibold outline-none focus:border-indigo-400 disabled:bg-slate-50"
+            className="font-bangla min-w-0 flex-1 rounded-2xl border-2 border-emerald-100 px-4 py-3 font-semibold outline-none focus:border-emerald-400 disabled:bg-slate-50"
             onKeyDown={(e) => e.key === "Enter" && checkText()}
           />
           <button
             type="button"
             onClick={checkText}
             disabled={done}
-            className="rounded-2xl bg-indigo-600 px-5 font-bold text-white shadow-md transition active:scale-95 disabled:opacity-40"
+            className="rounded-2xl bg-emerald-600 px-5 font-bold text-white shadow-md transition active:scale-95 disabled:opacity-40"
           >
             ✓
           </button>
@@ -167,7 +167,7 @@ function ExerciseCard({
       {/* Order */}
       {ex.type === "order" && (
         <div className="mt-4 flex flex-col gap-3">
-          <div className="flex min-h-14 flex-wrap gap-2 rounded-2xl bg-indigo-50/60 p-3 ring-1 ring-indigo-100">
+          <div className="flex min-h-14 flex-wrap gap-2 rounded-2xl bg-emerald-50/60 p-3 ring-1 ring-emerald-100">
             {picked.length === 0 && <span className="text-sm text-slate-400">শব্দগুলো ট্যাপ করে সাজাও…</span>}
             {picked.map((w, i) => (
               <button
@@ -175,7 +175,7 @@ function ExerciseCard({
                 type="button"
                 disabled={done}
                 onClick={() => toggleWord(w, true)}
-                className="rounded-xl bg-indigo-600 px-3 py-2 font-bold text-white shadow-sm"
+                className="rounded-xl bg-emerald-600 px-3 py-2 font-bold text-white shadow-sm"
               >
                 {w}
               </button>
@@ -188,7 +188,7 @@ function ExerciseCard({
                 type="button"
                 disabled={done}
                 onClick={() => toggleWord(w, false)}
-                className="rounded-xl bg-white px-3 py-2 font-bold text-slate-700 shadow-sm ring-1 ring-indigo-100 transition active:scale-95"
+                className="rounded-xl bg-white px-3 py-2 font-bold text-slate-700 shadow-sm ring-1 ring-emerald-100 transition active:scale-95"
               >
                 {w}
               </button>
@@ -198,7 +198,7 @@ function ExerciseCard({
             type="button"
             onClick={checkOrder}
             disabled={done || picked.length === 0}
-            className="self-start rounded-full bg-indigo-600 px-6 py-2.5 font-bold text-white shadow-md transition active:scale-95 disabled:opacity-40"
+            className="self-start rounded-full bg-emerald-600 px-6 py-2.5 font-bold text-white shadow-md transition active:scale-95 disabled:opacity-40"
           >
             Prüfen ✓
           </button>
@@ -272,15 +272,15 @@ export default function LessonDetailPage() {
     <div className="flex flex-col gap-6">
       {/* Header */}
       <div>
-        <Link href="/lektionen" className="font-bangla text-sm font-bold text-indigo-600">
+        <Link href="/lektionen" className="font-bangla text-sm font-bold text-emerald-600">
           ← সব পাঠ
         </Link>
         <div className="mt-2 flex items-center gap-3">
-          <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 text-2xl font-extrabold text-white shadow-lg">
+          <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-600 text-2xl font-extrabold text-white shadow-lg">
             {lesson.id}
           </span>
           <div>
-            <h1 className="text-2xl font-extrabold tracking-tight text-indigo-950">
+            <h1 className="text-2xl font-extrabold tracking-tight text-emerald-950">
               Lektion {lesson.id}: {lesson.title}
             </h1>
             <p className="font-bangla text-slate-500">{lesson.titleBangla}</p>
@@ -294,8 +294,8 @@ export default function LessonDetailPage() {
       </div>
 
       {/* Lernziele */}
-      <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-indigo-100">
-        <h2 className="font-bangla text-lg font-extrabold text-indigo-950">🎯 Lernziele — শেখার লক্ষ্য</h2>
+      <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-emerald-100">
+        <h2 className="font-bangla text-lg font-extrabold text-emerald-950">🎯 Lernziele — শেখার লক্ষ্য</h2>
         <ul className="font-bangla mt-3 flex flex-col gap-2">
           {lesson.ziele.map((z, i) => (
             <li key={i} className="flex items-start gap-2 text-slate-700">
@@ -307,13 +307,13 @@ export default function LessonDetailPage() {
 
       {/* Wortschatz */}
       <section className="flex flex-col gap-3">
-        <h2 className="font-bangla text-lg font-extrabold text-indigo-950">
+        <h2 className="font-bangla text-lg font-extrabold text-emerald-950">
           🃏 Wortschatz — শব্দভাণ্ডার ({vocabWords.length})
         </h2>
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           {vocabWords.map((w) => (
-            <div key={w.id} className="rounded-2xl bg-white p-3 shadow-sm ring-1 ring-indigo-100">
-              <p className="font-extrabold text-indigo-900">{w.german}</p>
+            <div key={w.id} className="rounded-2xl bg-white p-3 shadow-sm ring-1 ring-emerald-100">
+              <p className="font-extrabold text-emerald-900">{w.german}</p>
               <p className="font-bangla text-sm text-slate-600">{w.bangla}</p>
             </div>
           ))}
@@ -322,10 +322,10 @@ export default function LessonDetailPage() {
 
       {/* Grammatik */}
       <section className="flex flex-col gap-3">
-        <h2 className="font-bangla text-lg font-extrabold text-indigo-950">📖 Grammatik — ব্যাকরণ</h2>
+        <h2 className="font-bangla text-lg font-extrabold text-emerald-950">📖 Grammatik — ব্যাকরণ</h2>
         {lesson.grammar.map((g, i) => (
-          <div key={i} className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-indigo-100">
-            <h3 className="font-extrabold text-indigo-900">{g.title}</h3>
+          <div key={i} className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-emerald-100">
+            <h3 className="font-extrabold text-emerald-900">{g.title}</h3>
             <p className="font-bangla mt-2 text-slate-700">{g.explanation}</p>
             {g.table && (
               <div className="mt-3 overflow-x-auto">
@@ -333,7 +333,7 @@ export default function LessonDetailPage() {
                   <thead>
                     <tr>
                       {g.table.headers.map((h, hi) => (
-                        <th key={hi} className="border border-indigo-200 bg-indigo-50 px-3 py-2 text-left font-bold text-indigo-900">
+                        <th key={hi} className="border border-emerald-200 bg-emerald-50 px-3 py-2 text-left font-bold text-emerald-900">
                           {h}
                         </th>
                       ))}
@@ -341,9 +341,9 @@ export default function LessonDetailPage() {
                   </thead>
                   <tbody>
                     {g.table.rows.map((row, ri) => (
-                      <tr key={ri} className={ri % 2 ? "bg-indigo-50/40" : ""}>
+                      <tr key={ri} className={ri % 2 ? "bg-emerald-50/40" : ""}>
                         {row.map((cell, ci) => (
-                          <td key={ci} className="border border-indigo-100 px-3 py-2 text-slate-700">
+                          <td key={ci} className="border border-emerald-100 px-3 py-2 text-slate-700">
                             {cell}
                           </td>
                         ))}
@@ -356,8 +356,8 @@ export default function LessonDetailPage() {
             {g.examples && (
               <ul className="mt-3 flex flex-col gap-1.5">
                 {g.examples.map((e, ei) => (
-                  <li key={ei} className="rounded-xl bg-indigo-50/60 px-3 py-2 text-sm">
-                    <span className="font-bold text-indigo-900">{e.german}</span>
+                  <li key={ei} className="rounded-xl bg-emerald-50/60 px-3 py-2 text-sm">
+                    <span className="font-bold text-emerald-900">{e.german}</span>
                     <span className="font-bangla block text-slate-600">{e.bangla}</span>
                   </li>
                 ))}
@@ -369,10 +369,10 @@ export default function LessonDetailPage() {
 
       {/* Beispielsätze */}
       <section className="flex flex-col gap-2">
-        <h2 className="font-bangla text-lg font-extrabold text-indigo-950">💬 Beispielsätze — উদাহরণ বাক্য</h2>
+        <h2 className="font-bangla text-lg font-extrabold text-emerald-950">💬 Beispielsätze — উদাহরণ বাক্য</h2>
         {lesson.saetze.map((s, i) => (
-          <div key={i} className="rounded-2xl bg-white p-3 shadow-sm ring-1 ring-indigo-100">
-            <p className="font-bold text-indigo-900">{s.german}</p>
+          <div key={i} className="rounded-2xl bg-white p-3 shadow-sm ring-1 ring-emerald-100">
+            <p className="font-bold text-emerald-900">{s.german}</p>
             <p className="font-bangla text-sm text-slate-600">{s.bangla}</p>
           </div>
         ))}
@@ -381,7 +381,7 @@ export default function LessonDetailPage() {
       {/* Übungen */}
       <section className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
-          <h2 className="font-bangla text-lg font-extrabold text-indigo-950">
+          <h2 className="font-bangla text-lg font-extrabold text-emerald-950">
             ✍️ Übungen — অনুশীলন <span className="text-sm font-semibold text-slate-400">(সহজ → কঠিন)</span>
           </h2>
           {xpGained > 0 && (
@@ -410,12 +410,12 @@ export default function LessonDetailPage() {
         )}
         <div className="flex gap-3">
           {lesson.id > 1 && (
-            <Link href={`/lektionen/${lesson.id - 1}`} className="font-bangla rounded-full bg-white px-6 py-2.5 font-bold text-indigo-700 shadow-sm ring-1 ring-indigo-100">
+            <Link href={`/lektionen/${lesson.id - 1}`} className="font-bangla rounded-full bg-white px-6 py-2.5 font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-100">
               ← আগের পাঠ
             </Link>
           )}
           {lesson.id < 12 && (
-            <Link href={`/lektionen/${lesson.id + 1}`} className="font-bangla rounded-full bg-white px-6 py-2.5 font-bold text-indigo-700 shadow-sm ring-1 ring-indigo-100">
+            <Link href={`/lektionen/${lesson.id + 1}`} className="font-bangla rounded-full bg-white px-6 py-2.5 font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-100">
               পরের পাঠ →
             </Link>
           )}

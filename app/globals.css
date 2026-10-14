@@ -69,6 +69,14 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-nunito), "Noto Sans Bengali", ui-sans-serif, system-ui, sans-serif;
+  /* Belt-and-braces guard: full-bleed (w-screen) hero/divider strips must
+     never create a page-level horizontal scrollbar. `clip` (not `hidden`)
+     keeps position: sticky working. */
+  overflow-x: clip;
+}
+
+html {
+  overflow-x: clip;
 }
 
 /* Bangla text uses the Noto Sans Bengali webfont loaded in the layout,

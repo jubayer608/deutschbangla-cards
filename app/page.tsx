@@ -203,13 +203,44 @@ function Hero() {
           </motion.p>
         </motion.div>
 
-        {/* Live product: a real clickable mini-flashcard */}
+        {/* Live product: a real clickable mini-flashcard.
+            Desktop-only floating stat chips (real counts) frame the card so
+            the first impression on large screens feels rich — mobile keeps
+            the clean single-card layout. */}
         <motion.div
           initial={{ opacity: 0, scale: 0.94 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.25, duration: 0.5 }}
-          className="mx-auto w-full max-w-sm lg:max-w-md"
+          className="relative mx-auto w-full max-w-sm lg:max-w-md"
         >
+          <motion.div
+            aria-hidden
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -left-6 -top-5 z-10 hidden items-center gap-2 rounded-2xl bg-white/95 px-3.5 py-2.5 shadow-xl shadow-navy/20 ring-1 ring-navy/5 backdrop-blur lg:flex"
+          >
+            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-teal/10">
+              <Layers className="h-4.5 w-4.5 text-teal" aria-hidden />
+            </span>
+            <span>
+              <span className="block text-sm font-extrabold leading-none text-navy">{words.length} Wörter</span>
+              <span className="font-bangla mt-0.5 block text-[11px] font-bold leading-none text-slate-500">শব্দ শিখো</span>
+            </span>
+          </motion.div>
+          <motion.div
+            aria-hidden
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+            className="absolute -bottom-5 -right-4 z-10 hidden items-center gap-2 rounded-2xl bg-white/95 px-3.5 py-2.5 shadow-xl shadow-navy/20 ring-1 ring-navy/5 backdrop-blur lg:flex"
+          >
+            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-sun/20">
+              <BookOpen className="h-4.5 w-4.5 text-amber-600" aria-hidden />
+            </span>
+            <span>
+              <span className="block text-sm font-extrabold leading-none text-navy">{lessons.length} Lektionen</span>
+              <span className="font-bangla mt-0.5 block text-[11px] font-bold leading-none text-slate-500">ধাপে ধাপে পাঠ</span>
+            </span>
+          </motion.div>
           <HeroMiniCard />
         </motion.div>
       </div>
@@ -321,7 +352,7 @@ export default function LandingPage() {
       <Hero />
 
       {/* Skewed gradient divider (Stripe-style, subtle) */}
-      <div aria-hidden className="relative left-1/2 z-10 w-screen -translate-x-1/2">
+      <div aria-hidden className="relative left-1/2 z-10 w-screen -translate-x-1/2 overflow-hidden">
         <div className="-my-5 h-12 -rotate-1 scale-x-105 bg-gradient-to-r from-teal via-teal to-sun opacity-90 shadow-lg shadow-navy/10 sm:h-16" />
       </div>
 
@@ -468,7 +499,7 @@ export default function LandingPage() {
         <motion.div variants={item} className="grid grid-cols-2 gap-3">
           <Link
             href="/quiz"
-            className="card card-hover rounded-3xl bg-sun p-5 text-center transition active:scale-95"
+            className="card-hover rounded-3xl bg-sun p-5 text-center shadow-sm transition active:scale-95"
           >
             <Gamepad2 className="mx-auto h-8 w-8 text-navy" aria-hidden />
             <p className="font-bangla mt-1 font-extrabold text-navy">কুইজ খেলো</p>

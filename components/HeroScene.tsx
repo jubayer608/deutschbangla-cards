@@ -7,16 +7,26 @@ import * as THREE from "three";
 /**
  * Ambient WebGL backdrop for the landing hero.
  *
- * Instanced-style floating letter tiles (D-E-U-T-S-C-H + umlauts) drawn as
- * lightweight canvas textures on planes, plus soft particle dust. Everything
- * is decoration: headline + CTAs live in DOM above and stay crisp without it.
+ * Five floating letter tiles spelling ULLUK, parked at the hero's edges so
+ * the headline stays crisp (the old 12-letter alphabet soup behind the text
+ * read as clutter). Plus soft particle dust. Everything is decoration:
+ * headline + CTAs live in DOM above and stay crisp without it.
  *
  * Perf / safety rules:
  * - DPR capped at 1.5 (mobile renders nothing — static CSS gradient instead)
  * - Rendering pauses when the hero scrolls out of view (IntersectionObserver)
  * - Never mounts when prefers-reduced-motion is set or WebGL is unavailable
  */
-const TILE_CHARS = ["D", "E", "U", "T", "S", "C", "H", "Ä", "Ö", "Ü", "ß", "A1"];
+const TILE_CHARS = ["U", "L", "L", "U", "K"];
+
+/** Fixed edge positions: corners + top-center, center band stays clear. */
+const TILE_SPOTS = [
+  { x: -7.6, y: 2.7 },
+  { x: -6.4, y: -2.9 },
+  { x: 6.6, y: 2.5 },
+  { x: 7.4, y: -2.7 },
+  { x: 0.4, y: 3.7 },
+];
 
 const TILE_INKS = ["#0B1F3B", "#10B981", "#FBBF24", "#0B1F3B"];
 const TILE_WASH = ["#DCE8F5", "#D1FAE5", "#FEF3C7", "#CCFBF1"];
@@ -91,16 +101,19 @@ function LetterTiles() {
       seed = (Math.imul(seed, 1103515245) + 12345) & 0x7fffffff;
       return seed / 0x7fffffff;
     };
-    return TILE_CHARS.map((char, i) => ({
-      x: -7.5 + (i / (TILE_CHARS.length - 1)) * 15 + (rand() - 0.5) * 2.2,
-      y: -3.2 + rand() * 6.4,
-      z: -3.5 + rand() * 4,
-      scale: 1.05 + rand() * 0.75,
-      phase: rand() * Math.PI * 2,
-      speed: 0.35 + rand() * 0.45,
-      rz: (rand() - 0.5) * 0.5,
-      texture: makeTileTexture(char, TILE_INKS[i % TILE_INKS.length], TILE_WASH[i % TILE_WASH.length]),
-    }));
+    return TILE_CHARS.map((char, i) => {
+      const spot = TILE_SPOTS[i] ?? { x: 0, y: 0 };
+      return {
+        x: spot.x + (rand() - 0.5) * 0.8,
+        y: spot.y + (rand() - 0.5) * 0.6,
+        z: -3.5 + rand() * 4,
+        scale: 0.85 + rand() * 0.3,
+        phase: rand() * Math.PI * 2,
+        speed: 0.2 + rand() * 0.25,
+        rz: (rand() - 0.5) * 0.35,
+        texture: makeTileTexture(char, TILE_INKS[i % TILE_INKS.length], TILE_WASH[i % TILE_WASH.length]),
+      };
+    });
   }, []);
 
   useEffect(() => {
@@ -116,7 +129,7 @@ function LetterTiles() {
     g.children.forEach((child, i) => {
       const cfg = tiles[i];
       if (!cfg) return;
-      child.position.y = cfg.y + Math.sin(t * cfg.speed + cfg.phase) * 0.35;
+      child.position.y = cfg.y + Math.sin(t * cfg.speed + cfg.phase) * 0.25;
       child.rotation.z = cfg.rz + Math.sin(t * cfg.speed * 0.7 + cfg.phase) * 0.08;
     });
     // Pointer parallax (lerped so it feels weighty, not twitchy)
@@ -135,14 +148,14 @@ function LetterTiles() {
       {tiles.map((cfg, i) => (
         <mesh key={i} position={[cfg.x, cfg.y, cfg.z]} rotation={[0, 0, cfg.rz]} scale={cfg.scale}>
           <planeGeometry args={[1.15, 1.15]} />
-          <meshBasicMaterial map={cfg.texture} transparent opacity={0.9} depthWrite={false} />
+          <meshBasicMaterial map={cfg.texture} transparent opacity={0.65} depthWrite={false} />
         </mesh>
       ))}
     </group>
   );
 }
 
-function Dust({ count = 140 }: { count?: number }) {
+function Dust({ count = 70 }: { count?: number }) {
   const points = useRef<THREE.Points>(null);
 
   const positions = useMemo(() => {
@@ -176,7 +189,7 @@ function Dust({ count = 140 }: { count?: number }) {
         size={0.055}
         color="#10b981"
         transparent
-        opacity={0.5}
+        opacity={0.35}
         sizeAttenuation
         depthWrite={false}
       />

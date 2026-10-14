@@ -50,10 +50,10 @@ export default function ResourcesPage() {
     >
       {/* Header */}
       <motion.div variants={item}>
-        <p className="font-bangla inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-600">
+        <p className="font-bangla inline-flex items-center gap-1.5 text-sm font-semibold text-teal">
           আরও শিখতে চাও? <Globe className="h-4 w-4" aria-hidden />
         </p>
-        <h1 className="text-3xl font-extrabold tracking-tight text-emerald-950">
+        <h1 className="section-heading text-3xl">
           Ressourcen
         </h1>
         <p className="font-bangla mt-2 text-sm leading-relaxed text-slate-500">
@@ -66,14 +66,14 @@ export default function ResourcesPage() {
       <motion.div variants={item}>
         <div className="relative">
           <Search
-            className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+            className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-mist"
             aria-hidden
           />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="খুঁজো… (যেমন: অভিধান, ভিডিও)"
-            className="font-bangla w-full rounded-2xl bg-white py-3 pl-11 pr-4 text-sm font-semibold text-emerald-950 shadow-sm ring-1 ring-emerald-100 outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-emerald-400"
+            className="font-bangla w-full rounded-2xl bg-white py-3 pl-11 pr-4 text-sm font-semibold text-navy shadow-sm ring-1 ring-slate-200 outline-none placeholder:text-mist focus:ring-2 focus:ring-teal/40"
           />
         </div>
       </motion.div>
@@ -84,8 +84,8 @@ export default function ResourcesPage() {
           onClick={() => setActiveCat("alle")}
           className={`font-bangla inline-flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold transition active:scale-95 ${
             activeCat === "alle"
-              ? "bg-brand-gradient text-white shadow-md shadow-emerald-200"
-              : "bg-white text-emerald-800 ring-1 ring-emerald-100"
+              ? "bg-brand-gradient text-white shadow-md shadow-navy/10"
+              : "bg-white text-navy ring-1 ring-slate-200"
           }`}
         >
           <Sparkles className="h-4 w-4" aria-hidden /> সবগুলো
@@ -96,8 +96,8 @@ export default function ResourcesPage() {
             onClick={() => setActiveCat(c.id)}
             className={`font-bangla inline-flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold transition active:scale-95 ${
               activeCat === c.id
-                ? "bg-brand-gradient text-white shadow-md shadow-emerald-200"
-                : "bg-white text-emerald-800 ring-1 ring-emerald-100"
+                ? "bg-brand-gradient text-white shadow-md shadow-navy/10"
+                : "bg-white text-navy ring-1 ring-slate-200"
             }`}
           >
             <c.Icon className="h-4 w-4" aria-hidden /> {c.bangla}
@@ -121,27 +121,27 @@ export default function ResourcesPage() {
                 href={r.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-start gap-4 rounded-3xl bg-white p-5 shadow-sm ring-1 ring-emerald-100 transition hover:shadow-lg hover:ring-emerald-200 active:scale-[0.99]"
+                className="card card-hover group flex items-start gap-4 rounded-3xl p-5 transition active:scale-[0.99]"
               >
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 ring-1 ring-emerald-100">
-                  <r.Icon className="h-6 w-6 text-emerald-600" aria-hidden />
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-cream ring-1 ring-teal/20">
+                  <r.Icon className="h-6 w-6 text-teal" aria-hidden />
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="flex flex-wrap items-center gap-2">
-                    <span className="text-base font-extrabold text-emerald-950">
+                    <span className="text-base font-extrabold text-navy">
                       {r.name}
                     </span>
-                    <span className="font-bangla inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-bold text-emerald-700 ring-1 ring-emerald-100">
+                    <span className="badge font-bangla inline-flex items-center gap-1 rounded-full bg-teal/10 px-2 py-0.5 text-[11px] text-teal">
                       <c.Icon className="h-3 w-3" aria-hidden /> {c.bangla}
                     </span>
-                    <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-bold text-amber-700">
+                    <span className="badge rounded-full bg-sun/30 px-2 py-0.5 text-[11px] text-navy">
                       {r.level}
                     </span>
                   </span>
                   <span className="font-bangla mt-1.5 block text-sm leading-relaxed text-slate-500">
                     {r.bangla}
                   </span>
-                  <span className="font-bangla mt-2 inline-flex items-center gap-1 text-sm font-bold text-emerald-600 transition group-hover:gap-2 group-hover:text-emerald-700">
+                  <span className="font-bangla mt-2 inline-flex items-center gap-1 text-sm font-bold text-teal transition group-hover:gap-2 group-hover:text-teal">
                     Visit <ArrowUpRight className="h-4 w-4" aria-hidden />
                   </span>
                 </span>
@@ -152,9 +152,9 @@ export default function ResourcesPage() {
       </motion.div>
 
       {filtered.length === 0 && (
-        <div className="rounded-3xl bg-white p-8 text-center shadow-sm ring-1 ring-emerald-100">
-          <SearchX className="mx-auto h-10 w-10 text-slate-300" aria-hidden />
-          <p className="font-bangla mt-2 font-bold text-emerald-900">
+        <div className="card rounded-3xl p-8 text-center">
+          <SearchX className="mx-auto h-10 w-10 text-mist" aria-hidden />
+          <p className="font-bangla mt-2 font-bold text-navy">
             কিছু পাওয়া গেল না
           </p>
           <p className="font-bangla text-sm text-slate-500">
@@ -166,10 +166,10 @@ export default function ResourcesPage() {
       {/* Note */}
       <motion.div
         variants={item}
-        className="rounded-3xl bg-amber-50 p-5 ring-1 ring-amber-100"
+        className="rounded-3xl bg-sun/15 p-5 ring-1 ring-sun/30"
       >
-        <p className="font-bangla flex items-start gap-2 text-sm leading-relaxed text-amber-800">
-          <Lightbulb className="h-4 w-4 shrink-0 text-amber-600" aria-hidden />
+        <p className="font-bangla flex items-start gap-2 text-sm leading-relaxed text-navy">
+          <Lightbulb className="h-4 w-4 shrink-0 text-navy" aria-hidden />
           <span>
             <strong>নোট:</strong> এগুলো সব বাইরের ফ্রি রিসোর্স — Ulluk-এর সাথে প্রতিদিন ১৫–২০ মিনিট এগুলো ব্যবহার করলে A1 অনেক দ্রুত
             শেষ হবে।

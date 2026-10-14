@@ -9,9 +9,9 @@ export default function GrammatikPage() {
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <p className="font-bangla text-sm font-semibold text-emerald-500">বাংলা ব্যাখ্যাসহ</p>
-        <h1 className="inline-flex items-center gap-2 text-3xl font-extrabold tracking-tight text-emerald-950">
-          <BookOpen className="h-7 w-7 text-emerald-600" aria-hidden /> Grammatik
+        <p className="font-bangla text-sm font-semibold text-teal">বাংলা ব্যাখ্যাসহ</p>
+        <h1 className="section-heading inline-flex items-center gap-2 text-3xl">
+          <BookOpen className="h-7 w-7 text-teal" aria-hidden /> Grammatik
         </h1>
       </div>
 
@@ -31,16 +31,16 @@ export default function GrammatikPage() {
           >
             <Link
               href={`/grammatik/${t.slug}`}
-              className="flex items-center gap-4 rounded-3xl bg-white p-4 shadow-sm ring-1 ring-emerald-100 transition hover:ring-emerald-300 active:scale-[0.98]"
+              className="flex items-center gap-4 rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-200 transition hover:ring-teal/50 active:scale-[0.98]"
             >
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-600 to-emerald-600 text-sm font-extrabold text-white">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-navy text-sm font-extrabold text-white">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <span className="flex-1">
-                <span className="block font-extrabold text-emerald-950">{t.title}</span>
+                <span className="block font-extrabold text-navy">{t.title}</span>
                 <span className="font-bangla block text-sm text-slate-500">{t.titleBangla}</span>
               </span>
-              <ArrowRight className="h-5 w-5 shrink-0 text-slate-300" aria-hidden />
+              <ArrowRight className="h-5 w-5 shrink-0 text-mist" aria-hidden />
             </Link>
           </motion.div>
         ))}

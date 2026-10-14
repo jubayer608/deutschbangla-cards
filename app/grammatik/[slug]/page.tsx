@@ -23,13 +23,13 @@ export default function GrammarDetailPage() {
       <div>
         <Link
           href="/grammatik"
-          className="font-bangla inline-flex items-center gap-1.5 text-sm font-bold text-emerald-600 transition hover:gap-2.5"
+          className="font-bangla inline-flex items-center gap-1.5 text-sm font-bold text-teal transition hover:gap-2.5"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden /> সব ব্যাকরণ
         </Link>
-        <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-emerald-950">{topic.title}</h1>
+        <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-navy">{topic.title}</h1>
         <p className="font-bangla text-slate-500">{topic.titleBangla}</p>
-        <p className="font-bangla mt-3 rounded-3xl bg-emerald-50 p-4 text-slate-700 ring-1 ring-emerald-100">
+        <p className="font-bangla mt-3 rounded-3xl bg-cream p-4 text-slate-700 ring-1 ring-teal/20">
           {topic.intro}
         </p>
       </div>
@@ -40,9 +40,9 @@ export default function GrammarDetailPage() {
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
-          className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-emerald-100"
+          className="card rounded-3xl p-5"
         >
-          <h2 className="font-extrabold text-emerald-900">{s.heading}</h2>
+          <h2 className="font-extrabold text-navy">{s.heading}</h2>
           <p className="font-bangla mt-2 whitespace-pre-line text-slate-700">{s.text}</p>
           {s.table && (
             <div className="mt-3 overflow-x-auto">
@@ -50,7 +50,7 @@ export default function GrammarDetailPage() {
                 <thead>
                   <tr>
                     {s.table.headers.map((h, hi) => (
-                      <th key={hi} className="border border-emerald-200 bg-emerald-50 px-3 py-2 text-left font-bold text-emerald-900">
+                      <th key={hi} className="border border-teal/30 bg-cream px-3 py-2 text-left font-bold text-navy">
                         {h}
                       </th>
                     ))}
@@ -58,9 +58,9 @@ export default function GrammarDetailPage() {
                 </thead>
                 <tbody>
                   {s.table.rows.map((row, ri) => (
-                    <tr key={ri} className={ri % 2 ? "bg-emerald-50/40" : ""}>
+                    <tr key={ri} className={ri % 2 ? "bg-cream/40" : ""}>
                       {row.map((cell, ci) => (
-                        <td key={ci} className="border border-emerald-100 px-3 py-2 text-slate-700">
+                        <td key={ci} className="border border-slate-200 px-3 py-2 text-slate-700">
                           {cell}
                         </td>
                       ))}
@@ -73,9 +73,9 @@ export default function GrammarDetailPage() {
           {s.examples && (
             <ul className="mt-3 flex flex-col gap-1.5">
               {s.examples.map((e, ei) => (
-                <li key={ei} className="rounded-xl bg-emerald-50/60 px-3 py-2 text-sm">
+                <li key={ei} className="rounded-xl bg-cream/60 px-3 py-2 text-sm">
                   <div className="flex items-start justify-between gap-2">
-                    <span className="font-bold text-emerald-900">{e.german}</span>
+                    <span className="font-bold text-navy">{e.german}</span>
                     <SpeakButton text={e.german} className="h-7 w-7" />
                   </div>
                   <span className="font-bangla block text-slate-600">{e.bangla}</span>
@@ -87,11 +87,11 @@ export default function GrammarDetailPage() {
       ))}
 
       {topic.tips.length > 0 && (
-        <section className="rounded-3xl bg-amber-50 p-5 ring-1 ring-amber-200">
-          <h2 className="font-bangla inline-flex items-center gap-2 text-lg font-extrabold text-amber-900">
+        <section className="rounded-3xl bg-sun/15 p-5 ring-1 ring-sun/40">
+          <h2 className="font-bangla inline-flex items-center gap-2 text-lg font-extrabold text-navy">
             <Lightbulb className="h-5 w-5" aria-hidden /> মনে রেখো
           </h2>
-          <ul className="font-bangla mt-2 flex flex-col gap-1.5 text-amber-900">
+          <ul className="font-bangla mt-2 flex flex-col gap-1.5 text-navy">
             {topic.tips.map((t, i) => (
               <li key={i} className="flex items-start gap-2">
                 <span>•</span> {t}
@@ -103,12 +103,12 @@ export default function GrammarDetailPage() {
 
       <Link
         href="/quiz"
-        className="rounded-3xl bg-gradient-to-r from-emerald-600 to-teal-600 p-5 text-center text-white shadow-xl shadow-emerald-200 transition active:scale-[0.98]"
+        className="btn btn-primary rounded-3xl p-5 text-center shadow-xl transition active:scale-[0.98]"
       >
         <p className="inline-flex items-center justify-center gap-2 text-lg font-extrabold">
           <PenLine className="h-5 w-5" aria-hidden /> Teste dich im Quiz
         </p>
-        <p className="font-bangla text-sm text-emerald-200">ব্যাকরণ মোডে নিজেকে যাচাই করো</p>
+        <p className="font-bangla text-sm text-white/80">ব্যাকরণ মোডে নিজেকে যাচাই করো</p>
       </Link>
     </div>
   );

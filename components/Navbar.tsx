@@ -3,16 +3,28 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
+import {
+  Flame,
+  Home,
+  BookOpen,
+  Library,
+  Puzzle,
+  Target,
+  Globe,
+  PenLine,
+  TrendingUp,
+  Languages,
+} from "lucide-react";
 
 const links = [
-  { href: "/", label: "হোম", short: "হোম", icon: "🏠" },
-  { href: "/lektionen", label: "পাঠ", short: "পাঠ", icon: "📖" },
-  { href: "/wortschatz", label: "শব্দ", short: "শব্দ", icon: "📚" },
-  { href: "/grammatik", label: "ব্যাকরণ", short: "ব্যাকরণ", icon: "🧩" },
-  { href: "/quiz", label: "কুইজ", short: "কুইজ", icon: "🎯" },
-  { href: "/resources", label: "রিসোর্স", short: "রিসোর্স", icon: "🌐" },
-  { href: "/blog", label: "ব্লগ", short: "ব্লগ", icon: "✍️" },
-  { href: "/fortschritt", label: "অগ্রগতি", short: "অগ্রগতি", icon: "📈" },
+  { href: "/", label: "হোম", short: "হোম", Icon: Home },
+  { href: "/lektionen", label: "পাঠ", short: "পাঠ", Icon: BookOpen },
+  { href: "/wortschatz", label: "শব্দ", short: "শব্দ", Icon: Library },
+  { href: "/grammatik", label: "ব্যাকরণ", short: "ব্যাকরণ", Icon: Puzzle },
+  { href: "/quiz", label: "কুইজ", short: "কুইজ", Icon: Target },
+  { href: "/resources", label: "রিসোর্স", short: "রিসোর্স", Icon: Globe },
+  { href: "/blog", label: "ব্লগ", short: "ব্লগ", Icon: PenLine },
+  { href: "/fortschritt", label: "অগ্রগতি", short: "অগ্রগতি", Icon: TrendingUp },
 ];
 
 function isActiveLink(pathname: string, href: string): boolean {
@@ -30,7 +42,7 @@ export default function Navbar() {
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-2 px-4 py-2.5">
           <Link href="/" className="group flex shrink-0 items-center gap-2.5">
             <span className="bg-brand-gradient flex h-10 w-10 items-center justify-center rounded-2xl text-xl shadow-md shadow-emerald-200 transition group-active:scale-95">
-              🇩🇪
+              <Languages className="h-5 w-5 text-white" aria-hidden />
             </span>
             <span className="leading-tight">
               <span className="block text-[17px] font-extrabold tracking-tight text-emerald-950">
@@ -47,7 +59,7 @@ export default function Navbar() {
             className="rounded-full bg-amber-100 px-3 py-1.5 text-sm font-bold text-amber-700 lg:hidden"
             aria-label="streak"
           >
-            🔥
+            <Flame className="h-4 w-4 text-amber-600" aria-hidden />
           </span>
 
           {/* Desktop nav */}
@@ -102,9 +114,12 @@ export default function Navbar() {
                     transition={{ type: "spring", stiffness: 420, damping: 34 }}
                   />
                 )}
-                <span className="relative z-10 text-[17px] leading-none" aria-hidden>
-                  {l.icon}
-                </span>
+                <l.Icon
+                  className={`relative z-10 h-[18px] w-[18px] leading-none ${
+                    active ? "text-emerald-700" : "text-slate-400"
+                  }`}
+                  aria-hidden
+                />
                 <span
                   className={`font-bangla relative z-10 text-[9px] leading-tight ${
                     active ? "font-extrabold text-emerald-800" : "font-semibold text-slate-400"

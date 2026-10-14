@@ -1,3 +1,20 @@
+import type { LucideIcon } from "lucide-react";
+import {
+  BookOpen,
+  Clapperboard,
+  GraduationCap,
+  Headphones,
+  Landmark,
+  Layers,
+  Podcast,
+  Radio,
+  Search,
+  Smartphone,
+  Tv,
+  Type,
+  Video,
+} from "lucide-react";
+
 export type ResourceCategory =
   | "video"
   | "kurse"
@@ -9,15 +26,15 @@ export interface CategoryInfo {
   id: ResourceCategory;
   bangla: string;
   german: string;
-  icon: string;
+  Icon: LucideIcon;
 }
 
 export const resourceCategories: CategoryInfo[] = [
-  { id: "video", bangla: "ভিডিও", german: "Video", icon: "🎬" },
-  { id: "kurse", bangla: "কোর্স", german: "Kurse", icon: "🎓" },
-  { id: "apps", bangla: "অ্যাপ", german: "Apps", icon: "📱" },
-  { id: "woerterbuch", bangla: "অভিধান", german: "Wörterbücher", icon: "📖" },
-  { id: "lesen-hoeren", bangla: "পড়া ও শোনা", german: "Lesen & Hören", icon: "🎧" },
+  { id: "video", bangla: "ভিডিও", german: "Video", Icon: Clapperboard },
+  { id: "kurse", bangla: "কোর্স", german: "Kurse", Icon: GraduationCap },
+  { id: "apps", bangla: "অ্যাপ", german: "Apps", Icon: Smartphone },
+  { id: "woerterbuch", bangla: "অভিধান", german: "Wörterbücher", Icon: BookOpen },
+  { id: "lesen-hoeren", bangla: "পড়া ও শোনা", german: "Lesen & Hören", Icon: Headphones },
 ];
 
 export interface Resource {
@@ -28,7 +45,7 @@ export interface Resource {
   url: string;
   level: string;
   free: boolean;
-  icon: string;
+  Icon: LucideIcon;
 }
 
 export const resources: Resource[] = [
@@ -41,7 +58,7 @@ export const resources: Resource[] = [
     url: "https://www.youtube.com/@EasyGerman",
     level: "A1-geeignet",
     free: true,
-    icon: "🎥",
+    Icon: Video,
   },
   {
     id: "dw-nicos-weg",
@@ -52,7 +69,7 @@ export const resources: Resource[] = [
     url: "https://www.dw.com/en/learn-german/s-2469",
     level: "A1–B1",
     free: true,
-    icon: "📺",
+    Icon: Tv,
   },
   {
     id: "goethe",
@@ -63,7 +80,7 @@ export const resources: Resource[] = [
     url: "https://www.goethe.de",
     level: "Alle Niveaus",
     free: true,
-    icon: "🏛️",
+    Icon: Landmark,
   },
   {
     id: "anki",
@@ -74,7 +91,7 @@ export const resources: Resource[] = [
     url: "https://apps.ankiweb.net",
     level: "Alle Niveaus",
     free: true,
-    icon: "🃏",
+    Icon: Layers,
   },
   {
     id: "dict-cc",
@@ -85,7 +102,7 @@ export const resources: Resource[] = [
     url: "https://www.dict.cc",
     level: "Alle Niveaus",
     free: true,
-    icon: "🔤",
+    Icon: Type,
   },
   {
     id: "linguee",
@@ -96,7 +113,7 @@ export const resources: Resource[] = [
     url: "https://www.linguee.com",
     level: "A2+",
     free: true,
-    icon: "🔍",
+    Icon: Search,
   },
   {
     id: "dw-langsam",
@@ -107,7 +124,7 @@ export const resources: Resource[] = [
     url: "https://www.dw.com/en/learn-german/s-2469",
     level: "A2+",
     free: true,
-    icon: "📻",
+    Icon: Radio,
   },
   {
     id: "germanpod101",
@@ -118,6 +135,6 @@ export const resources: Resource[] = [
     url: "https://www.germanpod101.com",
     level: "A1-geeignet",
     free: true,
-    icon: "🎙️",
+    Icon: Podcast,
   },
 ];

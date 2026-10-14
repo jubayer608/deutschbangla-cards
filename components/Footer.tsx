@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { ArrowRight, Calendar, Flame, Languages, Sparkles } from "lucide-react";
 import { words, type VocabWord } from "@/data/words";
 
 function dayKey(d: Date = new Date()): string {
@@ -52,7 +53,7 @@ export default function Footer() {
           >
             <Link href="/" className="flex items-center gap-2.5">
               <span className="bg-brand-gradient flex h-10 w-10 items-center justify-center rounded-2xl text-xl shadow-md shadow-emerald-200">
-                🇩🇪
+                <Languages className="h-5 w-5 text-white" aria-hidden />
               </span>
               <span className="text-lg font-extrabold tracking-tight text-emerald-950">
                 DeutschBangla <span className="text-brand-gradient">Cards</span>
@@ -63,7 +64,7 @@ export default function Footer() {
               জায়গায়।
             </p>
             <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-700">
-              🔥 প্রতিদিন একটু একটু করে
+              <Flame className="h-3.5 w-3.5" aria-hidden /> প্রতিদিন একটু একটু করে
             </p>
           </motion.div>
 
@@ -131,7 +132,9 @@ export default function Footer() {
             transition={{ duration: 0.4, delay: 0.24 }}
           >
             <h3 className="font-bangla text-sm font-extrabold uppercase tracking-widest text-emerald-800">
-              📅 আজকের শব্দ
+              <span className="inline-flex items-center gap-1.5">
+                <Calendar className="h-4 w-4" aria-hidden /> আজকের শব্দ
+              </span>
             </h3>
             {word ? (
               <Link
@@ -140,8 +143,8 @@ export default function Footer() {
               >
                 <p className="text-lg font-extrabold text-emerald-900">{word.german}</p>
                 <p className="font-bangla text-sm font-semibold text-slate-500">{word.bangla}</p>
-                <p className="font-bangla mt-2 text-xs font-bold text-emerald-600 group-hover:text-emerald-700">
-                  শব্দভাণ্ডারে দেখো →
+                <p className="font-bangla mt-2 inline-flex items-center gap-1 text-xs font-bold text-emerald-600 group-hover:text-emerald-700">
+                  শব্দভাণ্ডারে দেখো <ArrowRight className="h-3.5 w-3.5" aria-hidden />
                 </p>
               </Link>
             ) : (
@@ -153,10 +156,13 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-emerald-100 pt-6 text-center sm:flex-row sm:text-left">
           <p className="text-xs font-semibold text-slate-400">
-            © 2026 DeutschBangla Cards 🇩🇪🇧🇩
+            © 2026 DeutschBangla Cards
           </p>
           <p className="font-bangla text-xs font-semibold text-slate-400">
-            Made for Bangla speakers learning German — Viel Erfolg! ✨
+            <span className="inline-flex items-center gap-1">
+              Made for Bangla speakers learning German — Viel Erfolg!
+              <Sparkles className="h-3.5 w-3.5 text-amber-500" aria-hidden />
+            </span>
           </p>
         </div>
       </div>

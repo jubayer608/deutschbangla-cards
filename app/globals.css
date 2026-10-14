@@ -118,3 +118,109 @@ body {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* ==========================================================================
+   Animated gradient system (v5 foundation)
+   Brand stays emerald → teal → amber. Restraint is the rule: use ONE
+   signature gradient moment per viewport — a mesh hero, an animated
+   gradient headline, or a bloom — never all three.
+   ========================================================================== */
+
+@keyframes dbc-mesh-drift {
+  0%,
+  100% {
+    background-position:
+      0% 0%,
+      100% 20%,
+      50% 100%,
+      0% 0%;
+  }
+  33% {
+    background-position:
+      45% 30%,
+      55% 75%,
+      20% 40%,
+      0% 0%;
+  }
+  66% {
+    background-position:
+      85% 10%,
+      15% 90%,
+      75% 60%,
+      0% 0%;
+  }
+}
+
+/* Slow drifting mesh gradient — emerald, teal, amber control points.
+   Best as a single hero/panel background, light mode first. */
+.mesh-gradient-animated {
+  background:
+    radial-gradient(38% 32% at 20% 15%, rgba(16, 185, 129, 0.32), transparent 70%),
+    radial-gradient(42% 38% at 85% 25%, rgba(13, 148, 136, 0.28), transparent 70%),
+    radial-gradient(45% 40% at 55% 90%, rgba(251, 191, 36, 0.2), transparent 70%),
+    linear-gradient(160deg, #ecfdf5 0%, #f0fdfa 55%, #fffbeb 100%);
+  background-size:
+    180% 180%,
+    200% 200%,
+    180% 180%,
+    100% 100%;
+  animation: dbc-mesh-drift 18s ease-in-out infinite;
+}
+
+@keyframes dbc-text-shimmer {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Animated gradient text for ONE hero headline. Static fallback via
+   prefers-reduced-motion below. */
+.text-gradient-animated {
+  background: linear-gradient(100deg, #059669, #0d9488, #d97706, #059669);
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: dbc-text-shimmer 9s ease-in-out infinite;
+}
+
+@keyframes dbc-bloom-breathe {
+  0%,
+  100% {
+    opacity: 0.65;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* Soft radial bloom — low opacity, light-mode tuned. Lay over a section
+   (pointer-events: none) for a gentle glow; never behind body text. */
+.bloom {
+  background: radial-gradient(closest-side, rgba(16, 185, 129, 0.14), transparent);
+  animation: dbc-bloom-breathe 11s ease-in-out infinite;
+}
+
+/* Subtle frosted card for content floating over gradients. */
+.glass-card {
+  background: rgba(255, 255, 255, 0.68);
+  -webkit-backdrop-filter: blur(14px) saturate(1.25);
+  backdrop-filter: blur(14px) saturate(1.25);
+  border: 1px solid rgba(16, 185, 129, 0.16);
+  box-shadow: 0 8px 32px rgba(6, 95, 70, 0.08);
+}
+
+/* Motion safety: freeze the gradient animations to their static frames. */
+@media (prefers-reduced-motion: reduce) {
+  .mesh-gradient-animated,
+  .text-gradient-animated,
+  .bloom {
+    animation: none;
+  }
+}

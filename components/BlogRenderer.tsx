@@ -1,5 +1,6 @@
 "use client";
 
+import { Lightbulb } from "lucide-react";
 import type { BlogBlock } from "@/data/blog";
 
 /** Renders **bold** inline markers inside Bangla/German text. */
@@ -62,8 +63,8 @@ export default function BlogRenderer({ blocks }: { blocks: BlogBlock[] }) {
                 key={i}
                 className="rounded-3xl bg-gradient-to-br from-amber-50 to-yellow-50 p-5 ring-1 ring-amber-200"
               >
-                <p className="font-bangla text-sm font-extrabold text-amber-800">
-                  💡 {b.title}
+                <p className="font-bangla inline-flex items-center gap-1.5 text-sm font-extrabold text-amber-800">
+                  <Lightbulb className="h-4 w-4" aria-hidden /> {b.title}
                 </p>
                 <p className="font-bangla mt-1.5 text-[15px] leading-relaxed text-amber-900/80">
                   <RichText text={b.text} />

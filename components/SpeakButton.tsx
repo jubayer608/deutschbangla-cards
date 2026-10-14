@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { Volume2 } from "lucide-react";
 import { speakGerman, isSpeechSupported } from "@/lib/speech";
 
 interface SpeakButtonProps {
@@ -61,9 +62,7 @@ export default function SpeakButton({ text, className = "", dark = false }: Spea
           ))}
         </span>
       ) : (
-        <span aria-hidden className="text-base leading-none">
-          🔊
-        </span>
+        <Volume2 className="h-4 w-4" aria-hidden />
       )}
     </motion.button>
   );

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useTransform, type PanInfo } from "framer-motion";
+import { Check, X, MousePointerClick } from "lucide-react";
 import SpeakButton from "@/components/SpeakButton";
 
 interface FlashcardWord {
@@ -102,8 +103,8 @@ export default function Flashcard({ word, flipped, onSwipe, onFlip, compact }: F
         className="pointer-events-none absolute inset-0 z-10 flex items-start justify-start p-5"
         aria-hidden
       >
-        <span className="font-bangla rounded-2xl bg-emerald-500 px-4 py-2 text-lg font-extrabold text-white shadow-lg">
-          জানি ✅
+        <span className="font-bangla inline-flex items-center gap-2 rounded-2xl bg-emerald-500 px-4 py-2 text-lg font-extrabold text-white shadow-lg">
+          জানি <Check className="h-5 w-5" strokeWidth={3} aria-hidden />
         </span>
       </motion.div>
       <motion.div
@@ -111,8 +112,8 @@ export default function Flashcard({ word, flipped, onSwipe, onFlip, compact }: F
         className="pointer-events-none absolute inset-0 z-10 flex items-start justify-end p-5"
         aria-hidden
       >
-        <span className="font-bangla rounded-2xl bg-rose-500 px-4 py-2 text-lg font-extrabold text-white shadow-lg">
-          জানি না ❌
+        <span className="font-bangla inline-flex items-center gap-2 rounded-2xl bg-rose-500 px-4 py-2 text-lg font-extrabold text-white shadow-lg">
+          জানি না <X className="h-5 w-5" strokeWidth={3} aria-hidden />
         </span>
       </motion.div>
 
@@ -135,7 +136,9 @@ export default function Flashcard({ word, flipped, onSwipe, onFlip, compact }: F
           )}
           <p className="text-center text-4xl font-extrabold tracking-tight sm:text-5xl">{word.german}</p>
           <SpeakButton text={word.german} dark />
-          <p className="text-sm font-medium text-emerald-200">👆 Tap to reveal meaning</p>
+          <p className="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-200">
+            <MousePointerClick className="h-4 w-4" aria-hidden /> Tap to reveal meaning
+          </p>
         </div>
 
         {/* Back: Bangla meaning + example */}

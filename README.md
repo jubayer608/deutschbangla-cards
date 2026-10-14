@@ -1,4 +1,10 @@
-# 🇩🇪🇧🇩 DeutschBangla Cards — v4
+# 🇩🇪🇧🇩 DeutschBangla Cards
+
+[![MIT License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black.svg)](https://nextjs.org)
+[![Live](https://img.shields.io/badge/live-deutschbangla--cards.vercel.app-emerald.svg)](https://deutschbangla-cards.vercel.app)
+
+**🌍 Live site:** https://deutschbangla-cards.vercel.app
 
 A complete **A1-level German learning site for Bangla speakers** — built with Next.js 16, TypeScript, Tailwind CSS v4 and Framer Motion.
 
@@ -71,3 +77,13 @@ npm run build   # production build
 ```
 
 Viel Erfolg beim Lernen! 🎉
+
+## 🤝 Contributing
+
+This project is open source and community-driven. See [CONTRIBUTING.md](CONTRIBUTING.md)
+to add words, lessons, grammar topics, blog posts, or improve the design.
+Pull requests are welcome — in Bangla or English.
+
+## 📄 License
+
+MIT © 2026 Jubayer Hossan — see [LICENSE](LICENSE).

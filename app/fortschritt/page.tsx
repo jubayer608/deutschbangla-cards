@@ -6,10 +6,11 @@ import { motion } from "framer-motion";
 import { words, categories } from "@/data/words";
 import { lessons } from "@/data/lessons";
 import { getFullProgress, type ProgressState } from "@/lib/progress";
-import { BarChart3, BookOpen, CalendarDays, Flame, Folders, Sprout } from "lucide-react";
+import { BarChart3, BookOpen, CalendarDays, Folders, Sprout } from "lucide-react";
 import ProgressRing from "@/components/ProgressRing";
 import CountUp from "@/components/CountUp";
 import EmptyState from "@/components/EmptyState";
+import { StreakFlame, SleepyStreakNotice } from "@/components/StreakIgnition";
 
 const LEVEL_XP = 200;
 
@@ -54,6 +55,8 @@ export default function FortschrittPage() {
   const level = Math.floor(progress.xp / LEVEL_XP) + 1;
   const levelPct = (progress.xp % LEVEL_XP) / LEVEL_XP;
   const hasAny = progress.xp > 0 || progress.lessonsDone.length > 0 || progress.knownWords.length > 0;
+  const todayActive = (progress.activity[dayKey(0)] ?? 0) > 0;
+  const streakAtRisk = !todayActive && progress.streak > 0;
 
   const week = Array.from({ length: 7 }, (_, i) => 6 - i).map((off) => ({
     key: dayKey(off),
@@ -94,13 +97,7 @@ export default function FortschrittPage() {
                   <CountUp value={progress.xp} /> <span className="text-xl text-emerald-200">XP</span>
                 </p>
               </div>
-              <motion.span
-                animate={{ scale: [1, 1.2, 1], rotate: [0, -8, 8, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="flex h-20 w-20 items-center justify-center rounded-full bg-white/15"
-              >
-                <Flame className="h-11 w-11 text-amber-400" aria-hidden />
-              </motion.span>
+              <StreakFlame todayActive={todayActive} size={80} iconSize={44} />
             </div>
             <div className="mt-4 h-2.5 overflow-hidden rounded-full bg-white/20">
               <motion.div
@@ -114,6 +111,9 @@ export default function FortschrittPage() {
               পরের লেভেলে {LEVEL_XP - (progress.xp % LEVEL_XP)} XP বাকি
             </p>
           </motion.div>
+
+          {/* Streak at risk: sleepy mascot nudge */}
+          {streakAtRisk && <SleepyStreakNotice />}
 
           {/* Stats */}
           <div className="grid grid-cols-3 gap-3">

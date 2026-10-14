@@ -10,7 +10,6 @@ import {
   Brain,
   CalendarDays,
   Check,
-  Flame,
   Gamepad2,
   Globe,
   Layers,
@@ -32,6 +31,8 @@ import { getFullProgress, type ProgressState } from "@/lib/progress";
 import ProgressRing from "@/components/ProgressRing";
 import CountUp from "@/components/CountUp";
 import Flashcard from "@/components/Flashcard";
+import Mascot from "@/components/Mascot";
+import { StreakFlame, SleepyStreakNotice } from "@/components/StreakIgnition";
 
 // 3D atmosphere is client-only and intentionally lazy: it renders over the
 // static CSS mesh gradient, and the headline/CTAs stay crisp without it.
@@ -176,7 +177,13 @@ function Hero() {
             </Link>
           </motion.div>
 
-          {/* MASCOT INSERTION POINT — Implementer C: render the shared Mascot component here (playful companion next to the CTAs). */}
+          {/* Ulluk the mascot — playful companion next to the CTAs */}
+          <motion.div variants={item} className="flex items-center gap-3">
+            <Mascot mood="happy" size={84} className="shrink-0 drop-shadow-md" />
+            <p className="font-bangla glass-card max-w-52 rounded-2xl rounded-bl-sm px-4 py-2.5 text-sm font-bold text-emerald-900">
+              আমি উল্লুক! চলো, আজকে কিছু নতুন শিখি!
+            </p>
+          </motion.div>
 
           <motion.p
             variants={item}
@@ -301,6 +308,8 @@ export default function LandingPage() {
     : null;
   const knownCount = progress?.knownWords.length ?? 0;
   const { text: greetText, Icon: GreetIcon } = greeting();
+  const todayActive = progress ? (progress.activity[dayKey()] ?? 0) > 0 : false;
+  const streakAtRisk = !!progress && !todayActive && progress.streak > 0;
 
   return (
     <div className="flex flex-col">
@@ -341,15 +350,15 @@ export default function LandingPage() {
               {greetText}
             </h2>
           </div>
-          <motion.div
-            animate={{ scale: [1, 1.18, 1], rotate: [0, -8, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            aria-label="streak"
-            className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 shadow-lg shadow-amber-300"
-          >
-            <Flame className="h-7 w-7 fill-white/20 text-white" aria-hidden />
-          </motion.div>
+          <StreakFlame todayActive={todayActive} />
         </motion.div>
+
+        {/* Streak at risk: sleepy mascot nudge */}
+        {streakAtRisk && (
+          <motion.div variants={item} className="w-full">
+            <SleepyStreakNotice />
+          </motion.div>
+        )}
 
         {/* Stats */}
         <motion.div variants={item} className="grid grid-cols-3 gap-3">

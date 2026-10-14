@@ -13,7 +13,9 @@ import {
   getFullProgress,
 } from "@/lib/progress";
 import { celebrate, bigCelebration } from "@/lib/confetti";
+import Mascot from "@/components/Mascot";
 import {
+  BadgeCheck,
   BookOpen,
   CheckCircle2,
   Dices,
@@ -203,6 +205,43 @@ const DIFFS: { id: DiffSetting; bn: string; de: string }[] = [
   { id: "mixed", bn: "মিশ্র", de: "gemischt" },
 ];
 
+/** Streak days worth a full-screen celebration. */
+const STREAK_MILESTONES = [7, 14, 21, 30, 60, 90, 100, 180, 365];
+
+/**
+ * Personal-best *score* per quiz mode. lib/progress.ts only tracks best
+ * totals, so this lives under its own key — progress.ts keys untouched.
+ */
+function bestScoreKey(modeKey: string): string {
+  return `dbc-quizbest-score-${modeKey}`;
+}
+function readBestScore(modeKey: string): number | null {
+  try {
+    const raw = localStorage.getItem(bestScoreKey(modeKey));
+    return raw === null ? null : Number(raw);
+  } catch {
+    return null;
+  }
+}
+function writeBestScore(modeKey: string, s: number): void {
+  try {
+    localStorage.setItem(bestScoreKey(modeKey), String(s));
+  } catch {
+    /* storage unavailable */
+  }
+}
+
+/** Animated XP tally pill used on every quiz end screen. */
+function XpTally({ value }: { value: number }) {
+  return (
+    <span className="font-bangla inline-flex items-center gap-1 rounded-full bg-amber-100 px-4 py-1.5 text-amber-700">
+      +<CountUp value={value} /> XP
+    </span>
+  );
+}
+
+type FinaleTier = "normal" | "best" | "milestone";
+
 export default function QuizPage() {
   const [stage, setStage] = useState<"setup" | "playing" | "done" | "reviewDone">("setup");
   const [mode, setMode] = useState<Mode>("vocab");
@@ -220,6 +259,10 @@ export default function QuizPage() {
   const [reviewScore, setReviewScore] = useState(0);
   const [mainScore, setMainScore] = useState(0);
   const [mainTotal, setMainTotal] = useState(0);
+  const [finaleTier, setFinaleTier] = useState<FinaleTier | null>(null);
+  const [prevBest, setPrevBest] = useState<number | null>(null);
+  const [milestoneDays, setMilestoneDays] = useState(0);
+  const prevStreakRef = useRef(0);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -231,6 +274,7 @@ export default function QuizPage() {
   const start = () => {
     const qs = buildQuestions(mode, diff);
     if (qs.length === 0) return;
+    const modeKey = `${mode}-${diff}`;
     setQuestions(qs);
     setQi(0);
     setPicked(null);
@@ -239,6 +283,11 @@ export default function QuizPage() {
     setBest(null);
     setMissed([]);
     setReviewing(false);
+    setFinaleTier(null);
+    // Snapshot before the round so the finale can detect a streak milestone
+    // (recordReview bumps the streak during play) and a new personal best.
+    prevStreakRef.current = getFullProgress().streak;
+    setPrevBest(readBestScore(modeKey));
     setStage("playing");
   };
 
@@ -271,10 +320,24 @@ export default function QuizPage() {
     setBest(p.quizBest[modeKey] ?? finalScore);
     setMainScore(finalScore);
     setMainTotal(questions.length);
+
+    // Tiered finale — celebration proportional to the achievement.
+    const newStreak = getFullProgress().streak;
+    const hitMilestone =
+      STREAK_MILESTONES.includes(newStreak) && prevStreakRef.current < newStreak;
+    const isNewBest = prevBest !== null && finalScore > prevBest;
+    if (prevBest === null || finalScore > prevBest) writeBestScore(modeKey, finalScore);
+    const tier: FinaleTier = hitMilestone ? "milestone" : isNewBest ? "best" : "normal";
+    setFinaleTier(tier);
+    setMilestoneDays(newStreak);
     setStage("done");
-    const ratio = finalScore / questions.length;
-    if (ratio >= 0.9) bigCelebration();
-    else if (ratio >= 0.6) celebrate();
+    if (hitMilestone || isNewBest) {
+      bigCelebration();
+    } else {
+      const ratio = finalScore / questions.length;
+      if (ratio >= 0.9) bigCelebration();
+      else if (ratio >= 0.6) celebrate();
+    }
   };
 
   const choose = (opt: string) => {
@@ -378,11 +441,67 @@ export default function QuizPage() {
     );
   }
 
-  /* ---------- done ---------- */
+  /* ---------- done (tiered finale) ---------- */
   if (stage === "done") {
     const ratio = questions.length ? score / questions.length : 0;
+    const modeBn = MODES.find((m) => m.id === mode)?.bn ?? "";
     return (
       <div className="flex flex-col items-center gap-4 py-8 text-center">
+        {/* (c) streak milestone: full-screen confetti fires in finish() + celebrating mascot banner */}
+        {finaleTier === "milestone" && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: "spring", stiffness: 160, damping: 20 }}
+            className="mesh-gradient-animated w-full rounded-3xl p-6 shadow-xl shadow-emerald-200 ring-1 ring-emerald-200/50"
+          >
+            <Mascot mood="celebrate" size={104} className="mx-auto" />
+            <h2 className="font-bangla mt-2 text-3xl font-extrabold text-emerald-950">
+              <CountUp value={milestoneDays} /> দিনের স্ট্রিক!
+            </h2>
+            <p className="font-bangla mt-1 font-bold text-slate-600">
+              অসাধারণ ধারাবাহিকতা — এভাবেই চালিয়ে যাও!
+            </p>
+          </motion.div>
+        )}
+
+        {/* (b) new personal best: full-width gradient banner + badge unlock card */}
+        {finaleTier === "best" && (
+          <>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ type: "spring", stiffness: 160, damping: 20 }}
+              className="bg-brand-gradient w-full rounded-3xl p-5 text-white shadow-xl shadow-emerald-200"
+            >
+              <Trophy className="mx-auto h-10 w-10" aria-hidden />
+              <h2 className="font-bangla mt-2 text-2xl font-extrabold">নতুন ব্যক্তিগত রেকর্ড!</h2>
+              <p className="font-bangla text-sm font-semibold text-emerald-50">
+                আগের সেরা {prevBest} — এখন {score}!
+              </p>
+            </motion.div>
+            <motion.div
+              initial={{ scale: 0, rotate: -12 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: "spring", stiffness: 260, damping: 14, delay: 0.25 }}
+              className="glass-card flex items-center gap-3 rounded-3xl px-5 py-4"
+            >
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-white shadow-md shadow-amber-200">
+                <BadgeCheck className="h-7 w-7" aria-hidden />
+              </span>
+              <span className="text-left">
+                <span className="font-bangla block text-sm font-extrabold text-emerald-950">
+                  ব্যাজ আনলকড!
+                </span>
+                <span className="font-bangla block text-xs font-semibold text-slate-500">
+                  কুইজ মাস্টার · {modeBn}
+                </span>
+              </span>
+              <Mascot mood="happy" size={56} className="shrink-0" />
+            </motion.div>
+          </>
+        )}
+
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
@@ -402,10 +521,10 @@ export default function QuizPage() {
         <p className="text-4xl font-extrabold text-emerald-950">
           <CountUp value={score} /> <span className="text-2xl text-slate-400">/ {questions.length}</span>
         </p>
-        <div className="font-bangla flex gap-2 text-sm font-bold">
-          <span className="rounded-full bg-amber-100 px-4 py-1.5 text-amber-700">+{xpEarned} XP</span>
+        <div className="flex gap-2 text-sm font-bold">
+          <XpTally value={xpEarned} />
           {best !== null && (
-            <span className="rounded-full bg-emerald-100 px-4 py-1.5 text-emerald-700">সেরা: {best}</span>
+            <span className="font-bangla rounded-full bg-emerald-100 px-4 py-1.5 text-emerald-700">সেরা: {best}</span>
           )}
         </div>
         <p className="font-bangla text-slate-500">
@@ -485,8 +604,8 @@ export default function QuizPage() {
               : "ভুল থেকে শেখাই আসল শেখা — weiter so!"}
           </p>
         </div>
-        <div className="font-bangla flex gap-2 text-sm font-bold">
-          <span className="rounded-full bg-amber-100 px-4 py-1.5 text-amber-700">+{xpEarned} XP</span>
+        <div className="flex gap-2 text-sm font-bold">
+          <XpTally value={xpEarned} />
         </div>
         <div className="flex flex-col gap-3 sm:flex-row">
           <button

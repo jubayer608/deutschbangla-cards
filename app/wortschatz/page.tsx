@@ -6,6 +6,7 @@ import { words, categories, shuffle, type VocabWord } from "@/data/words";
 import { phraseGroups } from "@/data/phrases";
 import { getFullProgress, markWord, type ProgressState } from "@/lib/progress";
 import Flashcard from "@/components/Flashcard";
+import SpeakButton from "@/components/SpeakButton";
 import EmptyState from "@/components/EmptyState";
 
 type Tab = "words" | "phrases";
@@ -195,16 +196,24 @@ export default function WortschatzPage() {
                         known ? "bg-emerald-50 ring-emerald-200" : "bg-white ring-emerald-100"
                       }`}
                     >
-                      {known && <span className="absolute right-3 top-3 text-sm">✅</span>}
+                      {known && <span className="absolute bottom-3 right-3 text-sm">✅</span>}
                       {isFlipped ? (
                         <>
                           <p className="font-bangla text-lg font-extrabold text-emerald-900">{w.bangla}</p>
-                          <p className="mt-1 text-xs italic text-slate-500">{w.example}</p>
-                          <p className="font-bangla text-xs text-slate-500">{w.exampleBangla}</p>
+                          <div className="mt-1 flex items-start justify-between gap-2">
+                            <div>
+                              <p className="text-xs italic text-slate-500">{w.example}</p>
+                              <p className="font-bangla text-xs text-slate-500">{w.exampleBangla}</p>
+                            </div>
+                            <SpeakButton text={w.example} className="h-7 w-7" />
+                          </div>
                         </>
                       ) : (
                         <>
-                          <p className="text-lg font-extrabold text-emerald-950">{w.german}</p>
+                          <div className="flex items-start justify-between gap-2">
+                            <p className="text-lg font-extrabold text-emerald-950">{w.german}</p>
+                            <SpeakButton text={w.german} className="h-7 w-7" />
+                          </div>
                           <p className="font-bangla mt-1 text-xs text-slate-400">ট্যাপ করো 👆</p>
                         </>
                       )}
@@ -249,7 +258,10 @@ export default function WortschatzPage() {
                       <ul className="flex flex-col gap-2 border-t border-emerald-50 p-4">
                         {g.items.map((p, i) => (
                           <li key={i} className="rounded-2xl bg-emerald-50/60 px-3 py-2">
-                            <p className="font-bold text-emerald-900">{p.german}</p>
+                            <div className="flex items-start justify-between gap-2">
+                              <p className="font-bold text-emerald-900">{p.german}</p>
+                              <SpeakButton text={p.german} className="h-7 w-7" />
+                            </div>
                             <p className="font-bangla text-sm text-slate-600">{p.bangla}</p>
                           </li>
                         ))}

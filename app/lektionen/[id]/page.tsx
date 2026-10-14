@@ -13,6 +13,7 @@ import {
   type ProgressState,
 } from "@/lib/progress";
 import { celebrate, bigCelebration } from "@/lib/confetti";
+import SpeakButton from "@/components/SpeakButton";
 import EmptyState from "@/components/EmptyState";
 
 function normalize(s: string): string {
@@ -313,7 +314,10 @@ export default function LessonDetailPage() {
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           {vocabWords.map((w) => (
             <div key={w.id} className="rounded-2xl bg-white p-3 shadow-sm ring-1 ring-emerald-100">
-              <p className="font-extrabold text-emerald-900">{w.german}</p>
+              <div className="flex items-center justify-between gap-2">
+                <p className="font-extrabold text-emerald-900">{w.german}</p>
+                <SpeakButton text={w.german} className="h-7 w-7" />
+              </div>
               <p className="font-bangla text-sm text-slate-600">{w.bangla}</p>
             </div>
           ))}
@@ -357,7 +361,10 @@ export default function LessonDetailPage() {
               <ul className="mt-3 flex flex-col gap-1.5">
                 {g.examples.map((e, ei) => (
                   <li key={ei} className="rounded-xl bg-emerald-50/60 px-3 py-2 text-sm">
-                    <span className="font-bold text-emerald-900">{e.german}</span>
+                    <div className="flex items-start justify-between gap-2">
+                      <span className="font-bold text-emerald-900">{e.german}</span>
+                      <SpeakButton text={e.german} className="h-7 w-7" />
+                    </div>
                     <span className="font-bangla block text-slate-600">{e.bangla}</span>
                   </li>
                 ))}
@@ -372,7 +379,10 @@ export default function LessonDetailPage() {
         <h2 className="font-bangla text-lg font-extrabold text-emerald-950">💬 Beispielsätze — উদাহরণ বাক্য</h2>
         {lesson.saetze.map((s, i) => (
           <div key={i} className="rounded-2xl bg-white p-3 shadow-sm ring-1 ring-emerald-100">
-            <p className="font-bold text-emerald-900">{s.german}</p>
+            <div className="flex items-start justify-between gap-2">
+              <p className="font-bold text-emerald-900">{s.german}</p>
+              <SpeakButton text={s.german} className="h-7 w-7" />
+            </div>
             <p className="font-bangla text-sm text-slate-600">{s.bangla}</p>
           </div>
         ))}

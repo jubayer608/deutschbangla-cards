@@ -32,7 +32,7 @@ export default function BlogPostClient({ post, prev, next }: Props) {
       {/* Back */}
       <Link
         href="/blog"
-        className="font-bangla inline-flex w-fit items-center gap-1.5 text-sm font-bold text-emerald-700 transition hover:gap-2.5 hover:text-emerald-800"
+        className="font-bangla inline-flex w-fit items-center gap-1.5 text-sm font-bold text-teal transition hover:gap-2.5 hover:text-navy"
       >
         <ArrowLeft className="h-4 w-4" aria-hidden /> সব পোস্ট
       </Link>
@@ -42,7 +42,7 @@ export default function BlogPostClient({ post, prev, next }: Props) {
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className={`overflow-hidden rounded-3xl bg-gradient-to-br ${post.cover} p-6 shadow-xl sm:p-8`}
+        className="overflow-hidden rounded-3xl bg-navy p-6 shadow-xl sm:p-8"
       >
         <span className="font-bangla inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-extrabold text-white backdrop-blur">
           {post.category}
@@ -62,7 +62,7 @@ export default function BlogPostClient({ post, prev, next }: Props) {
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.1 }}
-        className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-emerald-100 sm:p-8"
+        className="card rounded-3xl p-6 sm:p-8"
       >
         <BlogRenderer blocks={post.blocks} />
       </motion.article>
@@ -72,7 +72,7 @@ export default function BlogPostClient({ post, prev, next }: Props) {
         {post.tags.map((t) => (
           <span
             key={t}
-            className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700 ring-1 ring-emerald-100"
+            className="badge rounded-full bg-teal/10 px-3 py-1 text-xs text-teal"
           >
             #{t}
           </span>
@@ -84,12 +84,12 @@ export default function BlogPostClient({ post, prev, next }: Props) {
         {prev ? (
           <Link
             href={`/blog/${prev.slug}`}
-            className="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-emerald-100 transition hover:shadow-md hover:ring-emerald-200 active:scale-[0.98]"
+            className="card card-hover rounded-3xl p-4 transition active:scale-[0.98]"
           >
-            <p className="font-bangla inline-flex items-center gap-1 text-xs font-bold text-slate-400">
+            <p className="font-bangla inline-flex items-center gap-1 text-xs font-bold text-mist">
               <ArrowLeft className="h-3.5 w-3.5" aria-hidden /> আগের পোস্ট
             </p>
-            <p className="font-bangla mt-1 text-sm font-extrabold leading-snug text-emerald-900">
+            <p className="font-bangla mt-1 text-sm font-extrabold leading-snug text-navy">
               {prev.title}
             </p>
           </Link>
@@ -99,12 +99,12 @@ export default function BlogPostClient({ post, prev, next }: Props) {
         {next ? (
           <Link
             href={`/blog/${next.slug}`}
-            className="rounded-3xl bg-white p-4 text-right shadow-sm ring-1 ring-emerald-100 transition hover:shadow-md hover:ring-emerald-200 active:scale-[0.98]"
+            className="card card-hover rounded-3xl p-4 text-right transition active:scale-[0.98]"
           >
-            <p className="font-bangla inline-flex items-center justify-end gap-1 text-xs font-bold text-slate-400">
+            <p className="font-bangla inline-flex items-center justify-end gap-1 text-xs font-bold text-mist">
               পরের পোস্ট <ArrowRight className="h-3.5 w-3.5" aria-hidden />
             </p>
-            <p className="font-bangla mt-1 text-sm font-extrabold leading-snug text-emerald-900">
+            <p className="font-bangla mt-1 text-sm font-extrabold leading-snug text-navy">
               {next.title}
             </p>
           </Link>

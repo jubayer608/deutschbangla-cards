@@ -97,11 +97,11 @@ function SectionHeading({
 }) {
   return (
     <motion.div variants={item} className="mx-auto mb-8 max-w-2xl text-center">
-      <span className="font-bangla inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
+      <span className="badge font-bangla inline-flex items-center gap-1.5 rounded-full bg-teal/10 px-3 py-1 text-xs text-teal">
         <Icon className="h-3.5 w-3.5" aria-hidden />
         {kicker}
       </span>
-      <h2 className="font-bangla mt-3 text-2xl font-extrabold tracking-tight text-emerald-950 sm:text-3xl">
+      <h2 className="font-bangla mt-3 text-2xl font-extrabold tracking-tight text-navy sm:text-3xl">
         {title}
       </h2>
       <p className="font-bangla mt-2 text-sm leading-relaxed text-slate-500">
@@ -114,7 +114,7 @@ function SectionHeading({
 /* ============================ HERO ============================ */
 function Hero() {
   return (
-    <section className="mesh-gradient-animated relative overflow-hidden">
+    <section className="bg-cream relative overflow-hidden">
       <div className="mx-auto max-w-5xl px-4 pb-14 pt-12 sm:pt-16">
         <motion.div
           variants={container}
@@ -124,18 +124,18 @@ function Hero() {
         >
           <motion.span
             variants={item}
-            className="font-bangla inline-flex items-center gap-1.5 rounded-full bg-white/70 px-4 py-1.5 text-xs font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-200 backdrop-blur"
+            className="font-bangla inline-flex items-center gap-1.5 rounded-full bg-white/70 px-4 py-1.5 text-xs font-bold text-teal shadow-sm ring-1 ring-teal/30 backdrop-blur"
           >
-            <Sparkles className="h-3.5 w-3.5 text-amber-500" aria-hidden />
+            <Sparkles className="h-3.5 w-3.5 text-navy" aria-hidden />
             Opportunities with German
           </motion.span>
           <motion.h1
             variants={item}
             className="font-bangla mt-5 max-w-3xl text-4xl font-black leading-tight tracking-tight sm:text-5xl"
           >
-            <span className="text-gradient-animated">জার্মান শিখলেই</span>
+            <span className="text-teal">জার্মান শিখলেই</span>
             <br />
-            <span className="text-emerald-950">দরজা খুলে যায়</span>
+            <span className="text-navy">দরজা খুলে যায়</span>
           </motion.h1>
           <motion.p
             variants={item}
@@ -150,13 +150,13 @@ function Hero() {
           >
             <a
               href="#roadmap"
-              className="font-bangla bg-brand-gradient inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-200 transition hover:shadow-xl active:scale-95"
+              className="btn btn-primary font-bangla inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm"
             >
               রোডম্যাপ দেখো <ArrowDown className="h-4 w-4" aria-hidden />
             </a>
             <Link
               href="/lektionen"
-              className="font-bangla inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-6 py-3 text-sm font-bold text-emerald-800 shadow-sm backdrop-blur transition hover:border-emerald-300 hover:bg-white active:scale-95"
+              className="font-bangla inline-flex items-center gap-2 rounded-full border border-teal/30 bg-white/80 px-6 py-3 text-sm font-bold text-navy shadow-sm backdrop-blur transition hover:border-teal/40 hover:bg-white active:scale-95"
             >
               A1 থেকে শুরু করো <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
@@ -191,13 +191,13 @@ function Hero() {
                 variants={item}
                 whileHover={{ y: -5, scale: 1.03 }}
                 transition={{ type: "spring", stiffness: 350, damping: 20 }}
-                className="glass-card rounded-3xl p-4 text-center"
+                className="card card-hover rounded-3xl p-4 text-center"
               >
                 <s.Icon
-                  className="mx-auto h-5 w-5 text-emerald-600"
+                  className="mx-auto h-5 w-5 text-teal"
                   aria-hidden
                 />
-                <p className="mt-2 text-2xl font-black tracking-tight text-emerald-950">
+                <p className="mt-2 text-2xl font-black tracking-tight text-navy">
                   {s.value}
                 </p>
                 <p className="font-bangla mt-1 text-xs font-semibold text-slate-500">
@@ -208,7 +208,7 @@ function Hero() {
           </motion.div>
           <motion.p
             variants={item}
-            className="font-bangla mt-4 inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-400"
+            className="font-bangla mt-4 inline-flex items-center gap-1.5 text-[11px] font-semibold text-mist"
           >
             <Info className="h-3.5 w-3.5" aria-hidden />
             সব অংক আনুমানিক — শেষ যাচাই: অক্টোবর ২০২৬
@@ -264,9 +264,8 @@ function Ausbildung() {
           variants={item}
           whileHover={{ y: -4 }}
           transition={{ type: "spring", stiffness: 300, damping: 22 }}
-          className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-emerald-600 via-teal-600 to-emerald-700 p-6 text-white shadow-xl shadow-emerald-200 sm:p-8"
+          className="relative overflow-hidden rounded-[2rem] bg-navy p-6 text-white shadow-xl shadow-navy/10 sm:p-8"
         >
-          <div className="bloom pointer-events-none absolute -right-20 -top-20 h-72 w-72" />
           <div className="relative flex flex-col gap-5 sm:flex-row sm:items-start">
             <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/15 backdrop-blur">
               <Building2 className="h-7 w-7 text-white" aria-hidden />
@@ -275,7 +274,7 @@ function Ausbildung() {
               <h3 className="font-bangla text-xl font-extrabold">
                 কোম্পানিতে চাকরি + স্কুল — একসাথে
               </h3>
-              <p className="font-bangla mt-2 text-sm leading-relaxed text-emerald-50">
+              <p className="font-bangla mt-2 text-sm leading-relaxed text-cream">
                 Ausbildung-এ তুমি একই সাথে একটা কোম্পানিতে ট্রেনি হিসেবে কাজ
                 করবে আর ভোকেশনাল স্কুলে পড়বে। সময়কাল{" "}
                 <strong className="font-extrabold">২ থেকে ৩.৫ বছর</strong> —
@@ -298,12 +297,12 @@ function Ausbildung() {
               variants={item}
               whileHover={{ y: -6, scale: 1.02 }}
               transition={{ type: "spring", stiffness: 350, damping: 20 }}
-              className="rounded-3xl border border-emerald-100 bg-white p-5 shadow-sm hover:border-emerald-200 hover:shadow-lg hover:shadow-emerald-100"
+              className="card card-hover rounded-3xl p-5"
             >
-              <span className="bg-brand-gradient-soft inline-flex h-10 w-10 items-center justify-center rounded-xl">
-                <r.Icon className="h-5 w-5 text-emerald-700" aria-hidden />
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-cream ring-1 ring-teal/20">
+                <r.Icon className="h-5 w-5 text-teal" aria-hidden />
               </span>
-              <h4 className="font-bangla mt-3 text-sm font-extrabold text-emerald-950">
+              <h4 className="font-bangla mt-3 text-sm font-extrabold text-navy">
                 {r.title}
               </h4>
               <p className="font-bangla mt-1 text-xs leading-relaxed text-slate-500">
@@ -319,18 +318,18 @@ function Ausbildung() {
             variants={item}
             whileHover={{ y: -4 }}
             transition={{ type: "spring", stiffness: 300, damping: 22 }}
-            className="overflow-hidden rounded-3xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-6"
+            className="overflow-hidden rounded-3xl border border-sun/40 bg-gradient-to-br from-sun/15 to-white p-6"
           >
             <div className="flex items-center gap-2">
-              <Wallet className="h-5 w-5 text-amber-600" aria-hidden />
-              <h3 className="font-bangla text-lg font-extrabold text-emerald-950">
+              <Wallet className="h-5 w-5 text-navy" aria-hidden />
+              <h3 className="font-bangla text-lg font-extrabold text-navy">
                 টাকার হিসাব (আনুমানিক)
               </h3>
             </div>
             <ul className="font-bangla mt-3 space-y-2.5 text-sm leading-relaxed text-slate-600">
               <li className="flex gap-2">
                 <CheckCircle2
-                  className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600"
+                  className="mt-0.5 h-4 w-4 shrink-0 text-teal"
                   aria-hidden
                 />
                 আইনগত ন্যূনতম ট্রেনিং বেতন প্রথম বছরে{" "}
@@ -339,14 +338,14 @@ function Ausbildung() {
               </li>
               <li className="flex gap-2">
                 <CheckCircle2
-                  className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600"
+                  className="mt-0.5 h-4 w-4 shrink-0 text-teal"
                   aria-hidden
                 />
                 অনেক কোম্পানি <strong>€800–1,200+</strong> দেয়
               </li>
               <li className="flex gap-2">
                 <CheckCircle2
-                  className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600"
+                  className="mt-0.5 h-4 w-4 shrink-0 text-teal"
                   aria-hidden
                 />
                 বেতন দিয়ে থাকা-খাওয়া চললে{" "}
@@ -354,7 +353,7 @@ function Ausbildung() {
                 ঘাটতিটুকু দেখালেই হয়
               </li>
             </ul>
-            <p className="font-bangla mt-3 text-[11px] font-semibold text-slate-400">
+            <p className="font-bangla mt-3 text-[11px] font-semibold text-mist">
               শেষ যাচাই: অক্টোবর ২০২৬
             </p>
           </motion.div>
@@ -363,18 +362,18 @@ function Ausbildung() {
             variants={item}
             whileHover={{ y: -4 }}
             transition={{ type: "spring", stiffness: 300, damping: 22 }}
-            className="overflow-hidden rounded-3xl border border-teal-200 bg-gradient-to-br from-teal-50 to-white p-6"
+            className="overflow-hidden rounded-3xl border border-teal/30 bg-gradient-to-br from-cream to-white p-6"
           >
             <div className="flex items-center gap-2">
-              <Rocket className="h-5 w-5 text-teal-600" aria-hidden />
-              <h3 className="font-bangla text-lg font-extrabold text-emerald-950">
+              <Rocket className="h-5 w-5 text-teal" aria-hidden />
+              <h3 className="font-bangla text-lg font-extrabold text-navy">
                 ট্রেনিং শেষে কী হবে?
               </h3>
             </div>
             <ul className="font-bangla mt-3 space-y-2.5 text-sm leading-relaxed text-slate-600">
               <li className="flex gap-2">
                 <CheckCircle2
-                  className="mt-0.5 h-4 w-4 shrink-0 text-teal-600"
+                  className="mt-0.5 h-4 w-4 shrink-0 text-teal"
                   aria-hidden
                 />
                 গ্র্যাজুয়েশনের পর <strong>১৮ মাসের</strong> জব-সার্চ
@@ -382,7 +381,7 @@ function Ausbildung() {
               </li>
               <li className="flex gap-2">
                 <CheckCircle2
-                  className="mt-0.5 h-4 w-4 shrink-0 text-teal-600"
+                  className="mt-0.5 h-4 w-4 shrink-0 text-teal"
                   aria-hidden
                 />
                 যোগ্যতাসম্পন্ন কাজের <strong>~২ বছর</strong> পর স্থায়ী
@@ -390,13 +389,13 @@ function Ausbildung() {
               </li>
               <li className="flex gap-2">
                 <CheckCircle2
-                  className="mt-0.5 h-4 w-4 shrink-0 text-teal-600"
+                  className="mt-0.5 h-4 w-4 shrink-0 text-teal"
                   aria-hidden
                 />
                 জার্মান ডিগ্রি + অভিজ্ঞতা = ইউরোপজুড়ে ক্যারিয়ারের দরজা
               </li>
             </ul>
-            <p className="font-bangla mt-3 text-[11px] font-semibold text-slate-400">
+            <p className="font-bangla mt-3 text-[11px] font-semibold text-mist">
               নিয়ম বদলাতে পারে — দূতাবাসের তথ্যই চূড়ান্ত
             </p>
           </motion.div>
@@ -485,7 +484,7 @@ function Roadmap() {
   });
 
   return (
-    <section id="roadmap" className="relative overflow-hidden bg-gradient-to-b from-white via-emerald-50/60 to-white py-12">
+    <section id="roadmap" className="relative overflow-hidden bg-gradient-to-b from-white via-cream to-white py-12">
       <div className="mx-auto max-w-5xl px-4">
         <motion.div
           variants={container}
@@ -503,10 +502,10 @@ function Roadmap() {
 
         <div ref={tlRef} className="relative mt-4">
           {/* track */}
-          <div className="absolute bottom-4 left-6 top-4 w-1 rounded-full bg-emerald-100 lg:left-1/2 lg:-translate-x-1/2" />
+          <div className="absolute bottom-4 left-6 top-4 w-1 rounded-full bg-cream lg:left-1/2 lg:-translate-x-1/2" />
           {/* scroll progress fill */}
           <motion.div
-            className="absolute bottom-4 left-6 top-4 w-1 origin-top rounded-full bg-gradient-to-b from-emerald-500 via-teal-500 to-amber-400 lg:left-1/2 lg:-translate-x-1/2"
+            className="absolute bottom-4 left-6 top-4 w-1 origin-top rounded-full bg-gradient-to-b from-teal via-teal to-sun lg:left-1/2 lg:-translate-x-1/2"
             style={{ scaleY: progress }}
           />
 
@@ -534,7 +533,7 @@ function Roadmap() {
                     whileInView={{ scale: [0.6, 1.15, 1] }}
                     viewport={{ once: true, margin: "-60px" }}
                     transition={{ type: "spring", stiffness: 320, damping: 16 }}
-                    className="absolute left-6 top-1 z-10 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full border-4 border-white bg-gradient-to-br from-emerald-500 to-teal-600 shadow-lg shadow-emerald-200 lg:left-1/2"
+                    className="absolute left-6 top-1 z-10 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full border-4 border-white bg-gradient-to-br from-navy to-teal shadow-lg shadow-navy/10 lg:left-1/2"
                   >
                     <s.Icon className="h-5 w-5 text-white" aria-hidden />
                   </motion.span>
@@ -547,20 +546,20 @@ function Roadmap() {
                       stiffness: 350,
                       damping: 20,
                     }}
-                    className={`ml-16 w-full rounded-3xl border border-emerald-100 bg-white p-5 shadow-sm hover:border-emerald-200 hover:shadow-xl hover:shadow-emerald-100 lg:ml-0 lg:w-[calc(50%-3rem)] ${
+                    className={`card card-hover ml-16 w-full rounded-3xl p-5 lg:ml-0 lg:w-[calc(50%-3rem)] ${
                       left ? "lg:mr-auto" : "lg:ml-auto"
                     }`}
                   >
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="bg-brand-gradient rounded-full px-3 py-1 text-[11px] font-black tracking-wide text-white">
+                      <span className="badge rounded-full bg-navy px-3 py-1 text-[11px] text-white">
                         {s.level}
                       </span>
-                      <span className="font-bangla inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-bold text-amber-700">
+                      <span className="font-bangla inline-flex items-center gap-1 rounded-full bg-sun/25 px-2.5 py-1 text-[11px] font-bold text-navy">
                         <Clock className="h-3 w-3" aria-hidden />
                         {s.time}
                       </span>
                     </div>
-                    <h3 className="font-bangla mt-2.5 text-base font-extrabold text-emerald-950">
+                    <h3 className="font-bangla mt-2.5 text-base font-extrabold text-navy">
                       {s.title}
                     </h3>
                     <p className="font-bangla mt-1 text-sm leading-relaxed text-slate-500">
@@ -578,7 +577,7 @@ function Roadmap() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ type: "spring", stiffness: 260, damping: 26 }}
-          className="font-bangla mx-auto mt-10 max-w-2xl rounded-3xl border border-emerald-200 bg-emerald-50 p-5 text-center text-sm leading-relaxed text-emerald-900"
+          className="font-bangla mx-auto mt-10 max-w-2xl rounded-3xl border border-teal/30 bg-cream p-5 text-center text-sm leading-relaxed text-navy"
         >
           <strong className="font-extrabold">বাস্তবসম্মত মোট সময়:</strong>{" "}
           শূন্য থেকে জার্মানিতে পৌঁছাতে <strong>১৮–৩০ মাস</strong> লাগে।
@@ -651,21 +650,21 @@ function Checklist() {
               variants={item}
               whileHover={{ y: -5, scale: 1.02 }}
               transition={{ type: "spring", stiffness: 350, damping: 20 }}
-              className="flex gap-3 rounded-3xl border border-emerald-100 bg-white p-4 shadow-sm hover:border-emerald-200 hover:shadow-lg hover:shadow-emerald-100"
+              className="card card-hover flex gap-3 rounded-3xl p-4"
             >
               <motion.span
                 whileInView={{ rotate: [0, -12, 0], scale: [1, 1.25, 1] }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ delay: 0.05 * i, duration: 0.45 }}
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-100"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-cream"
               >
                 <CheckCircle2
-                  className="h-5 w-5 text-emerald-600"
+                  className="h-5 w-5 text-teal"
                   aria-hidden
                 />
               </motion.span>
               <div>
-                <h4 className="font-bangla text-sm font-extrabold text-emerald-950">
+                <h4 className="font-bangla text-sm font-extrabold text-navy">
                   {c.title}
                 </h4>
                 <p className="font-bangla mt-0.5 text-xs leading-relaxed text-slate-500">
@@ -692,8 +691,9 @@ const paths = [
       "Sperrkonto সাধারণত লাগে না",
       "জার্মান উন্নতি + জার্মানিতে পা রাখার সুযোগ",
     ],
-    accent: "from-emerald-500 to-teal-500",
-    chip: "bg-emerald-100 text-emerald-700",
+    accent: "from-teal to-teal",
+    ink: "text-white",
+    chip: "bg-cream text-teal",
   },
   {
     Icon: GraduationCap,
@@ -705,8 +705,9 @@ const paths = [
       "জার্মান-মাধ্যম প্রোগ্রামে B2/C1",
       "ইংরেজি-মাধ্যম প্রোগ্রামে IELTS",
     ],
-    accent: "from-teal-500 to-cyan-600",
-    chip: "bg-teal-100 text-teal-700",
+    accent: "from-teal to-navy",
+    ink: "text-white",
+    chip: "bg-cream text-teal",
   },
   {
     Icon: IdCard,
@@ -718,8 +719,9 @@ const paths = [
       "চাকরি খুঁজতে ১২ মাস, সপ্তাহে ২০ ঘণ্টা পার্ট-টাইম",
       "আর্থিক প্রমাণ ~€1,091/মাস (২০২৬)",
     ],
-    accent: "from-amber-500 to-orange-500",
-    chip: "bg-amber-100 text-amber-700",
+    accent: "from-sun to-sun",
+    ink: "text-navy",
+    chip: "bg-sun/25 text-navy",
   },
   {
     Icon: Stethoscope,
@@ -731,14 +733,15 @@ const paths = [
       "Pflege Ausbildung বাংলাদেশিদের জন্য শীর্ষ রুট",
       "স্থিতিশীল বেতন ও PR-এর শক্ত পথ",
     ],
-    accent: "from-emerald-600 to-green-600",
-    chip: "bg-emerald-100 text-emerald-700",
+    accent: "from-navy to-teal",
+    ink: "text-white",
+    chip: "bg-cream text-teal",
   },
 ];
 
 function OtherPaths() {
   return (
-    <section className="bg-gradient-to-b from-white via-teal-50/50 to-white py-12">
+    <section className="bg-gradient-to-b from-white via-cream to-white py-12">
       <div className="mx-auto max-w-5xl px-4">
         <motion.div
           variants={container}
@@ -759,18 +762,18 @@ function OtherPaths() {
                 variants={item}
                 whileHover={{ y: -7, scale: 1.015 }}
                 transition={{ type: "spring", stiffness: 320, damping: 20 }}
-                className="overflow-hidden rounded-[1.75rem] border border-emerald-100 bg-white shadow-sm hover:shadow-xl hover:shadow-emerald-100"
+                className="card card-hover overflow-hidden rounded-[1.75rem]"
               >
                 <div className={`bg-gradient-to-r ${p.accent} px-6 py-4`}>
                   <div className="flex items-center gap-3">
                     <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/20 backdrop-blur">
-                      <p.Icon className="h-6 w-6 text-white" aria-hidden />
+                      <p.Icon className={`h-6 w-6 ${p.ink}`} aria-hidden />
                     </span>
                     <div>
-                      <h3 className="text-base font-black tracking-tight text-white">
+                      <h3 className={`text-base font-black tracking-tight ${p.ink}`}>
                         {p.name}
                       </h3>
-                      <p className="font-bangla text-xs font-bold text-white/85">
+                      <p className={`font-bangla text-xs font-bold ${p.ink} opacity-85`}>
                         {p.bangla}
                       </p>
                     </div>
@@ -780,7 +783,7 @@ function OtherPaths() {
                   {p.points.map((pt) => (
                     <li key={pt} className="flex gap-2">
                       <CheckCircle2
-                        className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600"
+                        className="mt-0.5 h-4 w-4 shrink-0 text-teal"
                         aria-hidden
                       />
                       <span className="font-bangla text-sm leading-relaxed text-slate-600">
@@ -794,7 +797,7 @@ function OtherPaths() {
           </div>
           <motion.p
             variants={item}
-            className="font-bangla mt-5 text-center text-[11px] font-semibold text-slate-400"
+            className="font-bangla mt-5 text-center text-[11px] font-semibold text-mist"
           >
             অংকগুলো আনুমানিক — শেষ যাচাই: অক্টোবর ২০২৬
           </motion.p>
@@ -813,17 +816,17 @@ function Cta() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ type: "spring", stiffness: 240, damping: 26 }}
-        className="mesh-gradient-animated relative overflow-hidden rounded-[2rem] p-8 text-center shadow-xl shadow-emerald-100 sm:p-12"
+        className="bg-cream relative overflow-hidden rounded-[2rem] p-8 text-center shadow-xl shadow-navy/5 sm:p-12"
       >
         <motion.div
           animate={{ y: [0, -8, 0] }}
           transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
-          className="mx-auto flex h-16 w-16 items-center justify-center rounded-3xl bg-gradient-to-br from-emerald-500 to-teal-600 shadow-lg shadow-emerald-300"
+          className="mx-auto flex h-16 w-16 items-center justify-center rounded-3xl bg-navy shadow-lg shadow-navy/20"
         >
           <Rocket className="h-8 w-8 text-white" aria-hidden />
         </motion.div>
-        <h2 className="font-bangla mt-5 text-2xl font-black tracking-tight text-emerald-950 sm:text-3xl">
-          যাত্রা শুরু হয় <span className="text-gradient-animated">A1</span>{" "}
+        <h2 className="font-bangla mt-5 text-2xl font-black tracking-tight text-navy sm:text-3xl">
+          যাত্রা শুরু হয় <span className="text-teal">A1</span>{" "}
           থেকে
         </h2>
         <p className="font-bangla mx-auto mt-3 max-w-xl text-sm leading-relaxed text-slate-600">
@@ -834,7 +837,7 @@ function Cta() {
           <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
             <Link
               href="/lektionen"
-              className="font-bangla bg-brand-gradient inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-200"
+              className="btn btn-primary font-bangla inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm"
             >
               A1 থেকে শুরু করো
               <ArrowRight className="h-4 w-4" aria-hidden />
@@ -843,13 +846,13 @@ function Cta() {
           <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
             <Link
               href="/wortschatz"
-              className="font-bangla inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-7 py-3 text-sm font-bold text-emerald-800 shadow-sm backdrop-blur"
+              className="font-bangla inline-flex items-center gap-2 rounded-full border border-teal/30 bg-white/80 px-7 py-3 text-sm font-bold text-navy shadow-sm backdrop-blur"
             >
               শব্দ শেখো
             </Link>
           </motion.div>
         </div>
-        <p className="font-bangla mx-auto mt-8 max-w-2xl rounded-2xl bg-white/70 px-4 py-3 text-[11px] leading-relaxed text-slate-500 ring-1 ring-emerald-100 backdrop-blur">
+        <p className="font-bangla mx-auto mt-8 max-w-2xl rounded-2xl bg-white/70 px-4 py-3 text-[11px] leading-relaxed text-slate-500 ring-1 ring-slate-200 backdrop-blur">
           তথ্যগুলো অক্টোবর ২০২৬-এ যাচাই করা; ভিসা নিয়ম বদলাতে পারে — জার্মান
           দূতাবাসের অফিসিয়াল তথ্যই চূড়ান্ত।
         </p>

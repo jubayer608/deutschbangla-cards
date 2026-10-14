@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useMotionValue, useTransform, type PanInfo } from "framer-motion";
+import { motion, useMotionValue, useReducedMotion, useTransform, type PanInfo } from "framer-motion";
 import { Check, X, MousePointerClick } from "lucide-react";
 import SpeakButton from "@/components/SpeakButton";
+import Mascot from "@/components/Mascot";
 
 interface FlashcardWord {
   id: string | number;
@@ -34,18 +35,31 @@ const posColors: Record<string, string> = {
 
 const SWIPE_THRESHOLD = 100;
 
+/**
+ * Personality flourishes on swipe judgement (study mode only — compact cards
+ * without onSwipe keep their plain behavior):
+ * - "known" (swipe right): happy springy wiggle, then the card flies
+ *   up-right toward the XP with a shrink flourish.
+ * - "unknown" (swipe left): gentle shake, the card flips to reveal the
+ *   answer, and a sympathetic sad Mascot pops in nearby.
+ */
+type FeedbackFx = "known" | "unknown" | null;
+
 export default function Flashcard({ word, flipped, onSwipe, onFlip, compact }: FlashcardProps) {
   const [internalFlipped, setInternalFlipped] = useState(false);
   const [exitDir, setExitDir] = useState<0 | 1 | -1>(0);
+  const [fx, setFx] = useState<FeedbackFx>(null);
+  const reduce = useReducedMotion();
   const swipeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const controlled = flipped !== undefined;
   const isFlipped = controlled ? flipped : internalFlipped;
 
-  // Reset flip/exit state whenever the card changes
+  // Reset flip/exit/personality state whenever the card changes
   useEffect(() => {
     setInternalFlipped(false);
     setExitDir(0);
+    setFx(null);
   }, [word.id]);
 
   useEffect(
@@ -60,31 +74,65 @@ export default function Flashcard({ word, flipped, onSwipe, onFlip, compact }: F
   const unknownOpacity = useTransform(x, [-(SWIPE_THRESHOLD + 20), -40], [1, 0]);
 
   const handleTap = () => {
+    if (fx) return; // personality moment in progress
     if (!controlled) setInternalFlipped((f) => !f);
     onFlip?.();
   };
 
   const handleDragEnd = (_event: unknown, info: PanInfo) => {
+    if (fx || !onSwipe) return;
     const offset = info.offset.x;
     if (offset > SWIPE_THRESHOLD) {
+      // Known! Happy wiggle, then fly toward the XP.
+      setFx("known");
       setExitDir(1);
-      swipeTimer.current = setTimeout(() => onSwipe?.(true), 120);
+      swipeTimer.current = setTimeout(() => onSwipe(true), reduce ? 250 : 620);
     } else if (offset < -SWIPE_THRESHOLD) {
+      // Unknown. Gentle shake + flip to reveal the answer + sad mascot.
+      setFx("unknown");
       setExitDir(-1);
-      swipeTimer.current = setTimeout(() => onSwipe?.(false), 120);
+      if (!controlled) setInternalFlipped(true);
+      swipeTimer.current = setTimeout(() => onSwipe(false), reduce ? 600 : 1700);
     }
   };
 
+  const personalityAnimate = !reduce
+    ? fx === "known"
+      ? {
+          rotate: [0, -10, 8, -5, 0],
+          scale: [1, 1.07, 0.99, 1.04, 1],
+          transition: { duration: 0.55, ease: "easeInOut" as const },
+        }
+      : fx === "unknown"
+        ? { x: [0, -16, 13, -9, 6, 0], transition: { duration: 0.55, ease: "easeInOut" as const } }
+        : undefined
+    : undefined;
+
+  const exitAnim =
+    exitDir === 1
+      ? reduce
+        ? { x: 60, opacity: 0, transition: { duration: 0.2 } }
+        : // happy flourish: the card hops toward the XP, shrinking away
+          {
+            x: 170,
+            y: -340,
+            scale: 0.45,
+            rotate: 14,
+            opacity: 0,
+            transition: { duration: 0.45, ease: "easeIn" as const },
+          }
+      : { x: exitDir * 420, opacity: 0, transition: { duration: 0.25, ease: "easeIn" as const } };
+
   return (
     <motion.div
-      drag="x"
+      drag={fx === null ? "x" : false}
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0.6}
       onDragEnd={handleDragEnd}
       onTap={handleTap}
       initial={{ opacity: 0, y: 16, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ x: exitDir * 420, opacity: 0, transition: { duration: 0.25, ease: "easeIn" } }}
+      exit={exitAnim}
       style={{ x }}
       className="relative cursor-grab select-none active:cursor-grabbing"
       role="button"
@@ -97,6 +145,22 @@ export default function Flashcard({ word, flipped, onSwipe, onFlip, compact }: F
         }
       }}
     >
+      {/* Sad-mascot comfort overlay for a missed word */}
+      {fx === "unknown" && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.6, y: 8 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ delay: reduce ? 0 : 0.25, type: "spring", stiffness: 300, damping: 18 }}
+          className="absolute -top-9 right-1 z-20 flex items-end gap-1.5"
+          aria-hidden
+        >
+          <span className="font-bangla max-w-40 rounded-2xl rounded-br-sm bg-white px-3 py-2 text-xs font-bold text-slate-600 shadow-md ring-1 ring-emerald-100">
+            ভুল হতেই পারে — উত্তরটা দেখে নাও!
+          </span>
+          <Mascot mood="sad" size={52} />
+        </motion.div>
+      )}
+
       {/* Swipe overlays */}
       <motion.div
         style={{ opacity: knownOpacity }}
@@ -117,6 +181,8 @@ export default function Flashcard({ word, flipped, onSwipe, onFlip, compact }: F
         </span>
       </motion.div>
 
+      {/* Personality wrapper (happy wiggle / gentle shake) */}
+      <motion.div animate={personalityAnimate}>
       {/* Flipping card */}
       <motion.div
         animate={{ rotateY: isFlipped ? 180 : 0 }}
@@ -152,6 +218,7 @@ export default function Flashcard({ word, flipped, onSwipe, onFlip, compact }: F
             <p className="font-bangla mt-1 text-sm text-slate-600">{word.exampleBangla}</p>
           </div>
         </div>
+      </motion.div>
       </motion.div>
     </motion.div>
   );

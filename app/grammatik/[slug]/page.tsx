@@ -19,12 +19,12 @@ export default function GrammarDetailPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <Link href="/grammatik" className="font-bangla text-sm font-bold text-indigo-600">
+        <Link href="/grammatik" className="font-bangla text-sm font-bold text-emerald-600">
           ← সব ব্যাকরণ
         </Link>
-        <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-indigo-950">{topic.title}</h1>
+        <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-emerald-950">{topic.title}</h1>
         <p className="font-bangla text-slate-500">{topic.titleBangla}</p>
-        <p className="font-bangla mt-3 rounded-3xl bg-indigo-50 p-4 text-slate-700 ring-1 ring-indigo-100">
+        <p className="font-bangla mt-3 rounded-3xl bg-emerald-50 p-4 text-slate-700 ring-1 ring-emerald-100">
           {topic.intro}
         </p>
       </div>
@@ -35,9 +35,9 @@ export default function GrammarDetailPage() {
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
-          className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-indigo-100"
+          className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-emerald-100"
         >
-          <h2 className="font-extrabold text-indigo-900">{s.heading}</h2>
+          <h2 className="font-extrabold text-emerald-900">{s.heading}</h2>
           <p className="font-bangla mt-2 whitespace-pre-line text-slate-700">{s.text}</p>
           {s.table && (
             <div className="mt-3 overflow-x-auto">
@@ -45,7 +45,7 @@ export default function GrammarDetailPage() {
                 <thead>
                   <tr>
                     {s.table.headers.map((h, hi) => (
-                      <th key={hi} className="border border-indigo-200 bg-indigo-50 px-3 py-2 text-left font-bold text-indigo-900">
+                      <th key={hi} className="border border-emerald-200 bg-emerald-50 px-3 py-2 text-left font-bold text-emerald-900">
                         {h}
                       </th>
                     ))}
@@ -53,9 +53,9 @@ export default function GrammarDetailPage() {
                 </thead>
                 <tbody>
                   {s.table.rows.map((row, ri) => (
-                    <tr key={ri} className={ri % 2 ? "bg-indigo-50/40" : ""}>
+                    <tr key={ri} className={ri % 2 ? "bg-emerald-50/40" : ""}>
                       {row.map((cell, ci) => (
-                        <td key={ci} className="border border-indigo-100 px-3 py-2 text-slate-700">
+                        <td key={ci} className="border border-emerald-100 px-3 py-2 text-slate-700">
                           {cell}
                         </td>
                       ))}
@@ -68,8 +68,8 @@ export default function GrammarDetailPage() {
           {s.examples && (
             <ul className="mt-3 flex flex-col gap-1.5">
               {s.examples.map((e, ei) => (
-                <li key={ei} className="rounded-xl bg-indigo-50/60 px-3 py-2 text-sm">
-                  <span className="font-bold text-indigo-900">{e.german}</span>
+                <li key={ei} className="rounded-xl bg-emerald-50/60 px-3 py-2 text-sm">
+                  <span className="font-bold text-emerald-900">{e.german}</span>
                   <span className="font-bangla block text-slate-600">{e.bangla}</span>
                 </li>
               ))}
@@ -93,10 +93,10 @@ export default function GrammarDetailPage() {
 
       <Link
         href="/quiz"
-        className="rounded-3xl bg-gradient-to-r from-indigo-600 to-violet-600 p-5 text-center text-white shadow-xl shadow-indigo-200 transition active:scale-[0.98]"
+        className="rounded-3xl bg-gradient-to-r from-emerald-600 to-teal-600 p-5 text-center text-white shadow-xl shadow-emerald-200 transition active:scale-[0.98]"
       >
         <p className="text-lg font-extrabold">✍️ Teste dich im Quiz</p>
-        <p className="font-bangla text-sm text-indigo-200">ব্যাকরণ মোডে নিজেকে যাচাই করো</p>
+        <p className="font-bangla text-sm text-emerald-200">ব্যাকরণ মোডে নিজেকে যাচাই করো</p>
       </Link>
     </div>
   );

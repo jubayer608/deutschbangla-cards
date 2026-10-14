@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Geist, Geist_Mono, Noto_Sans_Bengali } from "next/font/google";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,27 +21,25 @@ const bengali = Noto_Sans_Bengali({
 });
 
 export const metadata: Metadata = {
-  title: "DeutschBangla Cards | German Flashcards for Bangla Speakers",
+  title: "DeutschBangla Cards | বাংলায় A1 German শেখো",
   description:
-    "Learn A1-level German vocabulary with flashcards and quizzes — meanings and examples in Bangla. Built with Next.js.",
+    "Bangla-speaker-দের জন্য A1 German: 12টি পাঠ, 192টি শব্দ, ব্যাকরণ, কুইজ, রিসোর্স আর ব্লগ — flashcards দিয়ে মজায় শেখো।",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
-      lang="en"
+      lang="bn"
       className={`${geistSans.variable} ${geistMono.variable} ${bengali.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-gradient-to-b from-indigo-50 via-white to-amber-50">
+      <body className="flex min-h-full flex-col bg-gradient-to-b from-emerald-50 via-white to-amber-50">
         <Suspense fallback={null}>
           <Navbar />
         </Suspense>
-        <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-6 pb-28 md:pb-8">
+        <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-6 pb-28 lg:pb-10">
           <Suspense fallback={null}>{children}</Suspense>
         </main>
-        <footer className="pb-6 text-center text-xs text-slate-400">
-          DeutschBangla Cards 🇩🇪🇧🇩 — Viel Erfolg beim Lernen!
-        </footer>
+        <Footer />
       </body>
     </html>
   );

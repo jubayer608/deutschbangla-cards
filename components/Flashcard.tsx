@@ -26,7 +26,7 @@ const posColors: Record<string, string> = {
   noun: "bg-sky-100 text-sky-800",
   verb: "bg-rose-100 text-rose-800",
   adjective: "bg-amber-100 text-amber-800",
-  adverb: "bg-violet-100 text-violet-800",
+  adverb: "bg-teal-100 text-teal-800",
   phrase: "bg-emerald-100 text-emerald-800",
 };
 
@@ -122,7 +122,7 @@ export default function Flashcard({ word, flipped, onSwipe, onFlip, compact }: F
         className={`relative ${compact ? "h-56" : "h-72 sm:h-80"} [transform-style:preserve-3d]`}
       >
         {/* Front: German word */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-3xl bg-gradient-to-br from-indigo-600 to-violet-600 p-6 text-white shadow-xl shadow-indigo-200 [backface-visibility:hidden]">
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-3xl bg-gradient-to-br from-emerald-600 to-teal-600 p-6 text-white shadow-xl shadow-emerald-200 [backface-visibility:hidden]">
           {word.pos && (
             <span
               className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider ${
@@ -133,13 +133,13 @@ export default function Flashcard({ word, flipped, onSwipe, onFlip, compact }: F
             </span>
           )}
           <p className="text-center text-4xl font-extrabold tracking-tight sm:text-5xl">{word.german}</p>
-          <p className="text-sm font-medium text-indigo-200">👆 Tap to reveal meaning</p>
+          <p className="text-sm font-medium text-emerald-200">👆 Tap to reveal meaning</p>
         </div>
 
         {/* Back: Bangla meaning + example */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-3xl bg-white p-6 text-center shadow-xl shadow-indigo-200 ring-1 ring-indigo-100 [backface-visibility:hidden] [transform:rotateY(180deg)]">
-          <p className="font-bangla text-4xl font-extrabold text-indigo-950 sm:text-5xl">{word.bangla}</p>
-          <div className="mt-2 w-full rounded-2xl bg-indigo-50 p-4">
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-3xl bg-white p-6 text-center shadow-xl shadow-emerald-200 ring-1 ring-emerald-100 [backface-visibility:hidden] [transform:rotateY(180deg)]">
+          <p className="font-bangla text-4xl font-extrabold text-emerald-950 sm:text-5xl">{word.bangla}</p>
+          <div className="mt-2 w-full rounded-2xl bg-emerald-50 p-4">
             <p className="text-base font-semibold text-slate-800">{word.example}</p>
             <p className="font-bangla mt-1 text-sm text-slate-600">{word.exampleBangla}</p>
           </div>

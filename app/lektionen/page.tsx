@@ -21,8 +21,8 @@ export default function LektionenPage() {
     <div className="flex flex-col gap-5">
       <div className="flex items-end justify-between">
         <div>
-          <p className="font-bangla text-sm font-semibold text-indigo-500">A1 কারিকুলাম</p>
-          <h1 className="text-3xl font-extrabold tracking-tight text-indigo-950">📖 Lektionen</h1>
+          <p className="font-bangla text-sm font-semibold text-emerald-500">A1 কারিকুলাম</p>
+          <h1 className="text-3xl font-extrabold tracking-tight text-emerald-950">📖 Lektionen</h1>
         </div>
         {progress && (
           <div className="flex items-center gap-2">
@@ -53,18 +53,18 @@ export default function LektionenPage() {
                 <Link
                   href={`/lektionen/${l.id}`}
                   className={`flex items-center gap-4 rounded-3xl p-4 shadow-sm ring-1 transition active:scale-[0.98] ${
-                    done ? "bg-emerald-50 ring-emerald-200" : "bg-white ring-indigo-100 hover:ring-indigo-300"
+                    done ? "bg-emerald-50 ring-emerald-200" : "bg-white ring-emerald-100 hover:ring-emerald-300"
                   }`}
                 >
                   <span
                     className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-xl font-extrabold ${
-                      done ? "bg-emerald-500 text-white" : "bg-gradient-to-br from-indigo-600 to-violet-600 text-white"
+                      done ? "bg-emerald-500 text-white" : "bg-gradient-to-br from-emerald-600 to-teal-600 text-white"
                     }`}
                   >
                     {done ? "✓" : l.id}
                   </span>
                   <span className="flex-1">
-                    <span className="block font-extrabold text-indigo-950">
+                    <span className="block font-extrabold text-emerald-950">
                       Lektion {l.id}: {l.title}
                     </span>
                     <span className="font-bangla block text-sm text-slate-500">{l.titleBangla}</span>

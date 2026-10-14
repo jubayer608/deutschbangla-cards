@@ -5,13 +5,20 @@ import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 
 const links = [
-  { href: "/", label: "হোম", icon: "🏠" },
-  { href: "/lektionen", label: "পাঠ", icon: "📖" },
-  { href: "/wortschatz", label: "শব্দ", icon: "📚" },
-  { href: "/grammatik", label: "ব্যাকরণ", icon: "🧩" },
-  { href: "/quiz", label: "কুইজ", icon: "🎯" },
-  { href: "/fortschritt", label: "অগ্রগতি", icon: "📈" },
+  { href: "/", label: "হোম", short: "হোম", icon: "🏠" },
+  { href: "/lektionen", label: "পাঠ", short: "পাঠ", icon: "📖" },
+  { href: "/wortschatz", label: "শব্দ", short: "শব্দ", icon: "📚" },
+  { href: "/grammatik", label: "ব্যাকরণ", short: "ব্যাকরণ", icon: "🧩" },
+  { href: "/quiz", label: "কুইজ", short: "কুইজ", icon: "🎯" },
+  { href: "/resources", label: "রিসোর্স", short: "রিসোর্স", icon: "🌐" },
+  { href: "/blog", label: "ব্লগ", short: "ব্লগ", icon: "✍️" },
+  { href: "/fortschritt", label: "অগ্রগতি", short: "অগ্রগতি", icon: "📈" },
 ];
+
+function isActiveLink(pathname: string, href: string): boolean {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(href + "/");
+}
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -19,79 +26,91 @@ export default function Navbar() {
   return (
     <>
       {/* Top bar */}
-      <header className="sticky top-0 z-40 border-b border-indigo-100 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl" aria-hidden>
-              🇩🇪🇧🇩
+      <header className="sticky top-0 z-40 border-b border-emerald-100 bg-white/90 shadow-[0_1px_12px_rgba(6,95,70,0.06)] backdrop-blur-xl">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-2 px-4 py-2.5">
+          <Link href="/" className="group flex shrink-0 items-center gap-2.5">
+            <span className="bg-brand-gradient flex h-10 w-10 items-center justify-center rounded-2xl text-xl shadow-md shadow-emerald-200 transition group-active:scale-95">
+              🇩🇪
             </span>
-            <span className="text-lg font-extrabold tracking-tight text-indigo-950">
-              DeutschBangla <span className="text-indigo-600">Cards</span>
+            <span className="leading-tight">
+              <span className="block text-[17px] font-extrabold tracking-tight text-emerald-950">
+                DeutschBangla <span className="text-brand-gradient">Cards</span>
+              </span>
+              <span className="font-bangla hidden text-[11px] font-semibold text-slate-400 sm:block">
+                বাংলায় জার্মান শেখো
+              </span>
             </span>
           </Link>
-          <div className="flex items-center gap-3">
-            {/* Streak placeholder (presentational only) */}
-            <span
-              className="rounded-full bg-amber-100 px-3 py-1 text-sm font-bold text-amber-700 md:hidden"
-              aria-label="streak"
-            >
-              🔥
-            </span>
-            {/* Desktop nav */}
-            <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
-              {links.map((l) => {
-                const active = pathname === l.href;
-                return (
-                  <Link
-                    key={l.href}
-                    href={l.href}
-                    className="relative rounded-full px-4 py-2 text-sm font-bold"
-                    aria-current={active ? "page" : undefined}
+
+          {/* Streak chip (mobile) */}
+          <span
+            className="rounded-full bg-amber-100 px-3 py-1.5 text-sm font-bold text-amber-700 lg:hidden"
+            aria-label="streak"
+          >
+            🔥
+          </span>
+
+          {/* Desktop nav */}
+          <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Main">
+            {links.map((l) => {
+              const active = isActiveLink(pathname, l.href);
+              return (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className="relative rounded-full px-3 py-2 text-[13px] font-bold transition"
+                  aria-current={active ? "page" : undefined}
+                >
+                  {active && (
+                    <motion.span
+                      layoutId="nav-pill"
+                      className="bg-brand-gradient absolute inset-0 rounded-full shadow-md shadow-emerald-200"
+                      transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                    />
+                  )}
+                  <span
+                    className={`font-bangla relative z-10 ${active ? "text-white" : "text-emerald-800 hover:text-emerald-600"}`}
                   >
-                    {active && (
-                      <motion.span
-                        layoutId="nav-pill"
-                        className="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-600 to-violet-600 shadow-md shadow-indigo-200"
-                        transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                      />
-                    )}
-                    <span className={`font-bangla relative z-10 ${active ? "text-white" : "text-indigo-700"}`}>
-                      {l.label}
-                    </span>
-                  </Link>
-                );
-              })}
-            </nav>
-          </div>
+                    {l.label}
+                  </span>
+                </Link>
+              );
+            })}
+          </nav>
         </div>
       </header>
 
       {/* Mobile bottom nav */}
       <nav
-        className="fixed inset-x-0 bottom-0 z-40 border-t border-indigo-100 bg-white/95 backdrop-blur md:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-emerald-100 bg-white/95 shadow-[0_-4px_24px_rgba(6,95,70,0.08)] backdrop-blur-xl lg:hidden"
         aria-label="Main"
       >
-        <div className="grid grid-cols-6 pb-[env(safe-area-inset-bottom)]">
+        <div className="grid grid-cols-8 pb-[env(safe-area-inset-bottom)]">
           {links.map((l) => {
-            const active = pathname === l.href;
+            const active = isActiveLink(pathname, l.href);
             return (
               <Link
                 key={l.href}
                 href={l.href}
-                className={`flex flex-col items-center gap-0.5 py-2 pt-2.5 transition ${
-                  active ? "text-indigo-600" : "text-slate-400"
-                }`}
+                className="relative flex flex-col items-center gap-0.5 px-0.5 py-2 pt-2.5"
                 aria-current={active ? "page" : undefined}
               >
-                <span
-                  className={`h-1 w-8 rounded-full ${active ? "bg-indigo-600" : "bg-transparent"}`}
-                  aria-hidden
-                />
-                <span className="text-lg" aria-hidden>
+                {active && (
+                  <motion.span
+                    layoutId="mnav-pill"
+                    className="absolute inset-x-1 inset-y-1 rounded-2xl bg-emerald-100"
+                    transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                  />
+                )}
+                <span className="relative z-10 text-[17px] leading-none" aria-hidden>
                   {l.icon}
                 </span>
-                <span className={`font-bangla text-[10px] ${active ? "font-extrabold" : "font-semibold"}`}>
-                  {l.label}
+                <span
+                  className={`font-bangla relative z-10 text-[9px] leading-tight ${
+                    active ? "font-extrabold text-emerald-800" : "font-semibold text-slate-400"
+                  }`}
+                >
+                  {l.short}
                 </span>
               </Link>
             );

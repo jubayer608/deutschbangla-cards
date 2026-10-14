@@ -1,6 +1,6 @@
-/** Tasteful confetti bursts (indigo / violet / amber). Plain module — no "use client" needed. */
+/** Tasteful confetti bursts (emerald / teal / amber). Plain module — no "use client" needed. */
 
-const COLORS = ["#6366f1", "#8b5cf6", "#f59e0b", "#ffffff"];
+const COLORS = ["#059669", "#0d9488", "#f59e0b", "#ffffff"];
 
 /** Two-burst celebration for small wins (quiz round finished, word mastered). */
 export async function celebrate(): Promise<void> {

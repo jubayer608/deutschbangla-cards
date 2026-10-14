@@ -10,7 +10,7 @@ function RichText({ text }: { text: string }) {
     <>
       {parts.map((p, i) =>
         p.startsWith("**") && p.endsWith("**") ? (
-          <strong key={i} className="font-extrabold text-emerald-900">
+          <strong key={i} className="font-extrabold text-navy">
             {p.slice(2, -2)}
           </strong>
         ) : (
@@ -30,7 +30,7 @@ export default function BlogRenderer({ blocks }: { blocks: BlogBlock[] }) {
             return (
               <h2
                 key={i}
-                className="font-bangla mt-2 text-xl font-extrabold tracking-tight text-emerald-950"
+                className="font-heading mt-2 text-xl font-extrabold tracking-tight text-navy"
               >
                 <RichText text={b.text} />
               </h2>
@@ -49,7 +49,7 @@ export default function BlogRenderer({ blocks }: { blocks: BlogBlock[] }) {
               <ul key={i} className="flex flex-col gap-2.5">
                 {b.items.map((it, j) => (
                   <li key={j} className="flex items-start gap-2.5">
-                    <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-emerald-500" aria-hidden />
+                    <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-teal" aria-hidden />
                     <span className="font-bangla text-[15px] leading-relaxed text-slate-600">
                       <RichText text={it} />
                     </span>
@@ -61,12 +61,12 @@ export default function BlogRenderer({ blocks }: { blocks: BlogBlock[] }) {
             return (
               <div
                 key={i}
-                className="rounded-3xl bg-gradient-to-br from-amber-50 to-yellow-50 p-5 ring-1 ring-amber-200"
+                className="rounded-3xl bg-teal/5 p-5 ring-1 ring-teal/20"
               >
-                <p className="font-bangla inline-flex items-center gap-1.5 text-sm font-extrabold text-amber-800">
-                  <Lightbulb className="h-4 w-4" aria-hidden /> {b.title}
+                <p className="font-bangla inline-flex items-center gap-1.5 text-sm font-extrabold text-navy">
+                  <Lightbulb className="h-4 w-4 text-sun" aria-hidden /> {b.title}
                 </p>
-                <p className="font-bangla mt-1.5 text-[15px] leading-relaxed text-amber-900/80">
+                <p className="font-bangla mt-1.5 text-[15px] leading-relaxed text-navy/80">
                   <RichText text={b.text} />
                 </p>
               </div>
@@ -75,11 +75,11 @@ export default function BlogRenderer({ blocks }: { blocks: BlogBlock[] }) {
             return (
               <div
                 key={i}
-                className="overflow-x-auto rounded-2xl shadow-sm ring-1 ring-emerald-100"
+                className="overflow-x-auto rounded-2xl shadow-sm ring-1 ring-slate-200"
               >
                 <table className="w-full min-w-[420px] border-collapse bg-white text-sm">
                   <thead>
-                    <tr className="bg-brand-gradient">
+                    <tr className="bg-navy">
                       {b.headers.map((h, j) => (
                         <th
                           key={j}
@@ -94,12 +94,12 @@ export default function BlogRenderer({ blocks }: { blocks: BlogBlock[] }) {
                     {b.rows.map((row, r) => (
                       <tr
                         key={r}
-                        className={r % 2 === 0 ? "bg-white" : "bg-emerald-50/50"}
+                        className={r % 2 === 0 ? "bg-white" : "bg-teal/5"}
                       >
                         {row.map((cell, c) => (
                           <td
                             key={c}
-                            className="font-bangla border-t border-emerald-50 px-4 py-2.5 text-slate-600"
+                            className="font-bangla border-t border-slate-100 px-4 py-2.5 text-slate-600"
                           >
                             <RichText text={cell} />
                           </td>

@@ -20,5 +20,5 @@ export default function CountUp({ value, duration = 0.8 }: CountUpProps) {
     return () => controls.stop();
   }, [value, duration]);
 
-  return <span>{display}</span>;
+  return <span className="font-heading tabular-nums">{display}</span>;
 }

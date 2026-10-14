@@ -44,10 +44,12 @@ export default function SpeakButton({ text, className = "", dark = false }: Spea
       whileTap={{ scale: 0.82 }}
       aria-label="উচ্চারণ শোনো"
       title="উচ্চারণ শোনো (Aussprache)"
-      className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full shadow-sm transition ${
-        dark
-          ? "bg-white/20 text-white hover:bg-white/30"
-          : "bg-emerald-100/90 text-emerald-700 hover:bg-emerald-200"
+      className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full shadow-sm transition active:scale-95 ${
+        speaking
+          ? "bg-navy text-white"
+          : dark
+            ? "bg-white/20 text-white hover:bg-white/30"
+            : "bg-teal text-white hover:bg-[#0DA678]"
       } ${className}`}
     >
       {speaking ? (
@@ -55,7 +57,7 @@ export default function SpeakButton({ text, className = "", dark = false }: Spea
           {[0, 1, 2].map((i) => (
             <motion.span
               key={i}
-              className={`w-[3px] rounded-full ${dark ? "bg-white" : "bg-emerald-600"}`}
+              className="w-[3px] rounded-full bg-current"
               animate={{ height: [5, 13, 5] }}
               transition={{ duration: 0.7, repeat: Infinity, delay: i * 0.14 }}
             />

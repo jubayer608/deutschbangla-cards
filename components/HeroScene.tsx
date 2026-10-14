@@ -18,8 +18,8 @@ import * as THREE from "three";
  */
 const TILE_CHARS = ["D", "E", "U", "T", "S", "C", "H", "Ä", "Ö", "Ü", "ß", "A1"];
 
-const TILE_INKS = ["#047857", "#0f766e", "#b45309", "#065f46"];
-const TILE_WASH = ["#d1fae5", "#ccfbf1", "#fef3c7", "#a7f3d0"];
+const TILE_INKS = ["#0B1F3B", "#10B981", "#FBBF24", "#0B1F3B"];
+const TILE_WASH = ["#DCE8F5", "#D1FAE5", "#FEF3C7", "#CCFBF1"];
 
 function roundRect(
   ctx: CanvasRenderingContext2D,

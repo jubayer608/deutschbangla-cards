@@ -39,8 +39,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="relative mt-10 overflow-hidden border-t border-emerald-100 bg-gradient-to-b from-emerald-50/60 via-white to-amber-50/40">
-      <div className="hero-glow pointer-events-none absolute inset-0" aria-hidden />
+    <footer className="relative mt-10 overflow-hidden bg-navy text-cream">
       <div className="relative mx-auto max-w-5xl px-4 pb-28 pt-10 lg:pb-10">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4">
           {/* Brand */}
@@ -54,11 +53,15 @@ export default function Footer() {
             <Link href="/" className="flex items-center gap-2.5">
               <img src="/logo.svg" alt="Ulluk" className="h-10 w-auto" />
             </Link>
-            <p className="font-bangla mt-3 text-sm leading-relaxed text-slate-500">
+            <p className="font-heading mt-3 text-sm font-bold text-white">
+              Learn German. Stay Weird.
+            </p>
+            <p className="font-bangla text-sm font-semibold text-teal">বাংলায় জার্মান শেখো</p>
+            <p className="font-bangla mt-3 text-sm leading-relaxed text-cream/70">
               Bangla-speaker-দের জন্য A1 German শেখার সবকিছু — flashcards, পাঠ, ব্যাকরণ আর কুইজ, এক
               জায়গায়।
             </p>
-            <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-700">
+            <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-sun/15 px-3 py-1 text-xs font-bold text-sun">
               <Flame className="h-3.5 w-3.5" aria-hidden /> প্রতিদিন একটু একটু করে
             </p>
           </motion.div>
@@ -71,7 +74,7 @@ export default function Footer() {
             transition={{ duration: 0.4, delay: 0.08 }}
             aria-label="Lernen"
           >
-            <h3 className="font-bangla text-sm font-extrabold uppercase tracking-widest text-emerald-800">
+            <h3 className="font-bangla text-sm font-extrabold uppercase tracking-widest text-teal">
               শেখো
             </h3>
             <ul className="mt-3 flex flex-col gap-2">
@@ -79,10 +82,10 @@ export default function Footer() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="font-bangla group text-sm font-semibold text-slate-500 transition hover:text-emerald-700"
+                    className="font-bangla group text-sm font-semibold text-cream/70 transition hover:text-white"
                   >
                     {l.label}
-                    <span className="ml-1.5 text-xs font-medium text-slate-300 transition group-hover:text-emerald-400">
+                    <span className="ml-1.5 text-xs font-medium text-mist transition group-hover:text-teal">
                       {l.german}
                     </span>
                   </Link>
@@ -99,7 +102,7 @@ export default function Footer() {
             transition={{ duration: 0.4, delay: 0.16 }}
             aria-label="Ressourcen"
           >
-            <h3 className="font-bangla text-sm font-extrabold uppercase tracking-widest text-emerald-800">
+            <h3 className="font-bangla text-sm font-extrabold uppercase tracking-widest text-teal">
               রিসোর্স
             </h3>
             <ul className="mt-3 flex flex-col gap-2">
@@ -107,10 +110,10 @@ export default function Footer() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="font-bangla group text-sm font-semibold text-slate-500 transition hover:text-emerald-700"
+                    className="font-bangla group text-sm font-semibold text-cream/70 transition hover:text-white"
                   >
                     {l.label}
-                    <span className="ml-1.5 text-xs font-medium text-slate-300 transition group-hover:text-emerald-400">
+                    <span className="ml-1.5 text-xs font-medium text-mist transition group-hover:text-teal">
                       {l.german}
                     </span>
                   </Link>
@@ -126,7 +129,7 @@ export default function Footer() {
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.4, delay: 0.24 }}
           >
-            <h3 className="font-bangla text-sm font-extrabold uppercase tracking-widest text-emerald-800">
+            <h3 className="font-bangla text-sm font-extrabold uppercase tracking-widest text-teal">
               <span className="inline-flex items-center gap-1.5">
                 <Calendar className="h-4 w-4" aria-hidden /> আজকের শব্দ
               </span>
@@ -134,29 +137,29 @@ export default function Footer() {
             {word ? (
               <Link
                 href="/wortschatz"
-                className="group mt-3 block rounded-2xl bg-white p-4 shadow-sm ring-1 ring-emerald-100 transition hover:shadow-md hover:ring-emerald-200"
+                className="group mt-3 block rounded-2xl bg-white/5 p-4 ring-1 ring-white/10 transition hover:bg-white/10 hover:ring-teal/40"
               >
-                <p className="text-lg font-extrabold text-emerald-900">{word.german}</p>
-                <p className="font-bangla text-sm font-semibold text-slate-500">{word.bangla}</p>
-                <p className="font-bangla mt-2 inline-flex items-center gap-1 text-xs font-bold text-emerald-600 group-hover:text-emerald-700">
+                <p className="font-heading text-lg font-extrabold text-white">{word.german}</p>
+                <p className="font-bangla text-sm font-semibold text-cream/70">{word.bangla}</p>
+                <p className="font-bangla mt-2 inline-flex items-center gap-1 text-xs font-bold text-teal group-hover:text-white">
                   শব্দভাণ্ডারে দেখো <ArrowRight className="h-3.5 w-3.5" aria-hidden />
                 </p>
               </Link>
             ) : (
-              <div className="mt-3 h-24 animate-pulse rounded-2xl bg-emerald-50" />
+              <div className="mt-3 h-24 animate-pulse rounded-2xl bg-white/5" />
             )}
           </motion.div>
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-emerald-100 pt-6 text-center sm:flex-row sm:text-left">
-          <p className="text-xs font-semibold text-slate-400">
+        <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-center sm:flex-row sm:text-left">
+          <p className="text-xs font-semibold text-mist">
             © 2026 Ulluk
           </p>
-          <p className="font-bangla text-xs font-semibold text-slate-400">
+          <p className="font-bangla text-xs font-semibold text-mist">
             <span className="inline-flex items-center gap-1">
               Made for Bangla speakers learning German — Viel Erfolg!
-              <Sparkles className="h-3.5 w-3.5 text-amber-500" aria-hidden />
+              <Sparkles className="h-3.5 w-3.5 text-sun" aria-hidden />
             </span>
           </p>
         </div>

@@ -65,7 +65,7 @@ export default function Navbar() {
   return (
     <>
       {/* Top bar */}
-      <header className="sticky top-0 z-40 border-b border-emerald-100 bg-white/90 shadow-[0_1px_12px_rgba(6,95,70,0.06)] backdrop-blur-xl">
+      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/90 shadow-[0_1px_12px_rgba(11,31,59,0.06)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-2 px-4 py-2.5">
           <Link href="/" className="group flex shrink-0 flex-col items-start gap-0.5">
             <img
@@ -73,17 +73,17 @@ export default function Navbar() {
               alt="Ulluk"
               className="h-9 w-auto transition group-active:scale-95"
             />
-            <span className="font-bangla hidden text-[11px] font-semibold text-slate-400 sm:block">
+            <span className="font-bangla hidden text-[11px] font-semibold text-mist sm:block">
               বাংলায় জার্মান শেখো
             </span>
           </Link>
 
           {/* Streak chip (mobile) */}
           <span
-            className="rounded-full bg-amber-100 px-3 py-1.5 text-sm font-bold text-amber-700 lg:hidden"
+            className="rounded-full bg-sun/30 px-3 py-1.5 text-sm font-bold text-navy lg:hidden"
             aria-label="streak"
           >
-            <Flame className="h-4 w-4 text-amber-600" aria-hidden />
+            <Flame className="h-4 w-4 text-sun" aria-hidden />
           </span>
 
           {/* Desktop nav */}
@@ -100,12 +100,12 @@ export default function Navbar() {
                   {active && (
                     <motion.span
                       layoutId="nav-pill"
-                      className="bg-brand-gradient absolute inset-0 rounded-full shadow-md shadow-emerald-200"
+                      className="absolute inset-0 rounded-full bg-teal shadow-md shadow-teal/30"
                       transition={{ type: "spring", stiffness: 420, damping: 34 }}
                     />
                   )}
                   <span
-                    className={`font-bangla relative z-10 ${active ? "text-white" : "text-emerald-800 hover:text-emerald-600"}`}
+                    className={`font-bangla relative z-10 ${active ? "text-white" : "text-navy hover:text-teal"}`}
                   >
                     {l.label}
                   </span>
@@ -125,12 +125,12 @@ export default function Navbar() {
                 {menuActive && (
                   <motion.span
                     layoutId="nav-pill"
-                    className="bg-brand-gradient absolute inset-0 rounded-full shadow-md shadow-emerald-200"
+                    className="absolute inset-0 rounded-full bg-teal shadow-md shadow-teal/30"
                     transition={{ type: "spring", stiffness: 420, damping: 34 }}
                   />
                 )}
                 <span
-                  className={`font-bangla relative z-10 flex items-center gap-1 ${menuActive ? "text-white" : "text-emerald-800 hover:text-emerald-600"}`}
+                  className={`font-bangla relative z-10 flex items-center gap-1 ${menuActive ? "text-white" : "text-navy hover:text-teal"}`}
                 >
                   আরো
                   <ChevronDown
@@ -148,7 +148,7 @@ export default function Navbar() {
                     transition={{ duration: 0.16 }}
                     role="menu"
                     aria-label="আরো"
-                    className="absolute right-0 top-full z-50 mt-2 w-64 overflow-hidden rounded-2xl border border-emerald-100 bg-white shadow-xl shadow-emerald-100"
+                    className="absolute right-0 top-full z-50 mt-2 w-64 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl shadow-navy/10"
                   >
                     {menuLinks.map((l) => {
                       const active = isActiveLink(pathname, l.href);
@@ -159,12 +159,12 @@ export default function Navbar() {
                           role="menuitem"
                           aria-current={active ? "page" : undefined}
                           className={`flex items-center gap-3 px-4 py-3 transition ${
-                            active ? "bg-emerald-50" : "hover:bg-emerald-50/60"
+                            active ? "bg-teal/10" : "hover:bg-cream"
                           }`}
                         >
                           <span
                             className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${
-                              active ? "bg-emerald-600 text-white" : "bg-emerald-100 text-emerald-700"
+                              active ? "bg-teal text-white" : "bg-teal/10 text-teal"
                             }`}
                           >
                             <l.Icon className="h-[18px] w-[18px]" aria-hidden />
@@ -172,16 +172,16 @@ export default function Navbar() {
                           <span className="min-w-0 flex-1">
                             <span
                               className={`font-bangla block text-sm leading-tight ${
-                                active ? "font-extrabold text-emerald-800" : "font-bold text-slate-700"
+                                active ? "font-extrabold text-navy" : "font-bold text-slate-700"
                               }`}
                             >
                               {l.label}
                             </span>
                             {l.desc && (
-                              <span className="font-bangla block text-xs text-slate-400">{l.desc}</span>
+                              <span className="font-bangla block text-xs text-mist">{l.desc}</span>
                             )}
                           </span>
-                          <ChevronRight className="h-4 w-4 shrink-0 text-slate-300" aria-hidden />
+                          <ChevronRight className="h-4 w-4 shrink-0 text-mist" aria-hidden />
                         </Link>
                       );
                     })}
@@ -206,7 +206,7 @@ export default function Navbar() {
 
       {/* Mobile bottom nav — 4 core tabs + menu */}
       <nav
-        className="fixed inset-x-0 bottom-0 z-40 border-t border-emerald-100 bg-white/95 shadow-[0_-4px_24px_rgba(6,95,70,0.08)] backdrop-blur-xl lg:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 shadow-[0_-4px_24px_rgba(11,31,59,0.08)] backdrop-blur-xl lg:hidden"
         aria-label="Main"
       >
         <div className="grid grid-cols-5 pb-[env(safe-area-inset-bottom)]">
@@ -222,19 +222,19 @@ export default function Navbar() {
                 {active && (
                   <motion.span
                     layoutId="mnav-pill"
-                    className="absolute inset-x-2 inset-y-1 rounded-2xl bg-emerald-100"
+                    className="absolute inset-x-2 inset-y-1 rounded-2xl bg-teal/15"
                     transition={{ type: "spring", stiffness: 420, damping: 34 }}
                   />
                 )}
                 <l.Icon
                   className={`relative z-10 h-5 w-5 leading-none ${
-                    active ? "text-emerald-700" : "text-slate-400"
+                    active ? "text-teal" : "text-mist"
                   }`}
                   aria-hidden
                 />
                 <span
                   className={`font-bangla relative z-10 text-[10px] leading-tight ${
-                    active ? "font-extrabold text-emerald-800" : "font-semibold text-slate-400"
+                    active ? "font-extrabold text-navy" : "font-semibold text-mist"
                   }`}
                 >
                   {l.label}
@@ -252,19 +252,19 @@ export default function Navbar() {
             {menuActive && (
               <motion.span
                 layoutId="mnav-pill"
-                className="absolute inset-x-2 inset-y-1 rounded-2xl bg-emerald-100"
+                className="absolute inset-x-2 inset-y-1 rounded-2xl bg-teal/15"
                 transition={{ type: "spring", stiffness: 420, damping: 34 }}
               />
             )}
             <Menu
               className={`relative z-10 h-5 w-5 leading-none ${
-                menuActive ? "text-emerald-700" : "text-slate-400"
+                menuActive ? "text-teal" : "text-mist"
               }`}
               aria-hidden
             />
             <span
               className={`font-bangla relative z-10 text-[10px] leading-tight ${
-                menuActive ? "font-extrabold text-emerald-800" : "font-semibold text-slate-400"
+                menuActive ? "font-extrabold text-navy" : "font-semibold text-mist"
               }`}
             >
               মেনু
@@ -283,7 +283,7 @@ export default function Navbar() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.18 }}
               onClick={() => setMenuOpen(false)}
-              className="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-[2px]"
+              className="fixed inset-0 z-40 bg-navy/40 backdrop-blur-[2px]"
               aria-hidden
             />
             <motion.div
@@ -294,16 +294,16 @@ export default function Navbar() {
               role="dialog"
               aria-modal="true"
               aria-label="মেনু"
-              className="fixed inset-x-0 bottom-0 z-50 rounded-t-3xl border-t border-emerald-100 bg-white px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] pt-2 shadow-2xl"
+              className="fixed inset-x-0 bottom-0 z-50 rounded-t-3xl border-t border-slate-200 bg-white px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] pt-2 shadow-2xl"
             >
               <div className="mx-auto mb-1 h-1 w-10 rounded-full bg-slate-200" aria-hidden />
               <div className="flex items-center justify-between py-2">
-                <span className="font-bangla text-base font-extrabold text-emerald-900">মেনু</span>
+                <span className="font-bangla text-base font-extrabold text-navy">মেনু</span>
                 <button
                   type="button"
                   onClick={() => setMenuOpen(false)}
                   aria-label="মেনু বন্ধ করুন"
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition active:scale-95"
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-cream text-navy transition active:scale-95"
                 >
                   <X className="h-5 w-5" aria-hidden />
                 </button>
@@ -322,12 +322,12 @@ export default function Navbar() {
                         href={l.href}
                         aria-current={active ? "page" : undefined}
                         className={`flex items-center gap-3 rounded-2xl px-3 py-3 transition active:scale-[0.99] ${
-                          active ? "bg-emerald-50" : "hover:bg-slate-50"
+                          active ? "bg-teal/10" : "hover:bg-cream"
                         }`}
                       >
                         <span
                           className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl ${
-                            active ? "bg-emerald-600 text-white" : "bg-emerald-100 text-emerald-700"
+                            active ? "bg-teal text-white" : "bg-teal/10 text-teal"
                           }`}
                         >
                           <l.Icon className="h-5 w-5" aria-hidden />
@@ -335,16 +335,16 @@ export default function Navbar() {
                         <span className="min-w-0 flex-1">
                           <span
                             className={`font-bangla block text-[15px] leading-tight ${
-                              active ? "font-extrabold text-emerald-800" : "font-bold text-slate-700"
+                              active ? "font-extrabold text-navy" : "font-bold text-slate-700"
                             }`}
                           >
                             {l.label}
                           </span>
                           {l.desc && (
-                            <span className="font-bangla block text-xs text-slate-400">{l.desc}</span>
+                            <span className="font-bangla block text-xs text-mist">{l.desc}</span>
                           )}
                         </span>
-                        <ChevronRight className="h-4 w-4 shrink-0 text-slate-300" aria-hidden />
+                        <ChevronRight className="h-4 w-4 shrink-0 text-mist" aria-hidden />
                       </Link>
                     </motion.div>
                   );

@@ -17,7 +17,7 @@ export default function ProgressRing({
   size = 96,
   stroke = 10,
   label,
-  color = "#059669",
+  color = "#10B981",
 }: ProgressRingProps) {
   const clamped = Math.min(1, Math.max(0, value));
   const r = (size - stroke) / 2;
@@ -33,7 +33,7 @@ export default function ProgressRing({
       aria-valuemax={100}
     >
       <svg width={size} height={size} className="-rotate-90" aria-hidden>
-        <circle cx={size / 2} cy={size / 2} r={r} stroke="#d1fae5" strokeWidth={stroke} fill="none" />
+        <circle cx={size / 2} cy={size / 2} r={r} stroke="#0B1F3B" strokeOpacity={0.12} strokeWidth={stroke} fill="none" />
         <motion.circle
           cx={size / 2}
           cy={size / 2}
@@ -48,7 +48,7 @@ export default function ProgressRing({
           transition={{ type: "spring", stiffness: 55, damping: 14 }}
         />
       </svg>
-      <span className="absolute text-sm font-extrabold text-emerald-950">
+      <span className="font-heading absolute text-sm font-extrabold text-navy">
         {label ?? `${Math.round(clamped * 100)}%`}
       </span>
     </div>

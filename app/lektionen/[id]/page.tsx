@@ -13,6 +13,20 @@ import {
   type ProgressState,
 } from "@/lib/progress";
 import { celebrate, bigCelebration } from "@/lib/confetti";
+import {
+  ArrowLeft,
+  ArrowRight,
+  BookOpen,
+  Check,
+  CheckCircle2,
+  Flag,
+  Layers,
+  Lightbulb,
+  MessageCircle,
+  PartyPopper,
+  PenLine,
+  Target,
+} from "lucide-react";
 import SpeakButton from "@/components/SpeakButton";
 import EmptyState from "@/components/EmptyState";
 
@@ -158,9 +172,9 @@ function ExerciseCard({
             type="button"
             onClick={checkText}
             disabled={done}
-            className="rounded-2xl bg-emerald-600 px-5 font-bold text-white shadow-md transition active:scale-95 disabled:opacity-40"
+            className="flex items-center rounded-2xl bg-emerald-600 px-5 font-bold text-white shadow-md transition active:scale-95 disabled:opacity-40"
           >
-            ✓
+            <Check className="h-5 w-5" strokeWidth={3} aria-hidden />
           </button>
         </div>
       )}
@@ -199,9 +213,9 @@ function ExerciseCard({
             type="button"
             onClick={checkOrder}
             disabled={done || picked.length === 0}
-            className="self-start rounded-full bg-emerald-600 px-6 py-2.5 font-bold text-white shadow-md transition active:scale-95 disabled:opacity-40"
+            className="inline-flex items-center gap-1.5 self-start rounded-full bg-emerald-600 px-6 py-2.5 font-bold text-white shadow-md transition active:scale-95 disabled:opacity-40"
           >
-            Prüfen ✓
+            Prüfen <Check className="h-4 w-4" strokeWidth={3} aria-hidden />
           </button>
         </div>
       )}
@@ -217,14 +231,20 @@ function ExerciseCard({
             }`}
           >
             {correct ? (
-              <p>
-                🎉 <b>সঠিক!</b> +{xp} XP — {ex.explanation}
+              <p className="flex items-start gap-2">
+                <PartyPopper className="h-5 w-5 shrink-0 text-emerald-600" aria-hidden />
+                <span>
+                  <b>সঠিক!</b> +{xp} XP — {ex.explanation}
+                </span>
               </p>
             ) : (
-              <p>
-                💡 <b>সঠিক উত্তর:</b> {ex.answer}
-                <br />
-                {ex.explanation}
+              <p className="flex items-start gap-2">
+                <Lightbulb className="h-5 w-5 shrink-0 text-rose-500" aria-hidden />
+                <span>
+                  <b>সঠিক উত্তর:</b> {ex.answer}
+                  <br />
+                  {ex.explanation}
+                </span>
               </p>
             )}
           </motion.div>
@@ -256,7 +276,7 @@ export default function LessonDetailPage() {
   );
 
   if (!lesson) {
-    return <EmptyState icon="📖" title="পাঠ পাওয়া যায়নি" message="এই নম্বরের কোনো পাঠ নেই।" />;
+    return <EmptyState Icon={BookOpen} title="পাঠ পাওয়া যায়নি" message="এই নম্বরের কোনো পাঠ নেই।" />;
   }
 
   const isDone = progress?.lessonsDone.includes(lesson.id) ?? false;
@@ -273,8 +293,11 @@ export default function LessonDetailPage() {
     <div className="flex flex-col gap-6">
       {/* Header */}
       <div>
-        <Link href="/lektionen" className="font-bangla text-sm font-bold text-emerald-600">
-          ← সব পাঠ
+        <Link
+          href="/lektionen"
+          className="font-bangla inline-flex items-center gap-1.5 text-sm font-bold text-emerald-600 transition hover:gap-2.5"
+        >
+          <ArrowLeft className="h-4 w-4" aria-hidden /> সব পাঠ
         </Link>
         <div className="mt-2 flex items-center gap-3">
           <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-600 text-2xl font-extrabold text-white shadow-lg">
@@ -288,19 +311,22 @@ export default function LessonDetailPage() {
           </div>
         </div>
         {isDone && (
-          <p className="font-bangla mt-3 inline-block rounded-full bg-emerald-100 px-4 py-1.5 text-sm font-bold text-emerald-700">
-            ✅ এই পাঠ শেষ করেছো!
+          <p className="font-bangla mt-3 inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-4 py-1.5 text-sm font-bold text-emerald-700">
+            <CheckCircle2 className="h-4 w-4" aria-hidden /> এই পাঠ শেষ করেছো!
           </p>
         )}
       </div>
 
       {/* Lernziele */}
       <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-emerald-100">
-        <h2 className="font-bangla text-lg font-extrabold text-emerald-950">🎯 Lernziele — শেখার লক্ষ্য</h2>
+        <h2 className="font-bangla inline-flex items-center gap-2 text-lg font-extrabold text-emerald-950">
+          <Target className="h-5 w-5 text-emerald-600" aria-hidden /> Lernziele — শেখার লক্ষ্য
+        </h2>
         <ul className="font-bangla mt-3 flex flex-col gap-2">
           {lesson.ziele.map((z, i) => (
             <li key={i} className="flex items-start gap-2 text-slate-700">
-              <span className="text-emerald-500">✓</span> {z}
+              <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" strokeWidth={3} aria-hidden />{" "}
+              {z}
             </li>
           ))}
         </ul>
@@ -308,8 +334,9 @@ export default function LessonDetailPage() {
 
       {/* Wortschatz */}
       <section className="flex flex-col gap-3">
-        <h2 className="font-bangla text-lg font-extrabold text-emerald-950">
-          🃏 Wortschatz — শব্দভাণ্ডার ({vocabWords.length})
+        <h2 className="font-bangla inline-flex items-center gap-2 text-lg font-extrabold text-emerald-950">
+          <Layers className="h-5 w-5 text-emerald-600" aria-hidden /> Wortschatz — শব্দভাণ্ডার (
+          {vocabWords.length})
         </h2>
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           {vocabWords.map((w) => (
@@ -326,7 +353,9 @@ export default function LessonDetailPage() {
 
       {/* Grammatik */}
       <section className="flex flex-col gap-3">
-        <h2 className="font-bangla text-lg font-extrabold text-emerald-950">📖 Grammatik — ব্যাকরণ</h2>
+        <h2 className="font-bangla inline-flex items-center gap-2 text-lg font-extrabold text-emerald-950">
+          <BookOpen className="h-5 w-5 text-emerald-600" aria-hidden /> Grammatik — ব্যাকরণ
+        </h2>
         {lesson.grammar.map((g, i) => (
           <div key={i} className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-emerald-100">
             <h3 className="font-extrabold text-emerald-900">{g.title}</h3>
@@ -376,7 +405,9 @@ export default function LessonDetailPage() {
 
       {/* Beispielsätze */}
       <section className="flex flex-col gap-2">
-        <h2 className="font-bangla text-lg font-extrabold text-emerald-950">💬 Beispielsätze — উদাহরণ বাক্য</h2>
+        <h2 className="font-bangla inline-flex items-center gap-2 text-lg font-extrabold text-emerald-950">
+          <MessageCircle className="h-5 w-5 text-emerald-600" aria-hidden /> Beispielsätze — উদাহরণ বাক্য
+        </h2>
         {lesson.saetze.map((s, i) => (
           <div key={i} className="rounded-2xl bg-white p-3 shadow-sm ring-1 ring-emerald-100">
             <div className="flex items-start justify-between gap-2">
@@ -391,8 +422,9 @@ export default function LessonDetailPage() {
       {/* Übungen */}
       <section className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
-          <h2 className="font-bangla text-lg font-extrabold text-emerald-950">
-            ✍️ Übungen — অনুশীলন <span className="text-sm font-semibold text-slate-400">(সহজ → কঠিন)</span>
+          <h2 className="font-bangla inline-flex items-center gap-2 text-lg font-extrabold text-emerald-950">
+            <PenLine className="h-5 w-5 text-emerald-600" aria-hidden /> Übungen — অনুশীলন{" "}
+            <span className="text-sm font-semibold text-slate-400">(সহজ → কঠিন)</span>
           </h2>
           {xpGained > 0 && (
             <span className="rounded-full bg-amber-100 px-3 py-1 text-sm font-bold text-amber-700">
@@ -408,25 +440,34 @@ export default function LessonDetailPage() {
       {/* Complete */}
       <div className="flex flex-col items-center gap-3 pb-4">
         {isDone ? (
-          <p className="font-bangla text-emerald-700 font-bold">🎉 Lektion abgeschlossen! পরের পাঠে এগিয়ে যাও।</p>
+          <p className="font-bangla inline-flex items-center gap-2 font-bold text-emerald-700">
+            <PartyPopper className="h-5 w-5" aria-hidden /> Lektion abgeschlossen! পরের পাঠে এগিয়ে
+            যাও।
+          </p>
         ) : (
           <button
             type="button"
             onClick={handleComplete}
-            className="rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-10 py-4 text-lg font-extrabold text-white shadow-xl shadow-emerald-200 transition active:scale-95"
+            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-10 py-4 text-lg font-extrabold text-white shadow-xl shadow-emerald-200 transition active:scale-95"
           >
-            🏁 Lektion abschließen (+50 XP)
+            <Flag className="h-5 w-5" aria-hidden /> Lektion abschließen (+50 XP)
           </button>
         )}
         <div className="flex gap-3">
           {lesson.id > 1 && (
-            <Link href={`/lektionen/${lesson.id - 1}`} className="font-bangla rounded-full bg-white px-6 py-2.5 font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-100">
-              ← আগের পাঠ
+            <Link
+              href={`/lektionen/${lesson.id - 1}`}
+              className="font-bangla inline-flex items-center gap-1.5 rounded-full bg-white px-6 py-2.5 font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-100"
+            >
+              <ArrowLeft className="h-4 w-4" aria-hidden /> আগের পাঠ
             </Link>
           )}
           {lesson.id < 12 && (
-            <Link href={`/lektionen/${lesson.id + 1}`} className="font-bangla rounded-full bg-white px-6 py-2.5 font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-100">
-              পরের পাঠ →
+            <Link
+              href={`/lektionen/${lesson.id + 1}`}
+              className="font-bangla inline-flex items-center gap-1.5 rounded-full bg-white px-6 py-2.5 font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-100"
+            >
+              পরের পাঠ <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
           )}
         </div>

@@ -13,6 +13,24 @@ import {
   getFullProgress,
 } from "@/lib/progress";
 import { celebrate, bigCelebration } from "@/lib/confetti";
+import {
+  BookOpen,
+  CheckCircle2,
+  Dices,
+  Dumbbell,
+  Library,
+  Lightbulb,
+  PartyPopper,
+  PenLine,
+  Play,
+  RotateCcw,
+  Settings,
+  Sparkles,
+  Star,
+  Target,
+  Trophy,
+  type LucideIcon,
+} from "lucide-react";
 import CountUp from "@/components/CountUp";
 
 type Mode = "vocab" | "grammar" | "mixed";
@@ -158,10 +176,25 @@ function buildQuestions(mode: Mode, diff: DiffSetting): Q[] {
   return mixed.slice(0, 10);
 }
 
-const MODES: { id: Mode; icon: string; de: string; bn: string }[] = [
-  { id: "vocab", icon: "📚", de: "Wortschatz", bn: "শব্দভাণ্ডার" },
-  { id: "grammar", icon: "📖", de: "Grammatik", bn: "ব্যাকরণ" },
-  { id: "mixed", icon: "🎲", de: "Gemischt", bn: "মিশ্র" },
+const MODES: { id: Mode; Icon: LucideIcon; de: string; bn: string }[] = [
+  { id: "vocab", Icon: Library, de: "Wortschatz", bn: "শব্দভাণ্ডার" },
+  { id: "grammar", Icon: BookOpen, de: "Grammatik", bn: "ব্যাকরণ" },
+  { id: "mixed", Icon: Dices, de: "Gemischt", bn: "মিশ্র" },
+];
+
+/** Playful, warm answer feedback — Duolingo tone with Bangla flavor. */
+const PRAISE = [
+  "দারুণ! Richtig!",
+  "বাহ! Genau richtig!",
+  "সাবাশ! Weiter so!",
+  "চমৎকার! Perfekt!",
+  "একদম ঠিক! Super!",
+];
+const ENCOURAGE = [
+  "ভুল হতেই পারে — এভাবেই শেখা হয়!",
+  "চিন্তা নেই — আরেকবার চেষ্টা করো!",
+  "কাছাকাছি ছিলে — উত্তরটা দেখে নাও!",
+  "হার মানা যাবে না — তুমি পারবে!",
 ];
 const DIFFS: { id: DiffSetting; bn: string; de: string }[] = [
   { id: "easy", bn: "সহজ", de: "leicht" },
@@ -181,6 +214,7 @@ export default function QuizPage() {
   const [xpEarned, setXpEarned] = useState(0);
   const [best, setBest] = useState<number | null>(null);
   const [shakeKey, setShakeKey] = useState(0);
+  const [feedback, setFeedback] = useState("");
   const [missed, setMissed] = useState<Q[]>([]);
   const [reviewing, setReviewing] = useState(false);
   const [reviewScore, setReviewScore] = useState(0);
@@ -258,9 +292,11 @@ export default function QuizPage() {
       x += gained;
       setScore(s);
       setXpEarned(x);
+      setFeedback(PRAISE[Math.floor(Math.random() * PRAISE.length)]);
     } else {
       setShakeKey((k) => k + 1);
       if (!reviewing) setMissed((m) => [...m, q]);
+      setFeedback(ENCOURAGE[Math.floor(Math.random() * ENCOURAGE.length)]);
     }
     timer.current = setTimeout(() => {
       if (qi + 1 >= questions.length) finish(s, x);
@@ -277,7 +313,9 @@ export default function QuizPage() {
       <div className="flex flex-col gap-6">
         <div>
           <p className="font-bangla text-sm font-semibold text-emerald-500">নিজেকে যাচাই করো</p>
-          <h1 className="text-3xl font-extrabold tracking-tight text-emerald-950">✍️ Quiz</h1>
+          <h1 className="inline-flex items-center gap-2 text-3xl font-extrabold tracking-tight text-emerald-950">
+            <PenLine className="h-7 w-7 text-emerald-600" aria-hidden /> Quiz
+          </h1>
         </div>
 
         <div className="flex flex-col gap-2">
@@ -293,7 +331,10 @@ export default function QuizPage() {
                   mode === m.id ? "bg-emerald-600 text-white ring-emerald-600" : "bg-white ring-emerald-100"
                 }`}
               >
-                <p className="text-3xl">{m.icon}</p>
+                <m.Icon
+                  className={`mx-auto h-8 w-8 ${mode === m.id ? "text-white" : "text-emerald-600"}`}
+                  aria-hidden
+                />
                 <p className="mt-1 text-sm font-extrabold">{m.de}</p>
                 <p className={`font-bangla text-xs ${mode === m.id ? "text-emerald-200" : "text-slate-500"}`}>
                   {m.bn}
@@ -329,9 +370,9 @@ export default function QuizPage() {
         <button
           type="button"
           onClick={start}
-          className="rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 py-4 text-lg font-extrabold text-white shadow-xl shadow-emerald-200 transition active:scale-95"
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 py-4 text-lg font-extrabold text-white shadow-xl shadow-emerald-200 transition active:scale-95"
         >
-          ▶️ Start — 10 Fragen
+          <Play className="h-5 w-5 fill-current" aria-hidden /> Start — 10 Fragen
         </button>
       </div>
     );
@@ -342,14 +383,22 @@ export default function QuizPage() {
     const ratio = questions.length ? score / questions.length : 0;
     return (
       <div className="flex flex-col items-center gap-4 py-8 text-center">
-        <motion.p
+        <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", stiffness: 260, damping: 14 }}
-          className="text-6xl"
+          className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 shadow-xl shadow-emerald-200"
         >
-          {ratio === 1 ? "🏆" : ratio >= 0.7 ? "🎉" : ratio >= 0.4 ? "💪" : "📚"}
-        </motion.p>
+          {ratio === 1 ? (
+            <Trophy className="h-11 w-11 text-white" aria-hidden />
+          ) : ratio >= 0.7 ? (
+            <PartyPopper className="h-11 w-11 text-white" aria-hidden />
+          ) : ratio >= 0.4 ? (
+            <Dumbbell className="h-11 w-11 text-white" aria-hidden />
+          ) : (
+            <BookOpen className="h-11 w-11 text-white" aria-hidden />
+          )}
+        </motion.div>
         <p className="text-4xl font-extrabold text-emerald-950">
           <CountUp value={score} /> <span className="text-2xl text-slate-400">/ {questions.length}</span>
         </p>
@@ -376,25 +425,25 @@ export default function QuizPage() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               whileTap={{ scale: 0.97 }}
-              className="font-bangla w-full rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-8 py-3 font-extrabold text-white shadow-lg shadow-amber-200"
+              className="font-bangla inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-8 py-3 font-extrabold text-white shadow-lg shadow-amber-200"
             >
-              🎯 ভুলগুলো আবার চেষ্টা করো ({missed.length}টি)
+              <Target className="h-5 w-5" aria-hidden /> ভুলগুলো আবার চেষ্টা করো ({missed.length}টি)
             </motion.button>
           )}
           <div className="flex flex-col gap-3 sm:flex-row">
             <button
               type="button"
               onClick={start}
-              className="rounded-full bg-emerald-600 px-8 py-3 font-bold text-white shadow-md transition active:scale-95"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 px-8 py-3 font-bold text-white shadow-md transition active:scale-95"
             >
-              🔁 আবার খেলো
+              <RotateCcw className="h-4 w-4" aria-hidden /> আবার খেলো
             </button>
             <button
               type="button"
               onClick={() => setStage("setup")}
-              className="rounded-full bg-white px-8 py-3 font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-100 transition active:scale-95"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3 font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-100 transition active:scale-95"
             >
-              ⚙️ সেটিং বদলাও
+              <Settings className="h-4 w-4" aria-hidden /> সেটিং বদলাও
             </button>
           </div>
         </div>
@@ -408,14 +457,20 @@ export default function QuizPage() {
     const ratio = total ? reviewScore / total : 0;
     return (
       <div className="flex flex-col items-center gap-4 py-8 text-center">
-        <motion.p
+        <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", stiffness: 260, damping: 14 }}
-          className="text-6xl"
+          className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-500 shadow-xl shadow-amber-200"
         >
-          {ratio === 1 ? "🏆" : ratio >= 0.5 ? "🎉" : "💪"}
-        </motion.p>
+          {ratio === 1 ? (
+            <Trophy className="h-11 w-11 text-white" aria-hidden />
+          ) : ratio >= 0.5 ? (
+            <PartyPopper className="h-11 w-11 text-white" aria-hidden />
+          ) : (
+            <Dumbbell className="h-11 w-11 text-white" aria-hidden />
+          )}
+        </motion.div>
         <h2 className="font-bangla text-2xl font-extrabold text-emerald-950">রিভিউ শেষ!</h2>
         <div className="font-bangla flex flex-col gap-2 rounded-3xl bg-white p-5 shadow-sm ring-1 ring-emerald-100">
           <p className="text-sm text-slate-500">
@@ -426,8 +481,8 @@ export default function QuizPage() {
           </p>
           <p className="text-sm text-slate-500">
             {ratio === 1
-              ? "সব ভুল শুধরে নিয়েছো — fantastisch! 🌟"
-              : "ভুল থেকে শেখাই আসল শেখা — weiter so! 💪"}
+              ? "সব ভুল শুধরে নিয়েছো — fantastisch!"
+              : "ভুল থেকে শেখাই আসল শেখা — weiter so!"}
           </p>
         </div>
         <div className="font-bangla flex gap-2 text-sm font-bold">
@@ -437,16 +492,16 @@ export default function QuizPage() {
           <button
             type="button"
             onClick={start}
-            className="rounded-full bg-emerald-600 px-8 py-3 font-bold text-white shadow-md transition active:scale-95"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 px-8 py-3 font-bold text-white shadow-md transition active:scale-95"
           >
-            🔁 নতুন কুইজ
+            <RotateCcw className="h-4 w-4" aria-hidden /> নতুন কুইজ
           </button>
           <button
             type="button"
             onClick={() => setStage("setup")}
-            className="rounded-full bg-white px-8 py-3 font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-100 transition active:scale-95"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-8 py-3 font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-100 transition active:scale-95"
           >
-            ⚙️ সেটিং বদলাও
+            <Settings className="h-4 w-4" aria-hidden /> সেটিং বদলাও
           </button>
         </div>
       </div>
@@ -463,15 +518,18 @@ export default function QuizPage() {
       <div className="flex items-center justify-between">
         <p className="text-sm font-bold text-slate-500">
           {reviewing ? (
-            <span className="font-bangla rounded-full bg-amber-100 px-3 py-1 text-amber-700">
-              🎯 রিভিউ {qi + 1} / {questions.length}
+            <span className="font-bangla inline-flex items-center gap-1 rounded-full bg-amber-100 px-3 py-1 text-amber-700">
+              <Target className="h-3.5 w-3.5" aria-hidden /> রিভিউ {qi + 1} / {questions.length}
             </span>
           ) : (
             <>Frage {qi + 1} / {questions.length}</>
           )}
         </p>
         <p className="rounded-full bg-white px-4 py-1 text-sm font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-100">
-          ⭐ <CountUp value={score} />
+          <span className="inline-flex items-center gap-1">
+            <Star className="h-4 w-4 fill-amber-400 text-amber-400" aria-hidden />
+            <CountUp value={score} />
+          </span>
         </p>
       </div>
       <div className="h-2 overflow-hidden rounded-full bg-emerald-100">
@@ -516,15 +574,27 @@ export default function QuizPage() {
 
       <AnimatePresence>
         {answered && (
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`font-bangla rounded-2xl p-4 text-center text-sm ${
+            className={`font-bangla flex items-center justify-center gap-2 rounded-2xl p-4 text-center text-sm font-bold ${
               picked === q.answer ? "bg-emerald-50 text-emerald-800" : "bg-amber-50 text-amber-900"
             }`}
           >
-            {picked === q.answer ? "🎉 Richtig! সঠিক!" : `💡 ${q.explanation}`}
-          </motion.p>
+            {picked === q.answer ? (
+              <>
+                <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-600" aria-hidden />
+                {feedback}
+              </>
+            ) : (
+              <>
+                <Lightbulb className="h-5 w-5 shrink-0 text-amber-600" aria-hidden />
+                <span>
+                  {feedback} <span className="font-semibold">{q.explanation}</span>
+                </span>
+              </>
+            )}
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

@@ -8,8 +8,8 @@ export default function manifest(): MetadataRoute.Manifest {
       "Bangla-speaker-দের জন্য A1 German: পাঠ, শব্দভাণ্ডার, ব্যাকরণ, কুইজ আর ব্লগ।",
     start_url: "/",
     display: "standalone",
-    background_color: "#ffffff",
-    theme_color: "#047857",
+    background_color: "#F8FAFC",
+    theme_color: "#0B1F3B",
     icons: [
       {
         src: "/icon.svg",

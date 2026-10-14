@@ -1,19 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <defs>
-    <linearGradient id="fav-bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#059669"/>
-      <stop offset="1" stop-color="#0d9488"/>
-    </linearGradient>
-  </defs>
-  <rect x="8" y="8" width="112" height="112" rx="28" fill="url(#fav-bg)"/>
-  <!-- simplified Ulluk owl face — bold shapes only, legible at 16x16 -->
-  <path d="M36 46 L29 22 L58 36 Z" fill="#047857"/>
-  <path d="M92 46 L99 22 L70 36 Z" fill="#047857"/>
-  <circle cx="49" cy="65" r="17" fill="#ffffff"/>
-  <circle cx="79" cy="65" r="17" fill="#ffffff"/>
-  <circle cx="49" cy="68" r="8" fill="#064e3b"/>
-  <circle cx="79" cy="68" r="8" fill="#064e3b"/>
-  <circle cx="52" cy="65" r="2.6" fill="#ffffff"/>
-  <circle cx="82" cy="65" r="2.6" fill="#ffffff"/>
-  <path d="M58 86 L70 86 L64 96 Z" fill="#fbbf24"/>
+  <!-- navy rounded square -->
+  <rect x="0" y="0" width="128" height="128" rx="28" fill="#0B1F3B"/>
+  <!-- graduation cap hint -->
+  <path d="M64 10 L96 22 L64 34 L32 22 Z" fill="#16345E" stroke="#F8FAFC" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M88 25 L96 36" stroke="#FBBF24" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <circle cx="96" cy="39" r="3" fill="#FBBF24"/>
+  <!-- ear tufts -->
+  <path d="M30 40 L24 26 L40 32 Z" fill="#FFF7E6"/>
+  <path d="M98 40 L104 26 L88 32 Z" fill="#FFF7E6"/>
+  <!-- cream face -->
+  <path d="M64 112 C 38 100 20 84 20 64 C 20 46 38 36 64 36 C 90 36 108 46 108 64 C 108 84 90 100 64 112 Z" fill="#FFF7E6"/>
+  <!-- amber eyes -->
+  <circle cx="46" cy="68" r="13" fill="#FBBF24"/>
+  <circle cx="82" cy="68" r="13" fill="#FBBF24"/>
+  <circle cx="46" cy="69" r="7" fill="#0B1F3B"/>
+  <circle cx="82" cy="69" r="7" fill="#0B1F3B"/>
+  <circle cx="49" cy="66" r="2.5" fill="#ffffff"/>
+  <circle cx="85" cy="66" r="2.5" fill="#ffffff"/>
+  <!-- orange beak -->
+  <path d="M57 86 L71 86 L64 97 Z" fill="#F59E0B"/>
 </svg>

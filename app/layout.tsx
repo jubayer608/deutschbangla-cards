@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
-import { Geist, Geist_Mono, Noto_Sans_Bengali } from "next/font/google";
+import { Geist, Geist_Mono, Noto_Sans_Bengali, Nunito, Poppins } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import "./globals.css";
@@ -18,6 +18,18 @@ const geistMono = Geist_Mono({
 const bengali = Noto_Sans_Bengali({
   variable: "--font-bengali",
   subsets: ["bengali"],
+});
+
+const poppins = Poppins({
+  variable: "--font-poppins",
+  subsets: ["latin", "latin-ext"],
+  weight: ["600", "700", "800"],
+});
+
+const nunito = Nunito({
+  variable: "--font-nunito",
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -56,16 +68,16 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#047857",
+  themeColor: "#0B1F3B",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="bn"
-      className={`${geistSans.variable} ${geistMono.variable} ${bengali.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${bengali.variable} ${poppins.variable} ${nunito.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-gradient-to-b from-emerald-50 via-white to-amber-50">
+      <body className="font-body flex min-h-full flex-col bg-gradient-to-b from-cream via-white to-cream">
         <Suspense fallback={null}>
           <Navbar />
         </Suspense>

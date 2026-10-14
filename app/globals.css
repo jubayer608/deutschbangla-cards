@@ -2,48 +2,90 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #132a44;
 
-  /* ---- DeutschBangla Cards brand palette ----
-     Primary: deep emerald · Secondary: warm amber · Gradient partner: teal */
+  /* ---- ULLUK brand palette (v6 foundation) ----
+     Primary: navy · Secondary: teal · Pop: yellow · Base: cream · Muted: gray
+     Legacy --brand-* / --accent-* names are kept (other files use them),
+     but repointed onto the navy/teal + yellow ramps. */
+  --brand-navy: #0b1f3b;
+  --brand-teal: #10b981;
+  --brand-teal-dark: #0b9b81;
+  --brand-yellow: #fbbf24;
+  --brand-cream: #f8fafc;
+  --brand-gray: #94a3b8;
+
+  /* --brand-* ramp: teal 50–700, navy 800–950 */
   --brand-50: #ecfdf5;
   --brand-100: #d1fae5;
   --brand-200: #a7f3d0;
+  --brand-300: #6ee7b7;
+  --brand-400: #34d399;
   --brand-500: #10b981;
-  --brand-600: #059669;
-  --brand-700: #047857;
-  --brand-800: #065f46;
-  --brand-900: #064e3b;
-  --brand-950: #022c22;
+  --brand-600: #0b9b81;
+  --brand-700: #07795f;
+  --brand-800: #0b1f3b;
+  --brand-900: #081731;
+  --brand-950: #040d1e;
+  /* --accent-* ramp: yellow */
   --accent-50: #fffbeb;
   --accent-100: #fef3c7;
+  --accent-200: #fde68a;
+  --accent-300: #fcd34d;
   --accent-400: #fbbf24;
   --accent-500: #f59e0b;
   --accent-600: #d97706;
   --accent-700: #b45309;
+  --accent-800: #92400e;
   --accent-950: #451a03;
-  --brand-gradient: linear-gradient(135deg, #059669 0%, #0d9488 100%);
-  --brand-gradient-soft: linear-gradient(135deg, #ecfdf5 0%, #f0fdfa 100%);
-  --hero-glow: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(16, 185, 129, 0.14), transparent);
+  --brand-gradient: linear-gradient(135deg, #0b1f3b 0%, #10b981 100%);
+  --brand-gradient-soft: linear-gradient(135deg, #eef2f7 0%, #ecfdf5 100%);
+  --hero-glow: radial-gradient(
+    ellipse 80% 60% at 50% -10%,
+    rgba(11, 31, 59, 0.12),
+    rgba(16, 185, 129, 0.06) 45%,
+    transparent 70%
+  );
+}
+
+@theme {
+  /* ULLUK palette as Tailwind color tokens:
+     bg-navy, text-teal, bg-sun, bg-cream, text-mist, … */
+  --color-navy: #0b1f3b;
+  --color-teal: #10b981;
+  --color-sun: #fbbf24;
+  --color-cream: #f8fafc;
+  --color-mist: #94a3b8;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-nunito), "Noto Sans Bengali", ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-nunito), "Noto Sans Bengali", ui-sans-serif, system-ui, sans-serif;
 }
 
 /* Bangla text uses the Noto Sans Bengali webfont loaded in the layout,
    with system fallbacks (Android ships Noto Sans Bengali built in). */
 .font-bangla {
   font-family: var(--font-bengali), "Noto Sans Bengali", "Hind Siliguri", sans-serif;
+}
+
+/* ULLUK type stacks. Poppins/Nunito lack Bengali glyphs, so Noto Sans
+   Bengali stays in the fallback chain; Bangla copy should still use
+   .font-bangla explicitly. */
+.font-heading {
+  font-family: var(--font-poppins), "Noto Sans Bengali", sans-serif;
+}
+
+.font-body {
+  font-family: var(--font-nunito), "Noto Sans Bengali", ui-sans-serif, system-ui, sans-serif;
 }
 
 /* ---- brand helpers ---- */
@@ -58,6 +100,133 @@ body {
 }
 .hero-glow {
   background: var(--hero-glow);
+}
+
+/* ---- shared interaction primitives (v6 foundation) ----
+   Other workers: use these exact class names for buttons, cards,
+   badges, progress bars, and section headings. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--brand-teal);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background: var(--brand-teal);
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
+}
+
+.btn-primary:hover {
+  background: var(--brand-teal-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(16, 185, 129, 0.4);
+}
+
+.btn-secondary {
+  background: #ffffff;
+  color: var(--brand-navy);
+  border-color: var(--brand-navy);
+  box-shadow: 0 2px 8px rgba(11, 31, 59, 0.06);
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(11, 31, 59, 0.12);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--brand-navy);
+}
+
+.btn-ghost:hover {
+  background: rgba(11, 31, 59, 0.06);
+}
+
+.btn-arrow svg {
+  transition: transform 0.18s ease;
+}
+
+.btn-arrow:hover svg {
+  transform: translateX(4px);
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(11, 31, 59, 0.08);
+  box-shadow: 0 4px 20px rgba(11, 31, 59, 0.06);
+}
+
+.card-hover {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(11, 31, 59, 0.12);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  background: rgba(11, 31, 59, 0.06);
+  color: var(--brand-navy);
+}
+
+.progress-track {
+  width: 100%;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: #e2e8f0;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, var(--brand-navy), var(--brand-teal));
+  transition: width 0.4s ease;
+}
+
+.section-heading {
+  font-family: var(--font-poppins), "Noto Sans Bengali", sans-serif;
+  font-weight: 700;
+  color: var(--brand-navy);
+  letter-spacing: -0.01em;
 }
 
 /* --- 3D flashcard flip --- */
@@ -120,8 +289,8 @@ body {
 }
 
 /* ==========================================================================
-   Animated gradient system (v5 foundation)
-   Brand stays emerald → teal → amber. Restraint is the rule: use ONE
+   Animated gradient system (v6 foundation)
+   Brand is navy → teal → yellow. Restraint is the rule: use ONE
    signature gradient moment per viewport — a mesh hero, an animated
    gradient headline, or a bloom — never all three.
    ========================================================================== */
@@ -151,14 +320,14 @@ body {
   }
 }
 
-/* Slow drifting mesh gradient — emerald, teal, amber control points.
+/* Slow drifting mesh gradient — navy, teal, yellow control points.
    Best as a single hero/panel background, light mode first. */
 .mesh-gradient-animated {
   background:
-    radial-gradient(38% 32% at 20% 15%, rgba(16, 185, 129, 0.32), transparent 70%),
-    radial-gradient(42% 38% at 85% 25%, rgba(13, 148, 136, 0.28), transparent 70%),
-    radial-gradient(45% 40% at 55% 90%, rgba(251, 191, 36, 0.2), transparent 70%),
-    linear-gradient(160deg, #ecfdf5 0%, #f0fdfa 55%, #fffbeb 100%);
+    radial-gradient(38% 32% at 20% 15%, rgba(11, 31, 59, 0.14), transparent 70%),
+    radial-gradient(42% 38% at 85% 25%, rgba(16, 185, 129, 0.3), transparent 70%),
+    radial-gradient(45% 40% at 55% 90%, rgba(251, 191, 36, 0.22), transparent 70%),
+    linear-gradient(160deg, #f8fafc 0%, #ecfdf5 55%, #fffbeb 100%);
   background-size:
     180% 180%,
     200% 200%,
@@ -180,7 +349,7 @@ body {
 /* Animated gradient text for ONE hero headline. Static fallback via
    prefers-reduced-motion below. */
 .text-gradient-animated {
-  background: linear-gradient(100deg, #059669, #0d9488, #d97706, #059669);
+  background: linear-gradient(100deg, #0b1f3b, #10b981, #f59e0b, #0b1f3b);
   background-size: 220% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -203,7 +372,12 @@ body {
 /* Soft radial bloom — low opacity, light-mode tuned. Lay over a section
    (pointer-events: none) for a gentle glow; never behind body text. */
 .bloom {
-  background: radial-gradient(closest-side, rgba(16, 185, 129, 0.14), transparent);
+  background: radial-gradient(
+    closest-side,
+    rgba(16, 185, 129, 0.14),
+    rgba(11, 31, 59, 0.06) 55%,
+    transparent
+  );
   animation: dbc-bloom-breathe 11s ease-in-out infinite;
 }
 
@@ -212,8 +386,8 @@ body {
   background: rgba(255, 255, 255, 0.68);
   -webkit-backdrop-filter: blur(14px) saturate(1.25);
   backdrop-filter: blur(14px) saturate(1.25);
-  border: 1px solid rgba(16, 185, 129, 0.16);
-  box-shadow: 0 8px 32px rgba(6, 95, 70, 0.08);
+  border: 1px solid rgba(11, 31, 59, 0.1);
+  box-shadow: 0 8px 32px rgba(11, 31, 59, 0.08);
 }
 
 /* Motion safety: freeze the gradient animations to their static frames. */
@@ -222,5 +396,11 @@ body {
   .text-gradient-animated,
   .bloom {
     animation: none;
+  }
+  .btn,
+  .card-hover,
+  .progress-fill,
+  .btn-arrow svg {
+    transition: none;
   }
 }

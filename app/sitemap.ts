@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/grammatik`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${BASE}/quiz`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE}/resources`, changeFrequency: "weekly", priority: 0.7 },
+    { url: `${BASE}/opportunities`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE}/blog`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE}/fortschritt`, changeFrequency: "monthly", priority: 0.4 },
   ];

@@ -7,6 +7,7 @@ import {
   Flame,
   Home,
   BookOpen,
+  Briefcase,
   Library,
   Puzzle,
   Target,
@@ -23,6 +24,7 @@ const links = [
   { href: "/grammatik", label: "ব্যাকরণ", short: "ব্যাকরণ", Icon: Puzzle },
   { href: "/quiz", label: "কুইজ", short: "কুইজ", Icon: Target },
   { href: "/resources", label: "রিসোর্স", short: "রিসোর্স", Icon: Globe },
+  { href: "/opportunities", label: "সুযোগ", short: "সুযোগ", Icon: Briefcase },
   { href: "/blog", label: "ব্লগ", short: "ব্লগ", Icon: PenLine },
   { href: "/fortschritt", label: "অগ্রগতি", short: "অগ্রগতি", Icon: TrendingUp },
 ];
@@ -97,7 +99,7 @@ export default function Navbar() {
         className="fixed inset-x-0 bottom-0 z-40 border-t border-emerald-100 bg-white/95 shadow-[0_-4px_24px_rgba(6,95,70,0.08)] backdrop-blur-xl lg:hidden"
         aria-label="Main"
       >
-        <div className="grid grid-cols-8 pb-[env(safe-area-inset-bottom)]">
+        <div className="grid grid-cols-9 pb-[env(safe-area-inset-bottom)]">
           {links.map((l) => {
             const active = isActiveLink(pathname, l.href);
             return (

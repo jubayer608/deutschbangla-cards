@@ -8,7 +8,7 @@ interface EmptyStateProps {
 
 export default function EmptyState({ Icon, title, message }: EmptyStateProps) {
   return (
-    <div className="card flex flex-col items-center justify-center gap-3 bg-cream px-6 py-12 text-center">
+    <div className="flex flex-col items-center justify-center gap-3 rounded-3xl bg-cream px-6 py-12 text-center shadow-sm ring-1 ring-navy/5">
       <span
         className="flex h-16 w-16 items-center justify-center rounded-full bg-teal/10"
         aria-hidden

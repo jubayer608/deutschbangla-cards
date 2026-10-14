@@ -393,7 +393,7 @@ export default function QuizPage() {
                 type="button"
                 onClick={() => setMode(m.id)}
                 whileTap={{ scale: 0.95 }}
-                className={`card card-hover rounded-3xl p-4 text-center ring-2 transition ${
+                className={`card-hover rounded-3xl p-4 text-center shadow-sm ring-2 transition ${
                   mode === m.id ? "bg-navy text-white ring-navy" : "bg-white ring-slate-200"
                 }`}
               >
@@ -462,7 +462,7 @@ export default function QuizPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 160, damping: 20 }}
-            className="card w-full rounded-3xl bg-cream p-6 shadow-xl"
+            className="w-full rounded-3xl bg-cream p-6 shadow-xl"
           >
             <Mascot mood="celebrate" size={104} className="mx-auto" />
             <h2 className="font-bangla mt-2 text-3xl font-extrabold text-navy">

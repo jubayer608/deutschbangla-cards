@@ -224,7 +224,7 @@ export default function Flashcard({ word, flipped, onSwipe, onFlip, compact }: F
         </div>
 
         {/* Back: Bangla meaning + example */}
-        <div className="card absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-3xl bg-cream p-6 text-center shadow-xl shadow-navy/10 ring-1 ring-teal/20 [backface-visibility:hidden] [transform:rotateY(180deg)]">
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-3xl bg-cream p-6 text-center shadow-xl shadow-navy/10 ring-1 ring-teal/20 [backface-visibility:hidden] [transform:rotateY(180deg)]">
           <p className="font-bangla text-4xl font-extrabold text-navy sm:text-5xl">{word.bangla}</p>
           <div className="mt-2 w-full rounded-2xl bg-white p-4 ring-1 ring-teal/10">
             <div className="flex items-start justify-between gap-2">

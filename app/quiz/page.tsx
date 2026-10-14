@@ -171,7 +171,7 @@ const DIFFS: { id: DiffSetting; bn: string; de: string }[] = [
 ];
 
 export default function QuizPage() {
-  const [stage, setStage] = useState<"setup" | "playing" | "done">("setup");
+  const [stage, setStage] = useState<"setup" | "playing" | "done" | "reviewDone">("setup");
   const [mode, setMode] = useState<Mode>("vocab");
   const [diff, setDiff] = useState<DiffSetting>("mixed");
   const [questions, setQuestions] = useState<Q[]>([]);
@@ -181,6 +181,11 @@ export default function QuizPage() {
   const [xpEarned, setXpEarned] = useState(0);
   const [best, setBest] = useState<number | null>(null);
   const [shakeKey, setShakeKey] = useState(0);
+  const [missed, setMissed] = useState<Q[]>([]);
+  const [reviewing, setReviewing] = useState(false);
+  const [reviewScore, setReviewScore] = useState(0);
+  const [mainScore, setMainScore] = useState(0);
+  const [mainTotal, setMainTotal] = useState(0);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -198,14 +203,40 @@ export default function QuizPage() {
     setScore(0);
     setXpEarned(0);
     setBest(null);
+    setMissed([]);
+    setReviewing(false);
+    setStage("playing");
+  };
+
+  const startReview = () => {
+    const qs = shuffle([...missed]);
+    if (qs.length === 0) return;
+    setQuestions(qs);
+    setQi(0);
+    setPicked(null);
+    setScore(0);
+    setXpEarned(0);
+    setReviewing(true);
     setStage("playing");
   };
 
   const finish = (finalScore: number, finalXp: number) => {
+    if (reviewing) {
+      addXP(finalXp);
+      setReviewScore(finalScore);
+      setReviewing(false);
+      setStage("reviewDone");
+      const ratio = questions.length ? finalScore / questions.length : 0;
+      if (ratio === 1) bigCelebration();
+      else if (ratio >= 0.5) celebrate();
+      return;
+    }
     const modeKey = `${mode}-${diff}`;
     const p = recordQuiz(modeKey, finalScore, questions.length);
     addXP(finalXp);
     setBest(p.quizBest[modeKey] ?? finalScore);
+    setMainScore(finalScore);
+    setMainTotal(questions.length);
     setStage("done");
     const ratio = finalScore / questions.length;
     if (ratio >= 0.9) bigCelebration();
@@ -221,12 +252,15 @@ export default function QuizPage() {
     let x = xpEarned;
     if (opt === q.answer) {
       s += 1;
-      const gained = xpForDifficulty(q.difficulty, "quiz");
+      const gained = reviewing
+        ? Math.ceil(xpForDifficulty(q.difficulty, "quiz") / 2)
+        : xpForDifficulty(q.difficulty, "quiz");
       x += gained;
       setScore(s);
       setXpEarned(x);
     } else {
       setShakeKey((k) => k + 1);
+      if (!reviewing) setMissed((m) => [...m, q]);
     }
     timer.current = setTimeout(() => {
       if (qi + 1 >= questions.length) finish(s, x);
@@ -334,13 +368,78 @@ export default function QuizPage() {
                 ? "Gut gemacht! চালিয়ে যাও!"
                 : "Weiter üben! আরও অনুশীলন দরকার।"}
         </p>
+        <div className="flex w-full max-w-xs flex-col gap-3">
+          {missed.length > 0 && (
+            <motion.button
+              type="button"
+              onClick={startReview}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              whileTap={{ scale: 0.97 }}
+              className="font-bangla w-full rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-8 py-3 font-extrabold text-white shadow-lg shadow-amber-200"
+            >
+              🎯 ভুলগুলো আবার চেষ্টা করো ({missed.length}টি)
+            </motion.button>
+          )}
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <button
+              type="button"
+              onClick={start}
+              className="rounded-full bg-emerald-600 px-8 py-3 font-bold text-white shadow-md transition active:scale-95"
+            >
+              🔁 আবার খেলো
+            </button>
+            <button
+              type="button"
+              onClick={() => setStage("setup")}
+              className="rounded-full bg-white px-8 py-3 font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-100 transition active:scale-95"
+            >
+              ⚙️ সেটিং বদলাও
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  /* ---------- review done ---------- */
+  if (stage === "reviewDone") {
+    const total = questions.length;
+    const ratio = total ? reviewScore / total : 0;
+    return (
+      <div className="flex flex-col items-center gap-4 py-8 text-center">
+        <motion.p
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: "spring", stiffness: 260, damping: 14 }}
+          className="text-6xl"
+        >
+          {ratio === 1 ? "🏆" : ratio >= 0.5 ? "🎉" : "💪"}
+        </motion.p>
+        <h2 className="font-bangla text-2xl font-extrabold text-emerald-950">রিভিউ শেষ!</h2>
+        <div className="font-bangla flex flex-col gap-2 rounded-3xl bg-white p-5 shadow-sm ring-1 ring-emerald-100">
+          <p className="text-sm text-slate-500">
+            প্রথম রাউন্ড: <b className="text-slate-800">{mainScore} / {mainTotal}</b>
+          </p>
+          <p className="text-lg font-extrabold text-emerald-700">
+            রিভিউ রাউন্ড: {reviewScore} / {total}
+          </p>
+          <p className="text-sm text-slate-500">
+            {ratio === 1
+              ? "সব ভুল শুধরে নিয়েছো — fantastisch! 🌟"
+              : "ভুল থেকে শেখাই আসল শেখা — weiter so! 💪"}
+          </p>
+        </div>
+        <div className="font-bangla flex gap-2 text-sm font-bold">
+          <span className="rounded-full bg-amber-100 px-4 py-1.5 text-amber-700">+{xpEarned} XP</span>
+        </div>
         <div className="flex flex-col gap-3 sm:flex-row">
           <button
             type="button"
             onClick={start}
             className="rounded-full bg-emerald-600 px-8 py-3 font-bold text-white shadow-md transition active:scale-95"
           >
-            🔁 আবার খেলো
+            🔁 নতুন কুইজ
           </button>
           <button
             type="button"
@@ -363,7 +462,13 @@ export default function QuizPage() {
     <div className="flex flex-col gap-5" key={shakeKey}>
       <div className="flex items-center justify-between">
         <p className="text-sm font-bold text-slate-500">
-          Frage {qi + 1} / {questions.length}
+          {reviewing ? (
+            <span className="font-bangla rounded-full bg-amber-100 px-3 py-1 text-amber-700">
+              🎯 রিভিউ {qi + 1} / {questions.length}
+            </span>
+          ) : (
+            <>Frage {qi + 1} / {questions.length}</>
+          )}
         </p>
         <p className="rounded-full bg-white px-4 py-1 text-sm font-bold text-emerald-700 shadow-sm ring-1 ring-emerald-100">
           ⭐ <CountUp value={score} />

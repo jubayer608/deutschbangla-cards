@@ -10,6 +10,7 @@
 // and persisted as Badge rows (unique per user+key).
 
 import type { PrismaClient } from "@prisma/client";
+import { notifyBadgeUnlock } from "./notifications";
 
 export interface BadgeDef {
   key: string;
@@ -106,5 +107,13 @@ export async function ensureBadges(
     data: fresh.map((key) => ({ userId, key })),
     skipDuplicates: true,
   });
+  // Phase 3 — one notification (+ push) per newly unlocked badge.
+  // Best-effort: notification failures must never break badge unlocking.
+  for (const key of fresh) {
+    const def = BADGE_CATALOG.find((d) => d.key === key);
+    await notifyBadgeUnlock(prisma, userId, key, def?.titleBangla ?? key).catch(
+      () => {},
+    );
+  }
   return fresh;
 }

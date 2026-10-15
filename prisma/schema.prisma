@@ -40,6 +40,7 @@ model User {
   emailPreference EmailPreference?
   settings        UserSettings?
   pushSubscriptions PushSubscription[]
+  mailLogs        MailLog[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -195,6 +196,26 @@ model PushSubscription {
   @@index([userId])
 }
 
+
+// ── Phase 4 — mail log (idempotency + audit for Resend sends) ───────────
+
+model MailLog {
+  id String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // welcome | weekly | streak | wordofday
+  kind String
+  // Dedup window: "welcome" (once ever) | ISO week "2026-W42" |
+  // calendar day "2026-10-15". Unique with (userId, kind) so a send is
+  // never duplicated for the same window, even if cron retries/races.
+  dedupKey String
+  sentAt DateTime @default(now())
+  // Free-form audit (e.g. { weekXp: 340 } for weekly reports).
+  meta Json?
+
+  @@unique([userId, kind, dedupKey])
+  @@index([userId, kind])
+}
 
 model UserSettings {
   id      String @id @default(cuid())

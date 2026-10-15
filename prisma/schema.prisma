@@ -41,9 +41,49 @@ model User {
   settings        UserSettings?
   pushSubscriptions PushSubscription[]
   mailLogs        MailLog[]
+  createdDuels    Duel[] @relation("DuelCreator")
+  joinedDuels     Duel[] @relation("DuelOpponent")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// ── Phase 5 — quiz duel (1v1, realtime-ish via polling) ─────────────────
+
+model Duel {
+  id String @id @default(cuid())
+  // 6-char uppercase invite code, e.g. "KQ7X2P" — the shareable handle.
+  code String @unique
+
+  creatorId  String
+  creator    User   @relation("DuelCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  opponentId String?
+  opponent   User?  @relation("DuelOpponent", fields: [opponentId], references: [id], onDelete: Cascade)
+
+  // waiting | playing | finished
+  status String @default("waiting")
+
+  // Quiz category: vocab | grammar | mixed. Difficulty: easy | medium | hard | mixed.
+  category   String
+  difficulty String
+
+  // The 10 questions, frozen at creation — IDENTICAL for both players.
+  // Shape: QuizQuestion[] from lib/quiz-questions.ts (incl. `answer` —
+  // never sent to clients; the answer endpoint validates server-side).
+  questions Json
+
+  // Per-user progress, keyed by user id:
+  // { [userId]: { answers: (number|null)[10], score: number,
+  //   finishedAt: string|null } }
+  // answers[i] = chosen option index, or null if unanswered.
+  scores Json @default("{}")
+
+  createdAt  DateTime  @default(now())
+  finishedAt DateTime?
+
+  @@index([creatorId])
+  @@index([opponentId])
+  @@index([status])
 }
 
 model Account {

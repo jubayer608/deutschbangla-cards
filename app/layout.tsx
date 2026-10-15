@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Suspense } from "react";
+import BotChatLoader from "@/components/BotChatLoader";
 import { Geist, Geist_Mono, Noto_Sans_Bengali, Nunito, Poppins } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import Navbar from "@/components/Navbar";
@@ -73,6 +73,8 @@ export const viewport: Viewport = {
   themeColor: "#0B1F3B",
 };
 
+import { Suspense } from "react";
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   // Phase 0 — auth is fully configured only when all env vars are set.
   // Reading process.env here does NOT make the layout dynamic; the
@@ -98,6 +100,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </main>
           <Footer />
           <ProgressSync />
+          <BotChatLoader />
         </SessionProvider>
       </body>
     </html>

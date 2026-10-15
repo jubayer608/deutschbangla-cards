@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { getPrisma } from "@/lib/prisma";
 import UsernameField from "@/components/UsernameField";
 import SettingsForm from "@/components/SettingsForm";
+import EmailPreferencesForm from "@/components/EmailPreferencesForm";
 import Mascot from "@/components/Mascot";
 
 export const metadata = {
@@ -29,7 +30,7 @@ export default async function SettingsPage() {
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    include: { settings: true },
+    include: { settings: true, emailPreference: true },
   });
   if (!user) redirect("/api/auth/signin?callbackUrl=/profile/settings");
 
@@ -60,6 +61,18 @@ export default async function SettingsPage() {
             reminderTime: settings.reminderTime,
             difficulty: settings.difficulty,
             privacy: settings.privacy,
+          }}
+        />
+      </section>
+      <section className="card rounded-3xl bg-white p-5">
+        <h2 className="font-bangla mb-4 text-base font-extrabold text-navy">
+          ইমেইল নোটিফিকেশন
+        </h2>
+        <EmailPreferencesForm
+          initial={{
+            weeklyReport: user.emailPreference?.weeklyReport ?? true,
+            streakNudge: user.emailPreference?.streakNudge ?? true,
+            wordOfDay: user.emailPreference?.wordOfDay ?? false,
           }}
         />
       </section>

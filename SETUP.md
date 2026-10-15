@@ -90,3 +90,25 @@ npx prisma migrate deploy   # applies prisma/migrations/0002_user_settings/
 Then: sign in → Navbar avatar menu → **আমার প্রোফাইল** → pick a username
 (`/profile/[username]`). Settings live at `/profile/settings`
 (daily XP goal, reminder time, difficulty, privacy: public / friends / private).
+
+## Phase 3 — notifications (migration 0003 + VAPID keys)
+
+Apply the push-subscription migration once (creates `PushSubscription`
++ adds `actorId` / `link` / `dedupKey` columns to `Notification`):
+
+```bash
+npx prisma migrate deploy   # applies prisma/migrations/0003_push_subscriptions/
+# ...or: npx prisma db push
+```
+
+Web Push needs VAPID keys. Generate a pair (Node built-in crypto, no dep):
+
+```bash
+node -e "const c=require('crypto');const e=c.createECDH('prime256v1');const p=e.generateKeys('base64','uncompressed');const s=e.getPrivateKey('base64');const u=x=>x.replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');console.log('PUBLIC='+u(p));console.log('PRIVATE='+u(s))"
+```
+
+Add to Vercel env vars (Production + Preview):
+`NEXT_PUBLIC_VAPID_PUBLIC_KEY` (the PUBLIC value),
+`VAPID_PRIVATE_KEY` (the PRIVATE value). Then redeploy.
+Without these keys, push sending is a no-op and the push toggle hides
+itself — in-app notifications still work. Never commit the keys.

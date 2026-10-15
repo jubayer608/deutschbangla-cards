@@ -1,6 +1,7 @@
 "use client";
 
 import AuthButton from "./AuthButton";
+import NotificationBell from "./NotificationBell";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -195,6 +196,7 @@ export default function Navbar({ authConfigured }: { authConfigured: boolean }) 
               </AnimatePresence>
             </div>
           </nav>
+          <NotificationBell />
           <AuthButton authConfigured={authConfigured} />
         </div>
         </div>

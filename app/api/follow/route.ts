@@ -2,13 +2,15 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { getPrisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/ratelimit";
+import { notifyFollow } from "@/lib/notifications";
 
 // Phase 2 — follow / unfollow toggle.
 // POST { targetId } → { following: boolean, followersCount } | { error }.
 // - Auth required; cannot follow yourself; target must exist.
 // - Idempotent toggle: existing Follow row → delete (unfollow),
-//   missing → create (follow). No notification is created here —
-//   Phase 3 (notifications) owns that.
+//   missing → create (follow). On follow, Phase 3 creates a `follow`
+//   notification (+ push) for the target — best-effort, never breaks
+//   the follow flow.
 
 export async function POST(req: Request) {
   const session = await auth().catch(() => null);
@@ -57,6 +59,8 @@ export async function POST(req: Request) {
       data: { followerId: viewerId, followingId: targetId },
     });
     following = true;
+    // Phase 3 — notify the followed user (best-effort, never breaks follow).
+    await notifyFollow(prisma, viewerId, targetId);
   }
 
   const followersCount = await prisma.follow.count({

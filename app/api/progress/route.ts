@@ -42,6 +42,7 @@ export async function GET() {
       quizBestScores: row.quizBestScores,
       activity: row.activity,
       lastStudyDate: row.lastStudyDate?.toISOString() ?? null,
+      streakFreezes: row.streakFreezes,
     },
   });
 }

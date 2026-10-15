@@ -5,6 +5,7 @@ import UsernameField from "@/components/UsernameField";
 import SettingsForm from "@/components/SettingsForm";
 import EmailPreferencesForm from "@/components/EmailPreferencesForm";
 import Mascot from "@/components/Mascot";
+import { Snowflake } from "lucide-react";
 
 export const metadata = {
   title: "সেটিংস",
@@ -30,7 +31,7 @@ export default async function SettingsPage() {
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    include: { settings: true, emailPreference: true },
+    include: { settings: true, emailPreference: true, progress: true },
   });
   if (!user) redirect("/api/auth/signin?callbackUrl=/profile/settings");
 
@@ -63,6 +64,18 @@ export default async function SettingsPage() {
             privacy: settings.privacy,
           }}
         />
+      </section>
+      {/* Phase 5 — Streak Freeze balance (read-only; earned/spent automatically). */}
+      <section className="card rounded-3xl bg-white p-5">
+        <h2 className="font-bangla mb-3 flex items-center gap-2 text-base font-extrabold text-navy">
+          <Snowflake className="h-5 w-5 text-sky-500" aria-hidden /> Streak Freeze
+        </h2>
+        <p className="font-bangla text-sm text-slate-600">
+          তোমার কাছে <b>{user.progress?.streakFreezes ?? 0}-টি Freeze</b> আছে। Freeze থাকলে ১ দিন
+          মিস হলেও স্ট্রিক বাঁচবে (ফ্রিজটা নিজে থেকে খরচ হবে)। স্ট্রিক প্রতি ৭ দিনে (৭, ১৪, ২১…)
+          ১-টি করে Freeze পাবে — সর্বোচ্চ ৩-টি জমা থাকে। ২ বা তার বেশি দিন মিস হলে Freeze-ও স্ট্রিক
+          বাঁচাতে পারবে না।
+        </p>
       </section>
       <section className="card rounded-3xl bg-white p-5">
         <h2 className="font-bangla mb-4 text-base font-extrabold text-navy">

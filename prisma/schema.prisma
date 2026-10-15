@@ -166,6 +166,13 @@ model UserProgress {
   lastStudyDate DateTime?
   reviewed    Int       @default(0)
 
+  // Phase 5 — Streak Freeze: auto-spent when the user returns after
+  // exactly one missed day (gap of 2 days since last activity).
+  // Earned +1 per streak multiple of 7 (7, 14, 21…), max 3 stored.
+  streakFreezes       Int @default(0)
+  // Highest multiple-of-7 milestone already paid out (per run).
+  lastFreezeMilestone Int @default(0)
+
   // Merged from localStorage on first login (see /api/sync-progress):
   // union of known word ids, union of completed lesson ids.
   knownWords  String[]

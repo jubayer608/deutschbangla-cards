@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
-import { getFullProgress, writeFullProgress, type ProgressState } from "@/lib/progress";
+import { getFullProgress, writeFullProgress, adoptServerStreak, type ProgressState } from "@/lib/progress";
 
 // Phase 0 — first-login migration trigger.
 // Once per browser session after sign-in: POST the localStorage snapshot
@@ -31,6 +31,12 @@ export default function ProgressSync() {
     syncing.current = true;
 
     const local = getFullProgress();
+    // The streak belongs to the user's timezone — send their local
+    // "today" so the server's streak-freeze gap math uses their day.
+    const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(
+      now.getDate(),
+    ).padStart(2, "0")}`;
     const quizBestScores: Record<string, number> = {};
     try {
       for (let i = 0; i < localStorage.length; i++) {
@@ -47,12 +53,15 @@ export default function ProgressSync() {
     fetch("/api/sync-progress", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...local, quizBestScores }),
+      body: JSON.stringify({ ...local, quizBestScores, today }),
     })
       .then(async (res) => {
         if (!res.ok) return;
         const data = (await res.json().catch(() => null)) as {
-          progress?: MergedProgress & { quizBestScores?: Record<string, number> };
+          progress?: MergedProgress & {
+            quizBestScores?: Record<string, number>;
+            freezeUsed?: boolean;
+          };
         } | null;
         if (data?.progress) {
           const p = data.progress;
@@ -68,6 +77,9 @@ export default function ProgressSync() {
             },
             p.quizBestScores as Record<string, number> | undefined,
           );
+          // Phase 5 — a freeze saved this streak: keep the local run
+          // alive (lastVisit=today) instead of restarting at 1.
+          if (p.freezeUsed) adoptServerStreak(p.streak);
         }
         try {
           sessionStorage.setItem(SYNCED_KEY, "1");

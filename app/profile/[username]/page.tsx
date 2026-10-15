@@ -16,6 +16,7 @@ import {
   Lock,
   Pencil,
   Settings as SettingsIcon,
+  Snowflake,
   Sparkles,
   Trophy,
   type LucideIcon,
@@ -171,6 +172,11 @@ export default async function ProfilePage({
                 <span className="inline-flex items-center gap-1 rounded-full bg-white/15 px-3 py-1 text-xs font-bold ring-1 ring-white/20">
                   <Flame className="h-3.5 w-3.5 text-sun" aria-hidden /> {profile.streak} দিনের স্ট্রিক
                 </span>
+                {profile.isOwner && (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-white/15 px-3 py-1 text-xs font-bold ring-1 ring-white/20">
+                    <Snowflake className="h-3.5 w-3.5 text-sky-300" aria-hidden /> {profile.streakFreezes} Streak Freeze
+                  </span>
+                )}
                 {profile.privacy !== "public" && (
                   <span className="inline-flex items-center gap-1 rounded-full bg-white/15 px-3 py-1 text-xs font-bold ring-1 ring-white/20">
                     <Lock className="h-3.5 w-3.5" aria-hidden />

@@ -40,6 +40,8 @@ export interface PublicProfile {
   level: number;
   xp: number;
   streak: number;
+  /** Phase 5 — Streak Freeze balance (owner-only display). */
+  streakFreezes: number;
   stats: ProfileStats;
   badges: ProfileBadge[];
   isOwner: boolean;
@@ -128,6 +130,7 @@ export type ProfileRow = {
     xp: number;
     level: number;
     streak: number;
+    streakFreezes: number;
     knownWords: unknown;
     lessonsDone: unknown;
     quizBestScores: unknown;
@@ -176,6 +179,7 @@ export function toPublicProfile(row: ProfileRow, viewerId: string | null): Publi
     level: row.progress?.level ?? 1,
     xp: row.progress?.xp ?? 0,
     streak: row.progress?.streak ?? 0,
+    streakFreezes: row.progress?.streakFreezes ?? 0,
     stats,
     badges,
     isOwner: viewerId === row.id,

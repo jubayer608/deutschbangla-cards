@@ -3,6 +3,11 @@ import { auth } from "@/auth";
 import { getPrisma } from "@/lib/prisma";
 import { ensureBadges } from "@/lib/badges";
 import { sendWelcomeMail } from "@/lib/mailer";
+import {
+  applyStreakFreeze,
+  grantMilestoneFreezes,
+  latestActivityDayBeforeToday,
+} from "@/lib/streak";
 
 // Phase 0 — first-login migration: merge the browser's localStorage progress
 // (see lib/progress.ts, `dbc-*` keys) into the DB. Called once per session
@@ -69,6 +74,13 @@ function parseDate(v: unknown): Date | null {
   return Number.isNaN(d.getTime()) ? null : d;
 }
 
+/** "YYYY-MM-DD" day key, or null when invalid. */
+function parseDayKey(v: unknown): string | null {
+  return typeof v === "string" && /^\d{4}-\d{2}-\d{2}$/.test(v) && !Number.isNaN(Date.parse(`${v}T00:00:00.000Z`))
+    ? v
+    : null;
+}
+
 export async function POST(req: Request) {
   const session = await auth().catch(() => null);
   if (!session?.user?.id) {
@@ -95,6 +107,10 @@ export async function POST(req: Request) {
     quizBestScores: parseRecord(body.quizBestScores),
     activity: parseRecord(body.activity),
     lastStudyDate: parseDate(body.lastStudyDate),
+    // The client's local "today" (YYYY-MM-DD) — the streak belongs to
+    // the user's timezone, so gap math uses their day, not the
+    // server's. Falls back to the server's UTC day when absent.
+    today: parseDayKey(body.today) ?? new Date().toISOString().slice(0, 10),
   };
 
   const existing = await prisma.userProgress.findUnique({ where: { userId } });
@@ -127,32 +143,79 @@ export async function POST(req: Request) {
         : (db?.lastStudyDate ?? local.lastStudyDate ?? null),
   };
 
+  // Phase 5 — Streak Freeze (see lib/streak.ts). The gap is measured
+  // from the latest activity day strictly before the client's today.
+  // Gap decisions run at most once per day: after a freeze is consumed
+  // (or the streak resets), lastStudyDate is set to today, and a
+  // second sync the same day skips the gap logic (only idempotent
+  // milestone grants still run) — so one missed day can never eat
+  // two freezes. First-ever syncs skip gap logic entirely (pure
+  // migration); milestone grants still apply.
+  let finalStreak = merged.streak;
+  let finalFreezes = existing?.streakFreezes ?? 0;
+  let finalMilestone = existing?.lastFreezeMilestone ?? 0;
+  let freezeUsed = false;
+  let finalLastStudyDate = merged.lastStudyDate;
+  const lastStudyDayKey = existing?.lastStudyDate
+    ? existing.lastStudyDate.toISOString().slice(0, 10)
+    : null;
+  const decisionMadeToday = lastStudyDayKey !== null && lastStudyDayKey >= local.today;
+  if (existing && !decisionMadeToday) {
+    const lastActivityDay = latestActivityDayBeforeToday(merged.activity, local.today);
+    const freeze = applyStreakFreeze({
+      streak: merged.streak,
+      streakFreezes: finalFreezes,
+      lastFreezeMilestone: finalMilestone,
+      lastActivityDay,
+      today: local.today,
+      studiedToday: (merged.activity[local.today] ?? 0) > 0,
+      localStreak: local.streak,
+    });
+    finalStreak = freeze.streak;
+    finalFreezes = freeze.streakFreezes;
+    finalMilestone = freeze.lastFreezeMilestone;
+    freezeUsed = freeze.freezeUsed;
+    if (freezeUsed || freeze.streakReset) {
+      finalLastStudyDate = new Date(`${local.today}T00:00:00.000Z`);
+    }
+  } else {
+    // First sync (migration) or a decision already made today:
+    // milestone grants only — idempotent via lastFreezeMilestone.
+    const grants = grantMilestoneFreezes(finalStreak, finalFreezes, finalMilestone);
+    finalFreezes = grants.streakFreezes;
+    finalMilestone = grants.lastFreezeMilestone;
+  }
+
   const saved = await prisma.userProgress.upsert({
     where: { userId },
     create: {
       userId,
       xp: merged.xp,
       level: levelFor(merged.xp),
-      streak: merged.streak,
-      lastStudyDate: merged.lastStudyDate,
+      streak: finalStreak,
+      lastStudyDate: finalLastStudyDate,
       reviewed: merged.reviewed,
       knownWords: merged.knownWords,
       lessonsDone: merged.lessonsDone,
       quizBest: merged.quizBest,
       quizBestScores: merged.quizBestScores,
       activity: merged.activity,
+      streakFreezes: finalFreezes,
+      lastFreezeMilestone: finalMilestone,
     },
     update: {
       xp: merged.xp,
       level: levelFor(merged.xp),
-      streak: merged.streak,
-      lastStudyDate: merged.lastStudyDate,
+      streak: finalStreak,
+      lastStudyDate: finalLastStudyDate,
       reviewed: merged.reviewed,
       knownWords: merged.knownWords,
       lessonsDone: merged.lessonsDone,
       quizBest: merged.quizBest,
       quizBestScores: merged.quizBestScores,
       activity: merged.activity,
+      streakFreezes: finalFreezes,
+      lastFreezeMilestone: finalMilestone,
     },
   });
 
@@ -182,6 +245,8 @@ export async function POST(req: Request) {
       quizBestScores: saved.quizBestScores,
       activity: saved.activity,
       lastStudyDate: saved.lastStudyDate?.toISOString() ?? null,
+      streakFreezes: saved.streakFreezes,
+      freezeUsed,
     },
   });
 }

@@ -148,6 +148,19 @@ export function getFullProgress(): ProgressState {
   };
 }
 
+/**
+ * Phase 5 — Streak Freeze: adopt the server streak after a freeze was
+ * used. Writes count + lastVisit=today so the local run continues
+ * instead of restarting at 1 on the next recordReview.
+ */
+export function adoptServerStreak(streak: number): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(STREAK_KEY, JSON.stringify({ count: streak, lastVisit: dayKey() }));
+  } catch {
+    /* storage unavailable */
+  }
+}
 /** Add xp to the total and to today's activity entry. Returns the new state. */
 function applyXP(state: ProgressState, n: number): ProgressState {
   const activity = { ...state.activity };

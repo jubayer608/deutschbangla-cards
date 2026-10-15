@@ -24,6 +24,7 @@ import {
   Target,
   TrendingUp,
   Trophy,
+  Users,
   X,
   type LucideIcon,
 } from "lucide-react";
@@ -46,6 +47,7 @@ const menuLinks: NavLink[] = [
   { href: "/duel", label: "Quiz Duel", Icon: Swords, desc: "১ বনাম ১ কুইজ" },
   { href: "/review", label: "Review", Icon: Repeat, desc: "SM-2 রিভিশন" },
   { href: "/boss", label: "Boss Battle", Icon: Skull, desc: "কঠিন শব্দের বস" },
+  { href: "/community", label: "Community", Icon: Users, desc: "শব্দ/idea পাঠাও" },
   { href: "/opportunities", label: "সুযোগ", Icon: Briefcase, desc: "ক্যারিয়ার গাইড" },
   { href: "/resources", label: "রিসোর্স", Icon: Globe, desc: "বাইরের রিসোর্স" },
   { href: "/blog", label: "ব্লগ", Icon: PenLine, desc: "আর্টিকেল" },

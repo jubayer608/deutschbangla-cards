@@ -38,6 +38,7 @@ model User {
   following       Follow[]       @relation("Follower")
   notifications   Notification[]
   emailPreference EmailPreference?
+  settings        UserSettings?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -167,4 +168,24 @@ model EmailPreference {
   weeklyReport  Boolean @default(true)
   streakNudge   Boolean @default(true)
   wordOfDay     Boolean @default(false)
+}
+
+// ── Phase 1 — profile settings ──────────────────────────────────────────
+
+model UserSettings {
+  id      String @id @default(cuid())
+  userId  String @unique
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Daily XP target shown on the profile / progress pages.
+  dailyGoalXp Int @default(50)
+  // Reminder time "HH:MM" (local time, as typed by the user) or null.
+  reminderTime String?
+  // Preferred quiz/lesson difficulty: easy | medium | hard | mixed.
+  difficulty String @default("mixed")
+  // Profile visibility: public | friends | private.
+  privacy String @default("public")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

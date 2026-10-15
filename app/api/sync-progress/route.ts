@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { getPrisma } from "@/lib/prisma";
+import { ensureBadges } from "@/lib/badges";
 
 // Phase 0 — first-login migration: merge the browser's localStorage progress
 // (see lib/progress.ts, `dbc-*` keys) into the DB. Called once per session
@@ -152,6 +153,15 @@ export async function POST(req: Request) {
       quizBestScores: merged.quizBestScores,
       activity: merged.activity,
     },
+  });
+
+  // Phase 1 — evaluate badge unlocks against the merged state.
+  await ensureBadges(prisma, userId, {
+    streak: saved.streak,
+    knownWords: saved.knownWords,
+    quizBestScores: saved.quizBestScores,
+  }).catch(() => {
+    /* badges must never break the sync flow */
   });
 
   return NextResponse.json({

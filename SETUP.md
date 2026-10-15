@@ -77,3 +77,16 @@ Vercel → Project Settings → **Environment Variables** → add all five:
 - Auth.js session strategy is `database` (sessions stored in the `Session`
   table). If the DB is unreachable, sign-in fails gracefully to the Auth.js
   error page — the rest of the site is unaffected.
+
+## Phase 1 — profile (migration 0002)
+
+After Phase 0 is set up, apply the profile migration once:
+
+```bash
+npx prisma migrate deploy   # applies prisma/migrations/0002_user_settings/
+# ...or: npx prisma db push
+```
+
+Then: sign in → Navbar avatar menu → **আমার প্রোফাইল** → pick a username
+(`/profile/[username]`). Settings live at `/profile/settings`
+(daily XP goal, reminder time, difficulty, privacy: public / friends / private).

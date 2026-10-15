@@ -1,0 +1,2 @@
+# Prisma migration lock (Phase 0 generated 0001_init via migrate diff).
+provider = "postgresql"

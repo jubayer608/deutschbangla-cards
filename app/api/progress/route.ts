@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { getPrisma } from "@/lib/prisma";
+import { ensureBadges } from "@/lib/badges";
 
 // Phase 0 — read the signed-in user's DB progress (merged state).
 // Returns { progress: null } when the user has never synced.
@@ -18,6 +19,16 @@ export async function GET() {
     where: { userId: session.user.id },
   });
   if (!row) return NextResponse.json({ progress: null });
+
+  // Phase 1 — badge unlocks are evaluated on read too, so a user who
+  // earned a badge (e.g. via a local streak) gets it without re-syncing.
+  await ensureBadges(prisma, session.user.id, {
+    streak: row.streak,
+    knownWords: row.knownWords,
+    quizBestScores: row.quizBestScores,
+  }).catch(() => {
+    /* badges must never break the read flow */
+  });
 
   return NextResponse.json({
     progress: {

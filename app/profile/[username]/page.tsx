@@ -6,6 +6,7 @@ import { getPrisma } from "@/lib/prisma";
 import { canViewProfile, toPublicProfile } from "@/lib/profile";
 import Mascot from "@/components/Mascot";
 import CopyLinkButton from "@/components/CopyLinkButton";
+import ProfileFollow from "@/components/ProfileFollow";
 import {
   BookOpen,
   CalendarDays,
@@ -78,7 +79,12 @@ export default async function ProfilePage({
 
   const user = await prisma.user.findUnique({
     where: { username: username.toLowerCase() },
-    include: { progress: true, badges: true, settings: true },
+    include: {
+      progress: true,
+      badges: true,
+      settings: true,
+      _count: { select: { followers: true, following: true } },
+    },
   });
   if (!user) notFound();
 
@@ -114,6 +120,16 @@ export default async function ProfilePage({
   const dailyGoal = profile.isOwner ? (user.settings?.dailyGoalXp ?? 50) : null;
   const goalPct = dailyGoal ? Math.min(100, Math.round((todayXp / dailyGoal) * 100)) : 0;
   const maxHeat = Math.max(1, ...profile.stats.heatmap.map((h) => h.xp));
+
+  // Phase 2 — does the viewer already follow this user?
+  const isFollowing = viewerId && !profile.isOwner
+    ? (await prisma.follow.findUnique({
+        where: {
+          followerId_followingId: { followerId: viewerId, followingId: user.id },
+        },
+        select: { id: true },
+      })) !== null
+    : false;
 
   return (
     <div className="flex flex-col gap-5">
@@ -167,6 +183,15 @@ export default async function ProfilePage({
 
           <div className="flex flex-wrap items-center gap-2">
             <CopyLinkButton />
+            <ProfileFollow
+              targetId={user.id}
+              targetUsername={profile.username}
+              isOwner={profile.isOwner}
+              signedIn={viewerId !== null}
+              initialFollowing={isFollowing}
+              initialFollowersCount={user._count.followers}
+              initialFollowingCount={user._count.following}
+            />
             {profile.isOwner && (
               <>
                 <Link

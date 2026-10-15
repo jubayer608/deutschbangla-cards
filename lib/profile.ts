@@ -48,13 +48,23 @@ export interface PublicProfile {
 
 const DAY_MS = 86_400_000;
 
-function dayKey(d: Date): string {
+/** "YYYY-MM-DD" key for a Date, using the server's local calendar day. */
+export function dayKey(d: Date): string {
   const m = String(d.getMonth() + 1).padStart(2, "0");
   const day = String(d.getDate()).padStart(2, "0");
   return `${d.getFullYear()}-${m}-${day}`;
 }
 
-function parseActivity(v: unknown): Record<string, number> {
+/** The last `n` day keys, oldest → newest (same convention as the heatmap). */
+export function lastNDayKeys(n: number): string[] {
+  return Array.from({ length: n }, (_, i) => {
+    const d = new Date(Date.now() - (n - 1 - i) * DAY_MS);
+    return dayKey(d);
+  });
+}
+
+/** Parse a `Record<string, number>` Json field defensively. */
+export function parseActivity(v: unknown): Record<string, number> {
   if (!v || typeof v !== "object" || Array.isArray(v)) return {};
   const out: Record<string, number> = {};
   for (const [k, val] of Object.entries(v as Record<string, unknown>)) {

@@ -19,6 +19,7 @@ import {
   Puzzle,
   Target,
   TrendingUp,
+  Trophy,
   X,
   type LucideIcon,
 } from "lucide-react";
@@ -37,6 +38,7 @@ const coreLinks: NavLink[] = [
 const menuLinks: NavLink[] = [
   { href: "/grammatik", label: "ব্যাকরণ", Icon: Puzzle, desc: "গ্রামার টপিক" },
   { href: "/fortschritt", label: "অগ্রগতি", Icon: TrendingUp, desc: "তোমার প্রগ্রেস" },
+  { href: "/leaderboard", label: "লিডারবোর্ড", Icon: Trophy, desc: "টপ লার্নার" },
   { href: "/opportunities", label: "সুযোগ", Icon: Briefcase, desc: "ক্যারিয়ার গাইড" },
   { href: "/resources", label: "রিসোর্স", Icon: Globe, desc: "বাইরের রিসোর্স" },
   { href: "/blog", label: "ব্লগ", Icon: PenLine, desc: "আর্টিকেল" },

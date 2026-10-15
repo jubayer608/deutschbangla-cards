@@ -43,9 +43,38 @@ model User {
   mailLogs        MailLog[]
   createdDuels    Duel[] @relation("DuelCreator")
   joinedDuels     Duel[] @relation("DuelOpponent")
+  wordReviews     WordReview[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// ── Phase 5 — SM-2 spaced repetition ──────────────────────────────────────
+
+model WordReview {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Word id from the static curriculum (data/words.ts, e.g. "familie-01").
+  // NOT an FK: words live in static data, not in the DB.
+  wordId String
+
+  // SM-2 state (see lib/sm2.ts for the algorithm).
+  easeFactor   Float   @default(2.5)
+  intervalDays Int     @default(0)
+  repetitions  Int     @default(0)
+  lapses       Int     @default(0)
+  // When the word is due again. New words have no row yet — a missing
+  // row means "new, due now"; rows are created on the first answer.
+  nextReviewAt DateTime @default(now())
+  lastQuality  Int?
+
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, wordId])
+  @@index([userId])
+  @@index([nextReviewAt])
 }
 
 // ── Phase 5 — quiz duel (1v1, realtime-ish via polling) ─────────────────

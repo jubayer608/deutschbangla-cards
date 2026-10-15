@@ -44,9 +44,53 @@ model User {
   createdDuels    Duel[] @relation("DuelCreator")
   joinedDuels     Duel[] @relation("DuelOpponent")
   wordReviews     WordReview[]
+  certificates    Certificate[]
+  submissions     Submission[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// ── Phase 5 — A1 Certificate (one per user, idempotent issue) ───────
+
+model Certificate {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Public verification code, e.g. "ULLUK-KQ7X-2P9M".
+  code String @unique
+  // Display name at issue time (frozen — later renames don't rewrite it).
+  name String
+  // Snapshot at issue time: { lessonsDone, knownWords, quizCompleted, xp, level }.
+  criteria Json
+  issuedAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+// ── Phase 5 — Community Submissions ──────────────────────────────────
+
+model Submission {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // word | phrase | lesson_idea
+  type String
+  // word: { german, bangla, article?, example?, category? }
+  // phrase: { german, bangla, context? }
+  // lesson_idea: { title, description }
+  payload Json
+  // pending | approved | rejected
+  status String @default("pending")
+  moderatorNote String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
 }
 
 // ── Phase 5 — SM-2 spaced repetition ──────────────────────────────────────

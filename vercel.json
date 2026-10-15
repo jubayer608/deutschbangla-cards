@@ -1,0 +1,1 @@
+{"$schema":"https://openapi.vercel.sh/vercel.json","crons":[{"path":"/api/mail/cron?kind=weekly","schedule":"0 2 * * 1"},{"path":"/api/mail/cron?kind=wordofday","schedule":"0 2 * * *"},{"path":"/api/mail/cron?kind=streak","schedule":"0 12 * * *"}]}

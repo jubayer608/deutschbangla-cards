@@ -112,3 +112,56 @@ Add to Vercel env vars (Production + Preview):
 `VAPID_PRIVATE_KEY` (the PRIVATE value). Then redeploy.
 Without these keys, push sending is a no-op and the push toggle hides
 itself — in-app notifications still work. Never commit the keys.
+
+## Phase 4 — mail via Resend (migration 0004 + API key + cron secret)
+
+Apply the mail-log migration once (creates `MailLog` — send idempotency
++ audit, deduped per user/kind/window):
+
+```bash
+npx prisma migrate deploy   # applies prisma/migrations/0004_mail_log/
+# ...or: npx prisma db push
+```
+
+### 1. Create a Resend account + API key
+
+1. Go to [resend.com](https://resend.com) → sign up (free tier).
+2. **API Keys** → Create API Key → copy it (starts with `re_`).
+3. Add to Vercel env vars (Production + Preview): `RESEND_API_KEY`.
+4. **Without `RESEND_API_KEY`, all mail sending is a no-op** — welcome
+   mail, weekly reports, streak nudges, word-of-day: nothing is sent and
+   nothing breaks. The cron endpoint still runs and reports `sent: 0`.
+
+### 2. Verified sender domain (for production delivery)
+
+By default the code sends from Resend's test sender
+(`onboarding@resend.dev`), which only delivers to the Resend account
+owner's own email. For real delivery to all users:
+
+1. Resend → **Domains** → Add Domain → follow the DNS steps.
+2. Add to Vercel env vars: `EMAIL_FROM` (e.g. `Ulluk <hello@yourdomain.com>`).
+
+### 3. Cron secret
+
+Generate once and add to Vercel env vars (Production + Preview):
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
+```
+
+→ `CRON_SECRET`. Vercel Cron calls `GET /api/mail/cron?kind=…` with
+`Authorization: Bearer <CRON_SECRET>`. Without it, the endpoint returns
+503 (cron disabled) — the endpoint never runs unauthenticated.
+
+### 4. Cron schedule (vercel.json)
+
+| Kind | Schedule (UTC) | Dhaka time |
+|---|---|---|
+| `wordofday` — Word of the Day | daily `0 2 * * *` | 08:00 |
+| `weekly` — Weekly report | Mondays `0 2 * * 1` | 08:00 |
+| `streak` — Streak nudge | daily `0 12 * * *` | 18:00 |
+
+Recipients honour their email-preference toggles (`/profile/settings`):
+weekly report / streak nudge default ON, word-of-day default OFF.
+Welcome mail sends once ever, on first progress sync. Every mail footer
+carries a one-click unsubscribe link (HMAC-signed, no login needed).

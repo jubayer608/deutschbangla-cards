@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { getPrisma } from "@/lib/prisma";
 import { ensureBadges } from "@/lib/badges";
+import { sendWelcomeMail } from "@/lib/mailer";
 
 // Phase 0 — first-login migration: merge the browser's localStorage progress
 // (see lib/progress.ts, `dbc-*` keys) into the DB. Called once per session
@@ -162,6 +163,11 @@ export async function POST(req: Request) {
     quizBestScores: saved.quizBestScores,
   }).catch(() => {
     /* badges must never break the sync flow */
+  });
+
+  // Phase 4 — welcome mail (once ever, best-effort, never breaks sync).
+  await sendWelcomeMail(prisma, userId).catch(() => {
+    /* mail must never break the sync flow */
   });
 
   return NextResponse.json({

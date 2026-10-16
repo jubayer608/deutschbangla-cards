@@ -1,13 +1,23 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   resources,
   resourceCategories,
   type ResourceCategory,
 } from "@/data/resources";
-import { ArrowUpRight, Globe, Lightbulb, Search, SearchX, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Award,
+  Globe,
+  Lightbulb,
+  Search,
+  SearchX,
+  Sparkles,
+} from "lucide-react";
 
 const container = {
   hidden: {},
@@ -103,6 +113,35 @@ export default function ResourcesPage() {
             <c.Icon className="h-4 w-4" aria-hidden /> {c.bangla}
           </button>
         ))}
+      </motion.div>
+
+      {/* Goethe A1 exam guide — internal */}
+      <motion.div variants={item}>
+        <Link
+          href="/goethe-a1"
+          className="card card-hover group flex items-start gap-4 rounded-3xl p-5 transition active:scale-[0.99]"
+        >
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-cream ring-1 ring-teal/20">
+            <Award className="h-6 w-6 text-teal" aria-hidden />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="flex flex-wrap items-center gap-2">
+              <span className="text-base font-extrabold text-navy">
+                Goethe A1 পরীক্ষা — Start Deutsch 1
+              </span>
+              <span className="badge font-bangla rounded-full bg-teal/10 px-2 py-0.5 text-[11px] font-bold text-teal">
+                পরীক্ষার গাইড
+              </span>
+            </span>
+            <span className="font-bangla mt-1.5 block text-sm leading-relaxed text-slate-500">
+              ৪টা মডিউলের সময়, নম্বর আর পাস মার্ক, পরীক্ষার দিনের করণীয়, ৪
+              সপ্তাহের প্রস্তুতি প্ল্যান আর বৈধ বইয়ের তালিকা — এক পেজে।
+            </span>
+            <span className="font-bangla mt-2 inline-flex items-center gap-1 text-sm font-bold text-teal transition group-hover:gap-2">
+              গাইড দেখো <ArrowRight className="h-4 w-4" aria-hidden />
+            </span>
+          </span>
+        </Link>
       </motion.div>
 
       {/* Cards */}

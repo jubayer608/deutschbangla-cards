@@ -403,6 +403,17 @@ export default function LessonExam({
                 </Link>
               )}
             </div>
+            {passed && (
+              <p className="font-bangla text-center text-sm text-slate-600">
+                Goethe A1 exam-er jonno prostut hou —{" "}
+                <Link
+                  href="/goethe-a1"
+                  className="font-bold text-teal underline underline-offset-2"
+                >
+                  Exam guide dekho
+                </Link>
+              </p>
+            )}
           </div>
 
           {/* Per-question review */}

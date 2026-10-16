@@ -258,7 +258,7 @@ export default function LessonExam({
                         type="button"
                         onClick={() => setAnswer(qi, opt)}
                         aria-pressed={selected}
-                        className={`rounded-2xl px-4 py-3 text-left font-bold shadow-sm transition active:scale-[0.98] ${
+                        className={`min-h-11 rounded-2xl px-4 py-3 text-left font-bold shadow-sm transition active:scale-[0.98] ${
                           selected
                             ? "bg-teal text-white ring-2 ring-teal"
                             : "bg-cream/50 text-slate-800 ring-1 ring-slate-200 hover:ring-teal/50"
@@ -296,7 +296,7 @@ export default function LessonExam({
                         key={`${optIndex}-${pos}`}
                         type="button"
                         onClick={() => toggleOrderWord(qi, optIndex, true)}
-                        className="rounded-xl bg-teal px-3 py-2 font-bold text-white shadow-sm"
+                        className="inline-flex min-h-11 items-center rounded-xl bg-teal px-3.5 py-2.5 font-bold text-white shadow-sm"
                       >
                         {q.options?.[optIndex]}
                       </button>
@@ -308,7 +308,7 @@ export default function LessonExam({
                         key={optIndex}
                         type="button"
                         onClick={() => toggleOrderWord(qi, optIndex, false)}
-                        className="rounded-xl bg-white px-3 py-2 font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 transition active:scale-95"
+                        className="inline-flex min-h-11 items-center rounded-xl bg-white px-3.5 py-2.5 font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 transition active:scale-95"
                       >
                         {q.options?.[optIndex]}
                       </button>
@@ -325,7 +325,7 @@ export default function LessonExam({
               type="button"
               onClick={() => setQi((v) => Math.max(0, v - 1))}
               disabled={qi === 0}
-              className="btn btn-ghost inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 disabled:opacity-40"
+              className="btn btn-ghost inline-flex items-center gap-1.5 rounded-full px-5 py-3 disabled:opacity-40"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden /> আগেরটা
             </button>
@@ -333,7 +333,7 @@ export default function LessonExam({
               <button
                 type="button"
                 onClick={() => setQi((v) => Math.min(total - 1, v + 1))}
-                className="btn btn-primary inline-flex items-center gap-1.5 rounded-full px-6 py-2.5"
+                className="btn btn-primary inline-flex items-center gap-1.5 rounded-full px-6 py-3"
               >
                 পরেরটা <ArrowRight className="h-4 w-4" aria-hidden />
               </button>
@@ -341,7 +341,7 @@ export default function LessonExam({
               <button
                 type="button"
                 onClick={submit}
-                className="btn btn-primary inline-flex items-center gap-1.5 rounded-full px-6 py-2.5"
+                className="btn btn-primary inline-flex items-center gap-1.5 rounded-full px-6 py-3"
               >
                 <Flag className="h-4 w-4" aria-hidden /> Result দেখো
               </button>
@@ -382,14 +382,14 @@ export default function LessonExam({
               <button
                 type="button"
                 onClick={retry}
-                className="btn btn-secondary inline-flex items-center gap-1.5 rounded-full px-6 py-2.5"
+                className="btn btn-secondary inline-flex items-center gap-1.5 rounded-full px-6 py-3"
               >
                 <RotateCcw className="h-4 w-4" aria-hidden /> Abar dao
               </button>
               {passed && lessonId < 12 && (
                 <Link
                   href={`/lektionen/${lessonId + 1}`}
-                  className="btn btn-primary inline-flex items-center gap-1.5 rounded-full px-6 py-2.5"
+                  className="btn btn-primary inline-flex items-center gap-1.5 rounded-full px-6 py-3"
                 >
                   Porer lesson <ArrowRight className="h-4 w-4" aria-hidden />
                 </Link>
@@ -397,7 +397,7 @@ export default function LessonExam({
               {passed && lessonId >= 12 && (
                 <Link
                   href="/certificate"
-                  className="btn btn-primary inline-flex items-center gap-1.5 rounded-full px-6 py-2.5"
+                  className="btn btn-primary inline-flex items-center gap-1.5 rounded-full px-6 py-3"
                 >
                   Certificate দেখো <ArrowRight className="h-4 w-4" aria-hidden />
                 </Link>

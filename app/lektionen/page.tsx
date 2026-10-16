@@ -121,8 +121,8 @@ export default function LektionenPage() {
                         l.id
                       )}
                     </span>
-                    <span className="flex-1">
-                      <span className="block font-extrabold text-navy">
+                    <span className="min-w-0 flex-1">
+                      <span className="block break-words font-extrabold text-navy">
                         Lektion {l.id}: {l.title}
                       </span>
                       <span className="font-bangla block text-sm text-slate-500">{l.titleBangla}</span>
@@ -151,7 +151,7 @@ export default function LektionenPage() {
                     <div className="mt-3 border-t border-slate-100 pt-3">
                       <Link
                         href={`/lektionen/${l.id}#exam`}
-                        className="btn btn-primary inline-flex items-center gap-1.5 rounded-full px-5 py-2 text-sm"
+                        className="btn btn-primary inline-flex items-center gap-1.5 rounded-full px-5 py-3 text-sm"
                       >
                         <Play className="h-4 w-4" aria-hidden /> Exam dao
                       </Link>

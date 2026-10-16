@@ -393,7 +393,7 @@ export default function ChatRoom({ variant = "page" }: { variant?: "page" | "wid
                         type="button"
                         onClick={() => void remove(m.id)}
                         aria-label="Message delete koro"
-                        className="ml-1 inline-flex align-middle text-mist hover:text-rose-500"
+                        className="ml-1 inline-flex min-h-11 min-w-11 items-center justify-center align-middle text-mist hover:text-rose-500"
                       >
                         <Trash2 className="h-3 w-3" aria-hidden />
                       </button>
@@ -429,7 +429,7 @@ export default function ChatRoom({ variant = "page" }: { variant?: "page" | "wid
             maxLength={CHAT_MAX_LENGTH}
             placeholder="Message likho…"
             aria-label="Chat message"
-            className="font-bangla w-full rounded-full bg-white px-4 py-3 text-sm text-slate-800 shadow ring-1 ring-slate-200 outline-none focus:ring-2 focus:ring-teal"
+            className="font-bangla w-full rounded-full bg-white px-4 py-3 text-base text-slate-800 shadow ring-1 ring-slate-200 outline-none focus:ring-2 focus:ring-teal"
           />
           <p className="font-bangla mt-1 text-right text-xs text-mist">
             {draft.length}/{CHAT_MAX_LENGTH}

@@ -38,7 +38,7 @@ export default function AuthButton({ authConfigured }: { authConfigured: boolean
         type="button"
         disabled
         title="Login setup baki — SETUP.md dekho (Neon + Google OAuth)"
-        className="font-bangla inline-flex shrink-0 cursor-not-allowed items-center gap-1.5 rounded-full bg-cream px-3 py-2 text-[13px] font-bold text-mist ring-1 ring-slate-200"
+        className="font-bangla inline-flex min-h-11 shrink-0 cursor-not-allowed items-center gap-1.5 rounded-full bg-cream px-3 py-2 text-[13px] font-bold text-mist ring-1 ring-slate-200"
       >
         <LogIn className="h-4 w-4" aria-hidden />
         লগইন
@@ -64,7 +64,7 @@ export default function AuthButton({ authConfigured }: { authConfigured: boolean
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-haspopup="menu"
-          className="inline-flex items-center gap-1.5 rounded-full py-0.5 pl-0.5 pr-1 transition hover:bg-cream"
+          className="inline-flex min-h-11 items-center gap-1.5 rounded-full py-0.5 pl-0.5 pr-1 transition hover:bg-cream"
         >
           {image ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -130,7 +130,7 @@ export default function AuthButton({ authConfigured }: { authConfigured: boolean
     <button
       type="button"
       onClick={() => signIn("google")}
-      className="font-bangla inline-flex shrink-0 items-center gap-1.5 rounded-full bg-navy px-3 py-2 text-[13px] font-bold text-white shadow-sm transition hover:bg-navy/90 active:scale-95"
+      className="font-bangla inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-full bg-navy px-3 py-2 text-[13px] font-bold text-white shadow-sm transition hover:bg-navy/90 active:scale-95"
     >
       <LogIn className="h-4 w-4" aria-hidden />
       Google দিয়ে লগইন

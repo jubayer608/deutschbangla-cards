@@ -44,7 +44,7 @@ export default function SpeakButton({ text, className = "", dark = false }: Spea
       whileTap={{ scale: 0.82 }}
       aria-label="উচ্চারণ শোনো"
       title="উচ্চারণ শোনো (Aussprache)"
-      className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full shadow-sm transition active:scale-95 ${
+      className={`inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full shadow-sm transition active:scale-95 ${
         speaking
           ? "bg-navy text-white"
           : dark

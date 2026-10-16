@@ -47,7 +47,7 @@ export default function NotificationBell() {
       aria-label={
         count > 0 ? `নোটিফিকেশন (${count}টি অপঠিত)` : "নোটিফিকেশন"
       }
-      className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-navy transition hover:bg-cream active:scale-95"
+      className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-navy transition hover:bg-cream active:scale-95"
     >
       <Bell className="h-5 w-5" aria-hidden />
       {count > 0 && (

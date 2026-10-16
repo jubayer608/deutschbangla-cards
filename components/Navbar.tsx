@@ -252,7 +252,7 @@ export default function Navbar({ authConfigured }: { authConfigured: boolean }) 
                   aria-hidden
                 />
                 <span
-                  className={`font-bangla relative z-10 text-[10px] leading-tight ${
+                  className={`font-bangla relative z-10 text-[11px] leading-tight ${
                     active ? "font-extrabold text-navy" : "font-semibold text-mist"
                   }`}
                 >
@@ -282,7 +282,7 @@ export default function Navbar({ authConfigured }: { authConfigured: boolean }) 
               aria-hidden
             />
             <span
-              className={`font-bangla relative z-10 text-[10px] leading-tight ${
+              className={`font-bangla relative z-10 text-[11px] leading-tight ${
                 menuActive ? "font-extrabold text-navy" : "font-semibold text-mist"
               }`}
             >
@@ -322,7 +322,7 @@ export default function Navbar({ authConfigured }: { authConfigured: boolean }) 
                   type="button"
                   onClick={() => setMenuOpen(false)}
                   aria-label="মেনু বন্ধ করুন"
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-cream text-navy transition active:scale-95"
+                  className="flex h-11 w-11 items-center justify-center rounded-full bg-cream text-navy transition active:scale-95"
                 >
                   <X className="h-5 w-5" aria-hidden />
                 </button>

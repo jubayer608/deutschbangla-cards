@@ -96,7 +96,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Suspense fallback={null}>
             <Navbar authConfigured={authConfigured} />
           </Suspense>
-          <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-6 pb-28 lg:pb-10">
+          <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-6 pb-[calc(7rem+env(safe-area-inset-bottom))] lg:pb-10">
             <Suspense fallback={null}>{children}</Suspense>
           </main>
           <Footer />

@@ -40,7 +40,7 @@ export default function Footer() {
 
   return (
     <footer className="relative mt-10 overflow-hidden bg-navy text-cream">
-      <div className="relative mx-auto max-w-5xl px-4 pb-28 pt-10 lg:pb-10">
+      <div className="relative mx-auto max-w-5xl px-4 pb-[calc(7rem+env(safe-area-inset-bottom))] pt-10 lg:pb-10">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4">
           {/* Brand */}
           <motion.div
@@ -82,7 +82,7 @@ export default function Footer() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="font-bangla group text-sm font-semibold text-cream/70 transition hover:text-white"
+                    className="font-bangla group inline-block py-1 text-sm font-semibold text-cream/70 transition hover:text-white"
                   >
                     {l.label}
                     <span className="ml-1.5 text-xs font-medium text-mist transition group-hover:text-teal">
@@ -110,7 +110,7 @@ export default function Footer() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="font-bangla group text-sm font-semibold text-cream/70 transition hover:text-white"
+                    className="font-bangla group inline-block py-1 text-sm font-semibold text-cream/70 transition hover:text-white"
                   >
                     {l.label}
                     <span className="ml-1.5 text-xs font-medium text-mist transition group-hover:text-teal">

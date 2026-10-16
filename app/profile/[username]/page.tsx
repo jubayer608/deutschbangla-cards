@@ -202,13 +202,13 @@ export default async function ProfilePage({
               <>
                 <Link
                   href="/profile/settings"
-                  className="font-bangla inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-bold text-navy transition hover:bg-cream active:scale-95"
+                  className="font-bangla inline-flex min-h-11 items-center gap-1.5 rounded-full bg-white px-4 py-2.5 text-sm font-bold text-navy transition hover:bg-cream active:scale-95"
                 >
                   <SettingsIcon className="h-4 w-4" aria-hidden /> সেটিংস
                 </Link>
                 <Link
                   href="/fortschritt"
-                  className="font-bangla inline-flex items-center gap-1.5 rounded-full bg-teal px-4 py-2 text-sm font-bold text-white transition hover:bg-teal/90 active:scale-95"
+                  className="font-bangla inline-flex min-h-11 items-center gap-1.5 rounded-full bg-teal px-4 py-2.5 text-sm font-bold text-white transition hover:bg-teal/90 active:scale-95"
                 >
                   <Pencil className="h-4 w-4" aria-hidden /> পড়াশোনা চালিয়ে যাও
                 </Link>
@@ -235,7 +235,7 @@ export default async function ProfilePage({
 
       {/* Celebration for newly unlocked badges (owner only) */}
       {newBadges.length > 0 && (
-        <section className="flex items-center gap-4 rounded-3xl bg-sun/15 p-5 ring-1 ring-sun/40">
+        <section className="flex flex-col items-center gap-4 rounded-3xl bg-sun/15 p-5 text-center ring-1 ring-sun/40 sm:flex-row sm:text-left">
           <Mascot mood="celebrate" size={76} className="shrink-0" />
           <div>
             <h2 className="font-bangla text-lg font-extrabold text-navy">নতুন ব্যাজ আনলকড! 🎉</h2>
@@ -283,13 +283,13 @@ export default async function ProfilePage({
             const height = day.xp > 0 ? Math.max(12, Math.round((day.xp / maxHeat) * 100)) : 4;
             return (
               <div key={day.date} className="flex flex-1 flex-col items-center gap-1.5">
-                <span className="text-[11px] font-bold text-navy">{day.xp > 0 ? day.xp : ""}</span>
+                <span className="text-xs font-bold text-navy">{day.xp > 0 ? day.xp : ""}</span>
                 <div
                   className={`w-full max-w-8 rounded-t-lg ${day.xp > 0 ? "bg-teal" : "bg-slate-100"}`}
                   style={{ height: `${height}px` }}
                   title={`${day.date}: ${day.xp} XP`}
                 />
-                <span className="font-bangla text-[11px] font-bold text-mist">{label}</span>
+                <span className="font-bangla text-xs font-bold text-mist">{label}</span>
               </div>
             );
           })}
@@ -325,7 +325,7 @@ export default async function ProfilePage({
                 <p className="text-xs font-bold text-mist">{b.def.title}</p>
                 <p className="font-bangla mt-1 text-xs text-slate-500">{b.def.description}</p>
                 {b.unlocked && b.unlockedAt && (
-                  <p className="font-bangla mt-1.5 text-[11px] font-bold text-teal">
+                  <p className="font-bangla mt-1.5 text-xs font-bold text-teal">
                     আনলকড:{" "}
                     {b.unlockedAt.toLocaleDateString("bn-BD", {
                       day: "numeric",

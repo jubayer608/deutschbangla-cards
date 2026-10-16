@@ -52,7 +52,7 @@ export default function FollowButton({
       onClick={toggle}
       disabled={busy}
       aria-pressed={following}
-      className={`font-bangla inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold transition active:scale-95 disabled:opacity-60 ${
+      className={`font-bangla inline-flex min-h-11 items-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-bold transition active:scale-95 disabled:opacity-60 ${
         following
           ? "bg-white/15 text-white ring-1 ring-white/25 hover:bg-white/25"
           : "bg-white text-navy hover:bg-cream"

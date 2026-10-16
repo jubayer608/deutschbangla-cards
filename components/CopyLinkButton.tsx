@@ -22,7 +22,7 @@ export default function CopyLinkButton() {
     <button
       type="button"
       onClick={copy}
-      className="font-bangla inline-flex items-center gap-1.5 rounded-full bg-white/15 px-4 py-2 text-sm font-bold text-white ring-1 ring-white/25 transition hover:bg-white/25 active:scale-95"
+      className="font-bangla inline-flex min-h-11 items-center gap-1.5 rounded-full bg-white/15 px-4 py-2.5 text-sm font-bold text-white ring-1 ring-white/25 transition hover:bg-white/25 active:scale-95"
     >
       {copied ? (
         <>

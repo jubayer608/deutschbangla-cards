@@ -171,7 +171,7 @@ export default function GoetheA1Page() {
         </h2>
         <div className="flex flex-col gap-3">
           {modules.map((m) => (
-            <div key={m.name} className="card rounded-3xl p-5">
+            <div key={m.name} className="card rounded-3xl p-4 sm:p-5">
               <div className="flex items-start gap-4">
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-cream ring-1 ring-teal/20">
                   <m.Icon className="h-6 w-6 text-teal" aria-hidden />
@@ -202,7 +202,7 @@ export default function GoetheA1Page() {
         <h2 className="section-heading font-bangla inline-flex items-center gap-2 text-lg">
           <Award className="h-5 w-5 text-teal" aria-hidden /> নম্বর আর পাস মার্ক
         </h2>
-        <div className="card rounded-3xl p-5">
+        <div className="card rounded-3xl p-4 sm:p-5">
           <div className="flex flex-col gap-4">
             <div className="flex flex-wrap gap-3">
               <div className="rounded-2xl bg-cream px-4 py-3 ring-1 ring-teal/20">
@@ -254,7 +254,7 @@ export default function GoetheA1Page() {
         <h2 className="section-heading font-bangla inline-flex items-center gap-2 text-lg">
           <CalendarCheck className="h-5 w-5 text-teal" aria-hidden /> পরীক্ষার দিন — কী নিবে, কী মনে রাখবে
         </h2>
-        <div className="card rounded-3xl p-5">
+        <div className="card rounded-3xl p-4 sm:p-5">
           <ul className="font-bangla flex flex-col gap-2.5 text-sm leading-relaxed text-slate-600">
             <li className="flex items-start gap-2">
               <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-teal" aria-hidden />
@@ -310,13 +310,13 @@ export default function GoetheA1Page() {
         </h2>
         <div className="flex flex-col gap-3">
           {plan.map((p) => (
-            <div key={p.week} className="card rounded-3xl p-5">
+            <div key={p.week} className="card rounded-3xl p-4 sm:p-5">
               <p className="font-bangla font-extrabold text-navy">{p.week}</p>
               <p className="font-bangla mt-1 text-sm leading-relaxed text-slate-600">{p.text}</p>
             </div>
           ))}
         </div>
-        <div className="card rounded-3xl p-5">
+        <div className="card rounded-3xl p-4 sm:p-5">
           <p className="font-bangla font-extrabold text-navy">পরীক্ষার হলে কাজে লাগবে এমন টিপস</p>
           <ul className="font-bangla mt-2 flex flex-col gap-2 text-sm leading-relaxed text-slate-600">
             <li>• <strong className="text-navy">Hören:</strong> অডিও শুরুর আগে প্রশ্নগুলো পড়ে নাও, keyword-এ কান দাও। কিছু অডিও একবারই বাজতে পারে — প্রথমবারই মন দিয়ে শোনো।</li>
@@ -339,7 +339,7 @@ export default function GoetheA1Page() {
               href={b.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="card card-hover group flex items-start gap-4 rounded-3xl p-5 transition active:scale-[0.99]"
+              className="card card-hover group flex items-start gap-4 rounded-3xl p-4 sm:p-5 transition active:scale-[0.99]"
             >
               <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-cream ring-1 ring-teal/20">
                 <BookOpen className="h-6 w-6 text-teal" aria-hidden />
@@ -384,7 +384,7 @@ export default function GoetheA1Page() {
             href="https://www.goethe.de/ins/sg/en/m/kur/prf/gzsd1/ueb.html"
             target="_blank"
             rel="noopener noreferrer"
-            className="card card-hover group flex items-start gap-4 rounded-3xl p-5 transition active:scale-[0.99]"
+            className="card card-hover group flex items-start gap-4 rounded-3xl p-4 sm:p-5 transition active:scale-[0.99]"
           >
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-cream ring-1 ring-teal/20">
               <FileText className="h-6 w-6 text-teal" aria-hidden />
@@ -404,7 +404,7 @@ export default function GoetheA1Page() {
             href="https://www.dw.com/en/learn-german/s-2469"
             target="_blank"
             rel="noopener noreferrer"
-            className="card card-hover group flex items-start gap-4 rounded-3xl p-5 transition active:scale-[0.99]"
+            className="card card-hover group flex items-start gap-4 rounded-3xl p-4 sm:p-5 transition active:scale-[0.99]"
           >
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-cream ring-1 ring-teal/20">
               <Headphones className="h-6 w-6 text-teal" aria-hidden />
@@ -424,7 +424,7 @@ export default function GoetheA1Page() {
       </motion.section>
 
       {/* Sources */}
-      <motion.section variants={item} className="card rounded-3xl p-5">
+      <motion.section variants={item} className="card rounded-3xl p-4 sm:p-5">
         <p className="font-bangla flex items-start gap-2 text-sm leading-relaxed text-slate-600">
           <Info className="mt-0.5 h-4 w-4 shrink-0 text-teal" aria-hidden />
           <span>

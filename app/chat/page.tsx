@@ -20,9 +20,9 @@ export default async function ChatPage() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-end justify-between gap-3">
-        <div>
+        <div className="min-w-0">
           <p className="font-bangla text-sm font-semibold text-teal">Community · shobai eksathe</p>
-          <h1 className="section-heading inline-flex items-center gap-2 text-3xl">
+          <h1 className="section-heading inline-flex items-center gap-2 break-words text-3xl">
             <MessagesSquare className="h-7 w-7 text-teal" aria-hidden /> Community Chat
           </h1>
           <p className="font-bangla mt-1 text-sm text-mist">

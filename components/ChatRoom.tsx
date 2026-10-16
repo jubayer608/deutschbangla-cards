@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Send, Trash2 } from "lucide-react";
-import { CHAT_MAX_LENGTH, CHAT_POLL_MS, type ChatMessageItem } from "@/lib/chat";
+import { CHAT_HEARTBEAT_MS, CHAT_MAX_LENGTH, CHAT_POLL_MS, type ChatMessageItem } from "@/lib/chat";
 
 // Global Community Chat — client room.
 //
@@ -12,6 +12,17 @@ import { CHAT_MAX_LENGTH, CHAT_POLL_MS, type ChatMessageItem } from "@/lib/chat"
 // tab is hidden (visibilitychange) to save requests, and resumes on
 // visible. Own messages are appended optimistically and reconciled
 // against the server echo on the next poll.
+//
+// Presence: while this room is mounted and the tab is visible, a
+// heartbeat POSTs to /api/chat/presence every 30s; the server counts
+// rows seen within the last 90s as "online" and returns onlineCount
+// with every poll. When onlineCount is null (presence unavailable) the
+// counter is hidden entirely — never a fake number.
+//
+// Variants: "page" (full /chat page) and "widget" (floating panel).
+// The widget reuses this exact component — no duplicated chat logic.
+// In widget mode the list stretches to fill the panel instead of
+// using its own max-height card.
 //
 // Message content is rendered as PLAIN TEXT (React escapes by default).
 // Never use dangerouslySetInnerHTML here.
@@ -36,10 +47,12 @@ function senderLabel(m: ChatMessageItem): string {
   return m.sender.username ? `@${m.sender.username}` : (m.sender.name ?? "Ulluk user");
 }
 
-export default function ChatRoom() {
+export default function ChatRoom({ variant = "page" }: { variant?: "page" | "widget" }) {
   const [messages, setMessages] = useState<ChatMessageItem[]>([]);
   const [viewerId, setViewerId] = useState<string | null>(null);
   const [viewerIsAdmin, setViewerIsAdmin] = useState(false);
+  const [onlineCount, setOnlineCount] = useState<number | null>(null);
+  const [needsAuth, setNeedsAuth] = useState(false);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
   const [draft, setDraft] = useState("");
@@ -51,6 +64,8 @@ export default function ChatRoom() {
   const lastIdRef = useRef<string | null>(null);
   const messagesRef = useRef<ChatMessageItem[]>([]);
   messagesRef.current = messages;
+  // Set by poll success; the heartbeat only fires while authenticated.
+  const authedRef = useRef(false);
 
   const scrollToBottom = useCallback(() => {
     requestAnimationFrame(() => {
@@ -72,6 +87,15 @@ export default function ChatRoom() {
         ? `/api/chat?after=${encodeURIComponent(lastIdRef.current)}`
         : "/api/chat";
       const res = await fetch(url, { cache: "no-store" });
+      if (res.status === 401) {
+        // Guest (or expired session): the widget shows a sign-in prompt;
+        // the /chat page normally redirects server-side, so this is the
+        // expired-session fallback there. Never render the chat UI.
+        authedRef.current = false;
+        setNeedsAuth(true);
+        if (initial) setLoading(false);
+        return;
+      }
       if (!res.ok) {
         if (initial) setLoadError(true);
         return;
@@ -80,9 +104,13 @@ export default function ChatRoom() {
         messages: ChatMessageItem[];
         viewerIsAdmin: boolean;
         viewerId: string;
+        onlineCount: number | null;
       };
+      authedRef.current = true;
+      setNeedsAuth(false);
       setViewerId(data.viewerId);
       setViewerIsAdmin(data.viewerIsAdmin);
+      setOnlineCount(typeof data.onlineCount === "number" ? data.onlineCount : null);
       if (data.messages.length === 0) return;
       const incoming = data.messages;
       setMessages((prev) => {
@@ -138,6 +166,44 @@ export default function ChatRoom() {
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [poll]);
+
+  // Heartbeat presence: while this room is mounted and the tab is
+  // visible, POST /api/chat/presence every 30s so the server counts
+  // this user as online. Stops when unmounted/hidden; the server's 90s
+  // window tolerates one missed beat. Skipped while unauthenticated
+  // (guests never count as online). Runs in both page + widget modes
+  // because both render this component.
+  useEffect(() => {
+    let id: ReturnType<typeof setInterval> | null = null;
+    const beat = () => {
+      if (!authedRef.current || document.hidden) return;
+      void fetch("/api/chat/presence", {
+        method: "POST",
+        cache: "no-store",
+      }).catch(() => {});
+    };
+    const start = () => {
+      if (id !== null) return;
+      id = setInterval(beat, CHAT_HEARTBEAT_MS);
+    };
+    const stop = () => {
+      if (id !== null) clearInterval(id);
+      id = null;
+    };
+    const onVisibility = () => {
+      if (document.hidden) stop();
+      else {
+        beat();
+        start();
+      }
+    };
+    start();
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      stop();
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, []);
 
   const send = async () => {
     const content = draft.trim();
@@ -197,13 +263,51 @@ export default function ChatRoom() {
   };
 
   if (loading) {
+    if (variant === "widget") {
+      return (
+        <div className="flex min-h-0 flex-1 items-center justify-center p-8">
+          <p className="font-bangla text-sm text-mist">Chat load hocche…</p>
+        </div>
+      );
+    }
     return (
       <div className="card rounded-3xl bg-white p-8 text-center">
         <p className="font-bangla text-sm text-mist">Chat load hocche…</p>
       </div>
     );
   }
+  if (needsAuth) {
+    // Guest state: never render the chat UI. Small sign-in prompt with
+    // a link (the /chat page redirects server-side; this covers the
+    // widget + expired sessions).
+    const prompt = (
+      <div className="m-auto flex flex-col items-center gap-3 py-6 text-center">
+        <p className="font-bangla font-bold text-navy">Community Chat-e jog dao</p>
+        <p className="font-bangla text-sm text-mist">
+          Chat korte hole age login korte hobe।
+        </p>
+        <Link
+          href="/api/auth/signin?callbackUrl=/chat"
+          className="font-bangla rounded-full bg-navy px-5 py-2.5 text-sm font-extrabold text-white shadow transition active:scale-95"
+        >
+          Login kore chat koro
+        </Link>
+      </div>
+    );
+    if (variant === "widget") {
+      return <div className="flex min-h-0 flex-1 flex-col px-4">{prompt}</div>;
+    }
+    return <div className="card rounded-3xl bg-white p-8 text-center">{prompt}</div>;
+  }
   if (loadError) {
+    if (variant === "widget") {
+      return (
+        <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-1 p-8 text-center">
+          <p className="font-bangla font-bold text-navy">Chat load hoy ni</p>
+          <p className="font-bangla text-sm text-mist">Abar chesta koro।</p>
+        </div>
+      );
+    }
     return (
       <div className="card rounded-3xl bg-white p-8 text-center">
         <p className="font-bangla font-bold text-navy">Chat load hoy ni</p>
@@ -215,8 +319,23 @@ export default function ChatRoom() {
   const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
 
   return (
-    <div className="flex flex-col gap-3">
+    <div
+      className={
+        variant === "widget"
+          ? "flex min-h-0 flex-1 flex-col gap-2 px-4 py-3"
+          : "flex flex-col gap-3"
+      }
+    >
       <p className="font-bangla text-xs text-mist">
+        {onlineCount !== null && (
+          <>
+            <span className="inline-flex items-center gap-1 font-bold text-teal">
+              <span className="inline-block h-2 w-2 rounded-full bg-green-500" aria-hidden />
+              {onlineCount} jon online
+            </span>
+            {" · "}
+          </>
+        )}
         {lastMessage
           ? `Shesh message: ${timeAgo(lastMessage.createdAt)}`
           : "Ekhono kono message nai"}
@@ -227,7 +346,11 @@ export default function ChatRoom() {
       <div
         ref={listRef}
         onScroll={onScroll}
-        className="card flex max-h-[60vh] min-h-[320px] flex-col gap-3 overflow-y-auto rounded-3xl bg-white p-4"
+        className={
+          variant === "widget"
+            ? "flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto p-1"
+            : "card flex max-h-[60vh] min-h-[320px] flex-col gap-3 overflow-y-auto rounded-3xl bg-white p-4"
+        }
       >
         {messages.length === 0 ? (
           <div className="m-auto text-center">

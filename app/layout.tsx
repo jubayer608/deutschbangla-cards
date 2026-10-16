@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import BotChatLoader from "@/components/BotChatLoader";
+import FloatingChatLoader from "@/components/FloatingChatLoader";
 import { Geist, Geist_Mono, Noto_Sans_Bengali, Nunito, Poppins } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import Navbar from "@/components/Navbar";
@@ -101,6 +102,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
           <ProgressSync />
           <BotChatLoader />
+          <FloatingChatLoader />
         </SessionProvider>
       </body>
     </html>

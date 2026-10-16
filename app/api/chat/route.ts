@@ -5,6 +5,7 @@ import { checkRateLimit, clientIp } from "@/lib/ratelimit";
 import { isAdminEmail } from "@/lib/submissions";
 import {
   CHAT_MAX_LENGTH,
+  CHAT_ONLINE_WINDOW_MS,
   CHAT_PAGE_SIZE,
   chatGapOk,
   shapeChatMessage,
@@ -20,9 +21,13 @@ import {
 // upgrade path (would need a realtime-service key + SDK).
 //
 // GET  /api/chat?after=<messageId>&limit=50
-//   → { messages: [...oldest-first...], viewerIsAdmin, viewerId }.
+//   → { messages: [...oldest-first...], viewerIsAdmin, viewerId,
+//       onlineCount }.
 //   Without `after`: the latest 50 messages. With `after`: messages
 //   created after that message (cap 50). Auth required.
+//   onlineCount = ChatPresence rows seen within the last 90s (heartbeat
+//   presence); null when presence is unavailable (table missing etc.) —
+//   the UI hides the counter then, never shows a fake number.
 // POST /api/chat { content }
 //   → { message }. Content 1–500 chars, plain text only (HTML stripped
 //   server-side). Rate limits: 1 msg / 3s per user + 20/min per user.
@@ -91,7 +96,24 @@ export async function GET(req: Request) {
     messages: rows.map(shapeChatMessage),
     viewerIsAdmin: isAdminEmail(session.user.email),
     viewerId: session.user.id,
+    onlineCount: await onlineCount(prisma),
   });
+}
+
+// Heartbeat presence count: users seen within the last 90s. Wrapped in
+// try/catch — if the ChatPresence table doesn't exist yet (migration
+// not run) or the query fails, return null so the UI hides the counter
+// instead of crashing or showing a fake number.
+async function onlineCount(
+  prisma: NonNullable<ReturnType<typeof getPrisma>>,
+): Promise<number | null> {
+  try {
+    return await prisma.chatPresence.count({
+      where: { lastSeenAt: { gte: new Date(Date.now() - CHAT_ONLINE_WINDOW_MS) } },
+    });
+  } catch {
+    return null;
+  }
 }
 
 export async function POST(req: Request) {

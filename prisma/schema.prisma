@@ -47,6 +47,7 @@ model User {
   certificates    Certificate[]
   submissions     Submission[]
   chatMessages    ChatMessage[]
+  chatPresence    ChatPresence?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -371,4 +372,18 @@ model ChatMessage {
 
   @@index([userId])
   @@index([createdAt])
+}
+
+// Heartbeat presence for the Community Chat "X jon online" counter.
+// One row per user (userId is the PK). The client sends a heartbeat
+// every 30s while a chat UI is open; GET /api/chat counts rows seen
+// within the last 90s as "online". NOT true WebSocket presence —
+// Vercel serverless can't hold persistent connections (see lib/chat.ts).
+// Stale rows need no cleanup job: the recency filter ignores them.
+model ChatPresence {
+  userId     String   @id
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastSeenAt DateTime @default(now())
+
+  @@index([lastSeenAt])
 }

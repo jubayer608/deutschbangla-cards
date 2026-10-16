@@ -237,14 +237,14 @@ export default function WortschatzPage() {
                               <p className="text-xs italic text-slate-500">{w.example}</p>
                               <p className="font-bangla text-xs text-slate-500">{w.exampleBangla}</p>
                             </div>
-                            <SpeakButton text={w.example} className="h-7 w-7" />
+                            <SpeakButton text={w.example} className="" />
                           </div>
                         </>
                       ) : (
                         <>
                           <div className="flex items-start justify-between gap-2">
                             <p className="text-lg font-extrabold text-navy">{w.german}</p>
-                            <SpeakButton text={w.german} className="h-7 w-7" />
+                            <SpeakButton text={w.german} className="" />
                           </div>
                           <p className="font-bangla mt-1 inline-flex items-center gap-1 text-xs text-mist">
                             ট্যাপ করো <MousePointerClick className="h-3.5 w-3.5" aria-hidden />
@@ -294,7 +294,7 @@ export default function WortschatzPage() {
                           <li key={i} className="rounded-2xl bg-cream/60 px-3 py-2">
                             <div className="flex items-start justify-between gap-2">
                               <p className="font-bold text-navy">{p.german}</p>
-                              <SpeakButton text={p.german} className="h-7 w-7" />
+                              <SpeakButton text={p.german} className="" />
                             </div>
                             <p className="font-bangla text-sm text-slate-600">{p.bangla}</p>
                           </li>

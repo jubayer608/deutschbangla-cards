@@ -76,7 +76,7 @@ export default function GrammarDetailPage() {
                 <li key={ei} className="rounded-xl bg-cream/60 px-3 py-2 text-sm">
                   <div className="flex items-start justify-between gap-2">
                     <span className="font-bold text-navy">{e.german}</span>
-                    <SpeakButton text={e.german} className="h-7 w-7" />
+                    <SpeakButton text={e.german} className="" />
                   </div>
                   <span className="font-bangla block text-slate-600">{e.bangla}</span>
                 </li>

@@ -90,7 +90,7 @@ export default function BotChat() {
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Ulluk Bot বন্ধ করো" : "Ulluk Bot খোলো"}
         aria-expanded={open}
-        className="fixed bottom-24 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-sun shadow-xl shadow-navy/30 ring-2 ring-white transition hover:-translate-y-0.5 active:scale-95 lg:bottom-6 lg:right-6"
+        className="fixed bottom-[calc(6rem+env(safe-area-inset-bottom))] right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-sun shadow-xl shadow-navy/30 ring-2 ring-white transition hover:-translate-y-0.5 active:scale-95 lg:bottom-6 lg:right-6"
       >
         {open ? (
           <X className="h-6 w-6 text-navy" aria-hidden />
@@ -108,7 +108,7 @@ export default function BotChat() {
             transition={{ duration: 0.18 }}
             role="dialog"
             aria-label="Ulluk Bot চ্যাট"
-            className="fixed bottom-40 left-4 right-4 z-50 flex max-h-[70vh] min-h-[380px] flex-col overflow-hidden rounded-3xl bg-white shadow-2xl shadow-navy/30 ring-1 ring-navy/10 sm:left-auto sm:w-[380px] lg:bottom-24 lg:right-6"
+            className="fixed bottom-[calc(10rem+env(safe-area-inset-bottom))] left-4 right-4 z-50 flex max-h-[70vh] min-h-[380px] flex-col overflow-hidden rounded-3xl bg-white shadow-2xl shadow-navy/30 ring-1 ring-navy/10 sm:left-auto sm:w-[380px] lg:bottom-24 lg:right-6"
           >
             {/* Header */}
             <div className="flex items-center gap-3 bg-navy px-4 py-3 text-white">
@@ -125,7 +125,7 @@ export default function BotChat() {
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label="চ্যাট বন্ধ করো"
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10 transition hover:bg-white/20"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/10 transition hover:bg-white/20"
               >
                 <X className="h-4 w-4" aria-hidden />
               </button>
@@ -152,7 +152,7 @@ export default function BotChat() {
                         key={s}
                         type="button"
                         onClick={() => send(s)}
-                        className="font-bangla rounded-full bg-teal/10 px-3 py-1.5 text-xs font-bold text-teal ring-1 ring-teal/20 transition hover:bg-teal/20"
+                        className="font-bangla inline-flex min-h-11 items-center rounded-full bg-teal/10 px-3.5 py-2 text-xs font-bold text-teal ring-1 ring-teal/20 transition hover:bg-teal/20"
                       >
                         {s}
                       </button>
@@ -187,7 +187,7 @@ export default function BotChat() {
                               key={s.href + s.title}
                               href={s.href}
                               onClick={() => setOpen(false)}
-                              className="rounded-full bg-teal/10 px-2.5 py-1 text-[11px] font-bold text-teal ring-1 ring-teal/20 transition hover:bg-teal/20"
+                              className="inline-flex min-h-11 items-center rounded-full bg-teal/10 px-3 py-2 text-xs font-bold text-teal ring-1 ring-teal/20 transition hover:bg-teal/20"
                             >
                               {s.title}
                             </Link>
@@ -242,13 +242,13 @@ export default function BotChat() {
                 maxLength={500}
                 placeholder="জার্মান প্রশ্ন লিখো…"
                 aria-label="জার্মান প্রশ্ন লিখো"
-                className="font-bangla min-w-0 flex-1 rounded-full bg-cream px-4 py-2.5 text-sm font-semibold text-navy ring-1 ring-navy/10 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal"
+                className="font-bangla min-w-0 flex-1 rounded-full bg-cream px-4 py-2.5 text-base font-semibold text-navy ring-1 ring-navy/10 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal"
               />
               <button
                 type="submit"
                 disabled={loading || input.trim().length === 0}
                 aria-label="প্রশ্ন পাঠাও"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-teal text-white transition hover:bg-teal/90 disabled:opacity-40"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-teal text-white transition hover:bg-teal/90 disabled:opacity-40"
               >
                 <Send className="h-4.5 w-4.5" aria-hidden />
               </button>

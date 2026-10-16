@@ -229,7 +229,7 @@ export default function Flashcard({ word, flipped, onSwipe, onFlip, compact }: F
           <div className="mt-2 w-full rounded-2xl bg-white p-4 ring-1 ring-teal/10">
             <div className="flex items-start justify-between gap-2">
               <p className="font-body text-base font-semibold text-navy">{word.example}</p>
-              <SpeakButton text={word.example} className="h-7 w-7" />
+              <SpeakButton text={word.example} className="" />
             </div>
             <p className="font-bangla mt-1 text-sm text-navy/60">{word.exampleBangla}</p>
           </div>

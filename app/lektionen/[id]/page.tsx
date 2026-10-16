@@ -192,7 +192,7 @@ function ExerciseCard({
                 type="button"
                 disabled={done}
                 onClick={() => toggleWord(w, true)}
-                className="rounded-xl bg-teal px-3 py-2 font-bold text-white shadow-sm"
+                className="inline-flex min-h-11 items-center rounded-xl bg-teal px-3.5 py-2.5 font-bold text-white shadow-sm"
               >
                 {w}
               </button>
@@ -205,7 +205,7 @@ function ExerciseCard({
                 type="button"
                 disabled={done}
                 onClick={() => toggleWord(w, false)}
-                className="rounded-xl bg-white px-3 py-2 font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 transition active:scale-95"
+                className="inline-flex min-h-11 items-center rounded-xl bg-white px-3.5 py-2.5 font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 transition active:scale-95"
               >
                 {w}
               </button>
@@ -303,7 +303,7 @@ export default function LessonDetailPage() {
       <div className="flex flex-col gap-6">
         <Link
           href="/lektionen"
-          className="font-bangla inline-flex items-center gap-1.5 text-sm font-bold text-teal transition hover:gap-2.5"
+          className="font-bangla inline-flex min-h-11 items-center gap-1.5 py-1 text-sm font-bold text-teal transition hover:gap-2.5"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden /> সব পাঠ
         </Link>
@@ -374,7 +374,7 @@ export default function LessonDetailPage() {
       <div>
         <Link
           href="/lektionen"
-          className="font-bangla inline-flex items-center gap-1.5 text-sm font-bold text-teal transition hover:gap-2.5"
+          className="font-bangla inline-flex min-h-11 items-center gap-1.5 py-1 text-sm font-bold text-teal transition hover:gap-2.5"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden /> সব পাঠ
         </Link>
@@ -382,8 +382,8 @@ export default function LessonDetailPage() {
           <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-navy text-2xl font-extrabold text-white shadow-lg">
             {lesson.id}
           </span>
-          <div>
-            <h1 className="text-2xl font-extrabold tracking-tight text-navy">
+          <div className="min-w-0">
+            <h1 className="break-words text-2xl font-extrabold tracking-tight text-navy">
               Lektion {lesson.id}: {lesson.title}
             </h1>
             <p className="font-bangla text-slate-500">{lesson.titleBangla}</p>
@@ -422,7 +422,7 @@ export default function LessonDetailPage() {
             <div key={w.id} className="card rounded-2xl p-3">
               <div className="flex items-center justify-between gap-2">
                 <p className="font-extrabold text-navy">{w.german}</p>
-                <SpeakButton text={w.german} className="h-7 w-7" />
+                <SpeakButton text={w.german} className="" />
               </div>
               <p className="font-bangla text-sm text-slate-600">{w.bangla}</p>
             </div>
@@ -471,7 +471,7 @@ export default function LessonDetailPage() {
                   <li key={ei} className="rounded-xl bg-cream/60 px-3 py-2 text-sm">
                     <div className="flex items-start justify-between gap-2">
                       <span className="font-bold text-navy">{e.german}</span>
-                      <SpeakButton text={e.german} className="h-7 w-7" />
+                      <SpeakButton text={e.german} className="" />
                     </div>
                     <span className="font-bangla block text-slate-600">{e.bangla}</span>
                   </li>
@@ -491,7 +491,7 @@ export default function LessonDetailPage() {
           <div key={i} className="card rounded-2xl p-3">
             <div className="flex items-start justify-between gap-2">
               <p className="font-bold text-navy">{s.german}</p>
-              <SpeakButton text={s.german} className="h-7 w-7" />
+              <SpeakButton text={s.german} className="" />
             </div>
             <p className="font-bangla text-sm text-slate-600">{s.bangla}</p>
           </div>
@@ -542,7 +542,7 @@ export default function LessonDetailPage() {
           {lesson.id > 1 && (
             <Link
               href={`/lektionen/${lesson.id - 1}`}
-              className="btn btn-ghost font-bangla inline-flex items-center gap-1.5 rounded-full px-6 py-2.5"
+              className="btn btn-ghost font-bangla inline-flex items-center gap-1.5 rounded-full px-6 py-3"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden /> আগের পাঠ
             </Link>
@@ -550,7 +550,7 @@ export default function LessonDetailPage() {
           {lesson.id < 12 && (
             <Link
               href={`/lektionen/${lesson.id + 1}`}
-              className="btn btn-ghost font-bangla inline-flex items-center gap-1.5 rounded-full px-6 py-2.5"
+              className="btn btn-ghost font-bangla inline-flex items-center gap-1.5 rounded-full px-6 py-3"
             >
               পরের পাঠ <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>

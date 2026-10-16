@@ -20,7 +20,7 @@ import { checkRateLimit, clientIp } from "@/lib/ratelimit";
  */
 
 const GEMINI_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent";
 
 const SYSTEM_PROMPT = `তুমি Ulluk — ULLUK ওয়েবসাইটের বন্ধুত্বপূর্ণ পেঁচা টিউটর। ULLUK হলো বাংলা-ভাষীদের জন্য জার্মান A1 শেখার সাইট।
 

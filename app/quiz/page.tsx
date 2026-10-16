@@ -546,10 +546,10 @@ export default function QuizPage() {
       </div>
 
       <div className="rounded-3xl bg-navy p-8 text-center shadow-xl shadow-navy/10">
-        <p className="font-bangla text-sm font-semibold uppercase tracking-widest text-white/70">
+        <p className="font-bangla break-words text-sm font-semibold uppercase tracking-widest text-white/70">
           {q.promptBangla}
         </p>
-        <p className="mt-2 text-3xl font-extrabold text-white sm:text-4xl">{q.prompt}</p>
+        <p className="mt-2 break-words text-3xl font-extrabold text-white sm:text-4xl">{q.prompt}</p>
       </div>
 
       <div className={`flex flex-col gap-3 ${answered && picked !== q.answer ? "animate-shake" : ""}`}>

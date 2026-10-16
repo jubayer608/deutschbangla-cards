@@ -145,7 +145,7 @@ function Hero() {
             <div className="min-w-0">
               <motion.h1
                 variants={item}
-                className="font-heading text-[clamp(2.75rem,7vw,5rem)] font-extrabold leading-[1.04] tracking-tight text-white"
+                className="font-heading break-words text-[clamp(2.75rem,7vw,5rem)] font-extrabold leading-[1.04] tracking-tight text-white"
               >
                 Learn German.
                 <br />
@@ -470,7 +470,7 @@ export default function LandingPage() {
             </h2>
             <Link
               href="/lektionen"
-              className="font-bangla inline-flex items-center gap-1 text-sm font-bold text-teal"
+              className="font-bangla inline-flex min-h-11 items-center gap-1 py-1 text-sm font-bold text-teal"
             >
               সবগুলো <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
@@ -482,13 +482,13 @@ export default function LandingPage() {
                 <Link
                   key={l.id}
                   href={`/lektionen/${l.id}`}
-                  className={`card card-hover flex flex-col items-center gap-1 rounded-3xl p-4 text-center transition active:scale-95 ${
+                  className={`card card-hover flex flex-col items-center gap-1 rounded-3xl p-3 text-center transition active:scale-95 sm:p-4 ${
                     done ? "bg-cream ring-teal/30" : "bg-white ring-slate-200"
                   }`}
                 >
                   <ProgressRing value={done ? 1 : 0} size={44} stroke={5} label={done ? "✓" : `${l.id}`} />
-                  <p className="text-xs font-bold leading-tight text-navy">{l.title}</p>
-                  <p className="font-bangla text-[11px] leading-tight text-slate-500">{l.titleBangla}</p>
+                  <p className="break-words text-xs font-bold leading-tight text-navy">{l.title}</p>
+                  <p className="font-bangla break-words text-[11px] leading-tight text-slate-500">{l.titleBangla}</p>
                 </Link>
               );
             })}

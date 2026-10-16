@@ -7,8 +7,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { getLesson, type Exercise } from "@/data/lessons";
 import { words, type Difficulty } from "@/data/words";
 import {
+  blockingLessonId,
   getFullProgress,
   completeLesson,
+  isLessonUnlocked,
   xpForDifficulty,
   type ProgressState,
 } from "@/lib/progress";
@@ -19,16 +21,16 @@ import {
   BookOpen,
   Check,
   CheckCircle2,
-  Flag,
   Layers,
+  Lock,
   MessageCircle,
-  PartyPopper,
   PenLine,
   Target,
 } from "lucide-react";
 import SpeakButton from "@/components/SpeakButton";
 import Mascot from "@/components/Mascot";
 import EmptyState from "@/components/EmptyState";
+import LessonExam from "@/components/LessonExam";
 
 function normalize(s: string): string {
   return s
@@ -279,11 +281,88 @@ export default function LessonDetailPage() {
     return <EmptyState Icon={BookOpen} title="পাঠ পাওয়া যায়নি" message="এই নম্বরের কোনো পাঠ নেই।" />;
   }
 
-  const isDone = progress?.lessonsDone.includes(lesson.id) ?? false;
+  // Progress loads client-side (localStorage). Wait for it so a locked
+  // lesson never flashes its content before the lock screen appears.
+  if (!progress) {
+    return (
+      <div className="flex flex-col items-center gap-3 py-16">
+        <Mascot mood="thinking" size={72} />
+        <p className="font-bangla text-slate-500">পাঠ লোড হচ্ছে…</p>
+      </div>
+    );
+  }
+
+  const isDone = progress.lessonsDone.includes(lesson.id);
+  const locked = !isLessonUnlocked(lesson.id, progress.lessonsDone);
+  const blocking = blockingLessonId(lesson.id, progress.lessonsDone);
+
+  // Locked lesson: show the road ahead (title, goals, what it covers)
+  // but not the content — plus a button to the required previous lesson.
+  if (locked && blocking !== null) {
+    return (
+      <div className="flex flex-col gap-6">
+        <Link
+          href="/lektionen"
+          className="font-bangla inline-flex items-center gap-1.5 text-sm font-bold text-teal transition hover:gap-2.5"
+        >
+          <ArrowLeft className="h-4 w-4" aria-hidden /> সব পাঠ
+        </Link>
+        <div className="card flex flex-col items-center gap-3 rounded-3xl p-6 text-center sm:p-8">
+          <span className="flex h-16 w-16 items-center justify-center rounded-3xl bg-navy text-white">
+            <Lock className="h-8 w-8" aria-hidden />
+          </span>
+          <h1 className="text-2xl font-extrabold tracking-tight text-navy">
+            Lektion {lesson.id}: {lesson.title}
+          </h1>
+          <p className="font-bangla text-slate-500">{lesson.titleBangla}</p>
+          <p className="font-bangla max-w-md text-slate-700">
+            এই পাঠটা এখনো লক করা। <b>Age Lesson {blocking} shesh koro</b> — ওই পাঠের Exam-এ পাস
+            করলেই এই পাঠ খুলে যাবে।
+          </p>
+          <Link
+            href={`/lektionen/${blocking}`}
+            className="btn btn-primary mt-1 inline-flex items-center gap-1.5 rounded-full px-8 py-3"
+          >
+            Lesson {blocking} shesh koro <ArrowRight className="h-4 w-4" aria-hidden />
+          </Link>
+        </div>
+        {/* What this lesson covers — visible even while locked */}
+        <section className="card rounded-3xl p-5">
+          <h2 className="section-heading font-bangla inline-flex items-center gap-2 text-lg">
+            <Target className="h-5 w-5 text-teal" aria-hidden /> এই পাঠে কী শিখবে
+          </h2>
+          <ul className="font-bangla mt-3 flex flex-col gap-2">
+            {lesson.ziele.map((z, i) => (
+              <li key={i} className="flex items-start gap-2 text-slate-700">
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-teal" strokeWidth={3} aria-hidden />{" "}
+                {z}
+              </li>
+            ))}
+          </ul>
+          <p className="font-bangla mt-4 text-sm text-mist">
+            {lesson.vocabIds.length} শব্দ · {lesson.grammar.length} ব্যাকরণ টপিক ·{" "}
+            {lesson.uebungen.length} অনুশীলন · ১০ প্রশ্নের Exam (৫ মিনিট, পাস ৭০%)
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {lesson.grammar.map((g, i) => (
+              <span
+                key={i}
+                className="badge rounded-full bg-cream px-3 py-1 text-xs font-bold text-navy"
+              >
+                {g.title}
+              </span>
+            ))}
+          </div>
+        </section>
+      </div>
+    );
+  }
 
   const handleCorrect = (xp: number) => setXpGained((x) => x + xp);
 
-  const handleComplete = () => {
+  // Passing the exam is the ONLY way a lesson enters lessonsDone now
+  // (completeLesson keeps the existing +50 XP first-pass rule).
+  const handleExamPass = () => {
     const p = completeLesson(lesson.id);
     setProgress(p);
     bigCelebration();
@@ -437,22 +516,28 @@ export default function LessonDetailPage() {
         ))}
       </section>
 
-      {/* Complete */}
-      <div className="flex flex-col items-center gap-3 pb-4">
-        {isDone ? (
-          <p className="font-bangla inline-flex items-center gap-2 font-bold text-teal">
-            <PartyPopper className="h-5 w-5" aria-hidden /> Lektion abgeschlossen! পরের পাঠে এগিয়ে
-            যাও।
+      {/* Exam — the gate: passing marks the lesson complete */}
+      <section id="exam" className="flex scroll-mt-24 flex-col gap-3">
+        <h2 className="section-heading font-bangla inline-flex items-center gap-2 text-lg">
+          <Target className="h-5 w-5 text-teal" aria-hidden /> Exam — পরীক্ষা{" "}
+          <span className="text-sm font-semibold text-mist">(১০ প্রশ্ন · ৫ মিনিট · পাস ৭০%)</span>
+        </h2>
+        {isDone && (
+          <p className="font-bangla inline-flex items-center gap-1.5 text-sm font-bold text-teal">
+            <CheckCircle2 className="h-4 w-4" aria-hidden /> এই পাঠের Exam-এ পাস করেছো — আবার দিয়ে
+            সেরা স্কোর বাড়াতে পারো।
           </p>
-        ) : (
-          <button
-            type="button"
-            onClick={handleComplete}
-            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-teal to-teal px-10 py-4 text-lg font-extrabold text-white shadow-xl shadow-navy/10 transition active:scale-95"
-          >
-            <Flag className="h-5 w-5" aria-hidden /> Lektion abschließen (+50 XP)
-          </button>
         )}
+        <LessonExam
+          key={lesson.id}
+          lessonId={lesson.id}
+          exam={lesson.exam}
+          onPass={handleExamPass}
+        />
+      </section>
+
+      {/* Prev / Next */}
+      <div className="flex flex-col items-center gap-3 pb-4">
         <div className="flex gap-3">
           {lesson.id > 1 && (
             <Link

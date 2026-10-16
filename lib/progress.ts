@@ -243,8 +243,7 @@ export function xpForDifficulty(d: "easy" | "medium" | "hard", kind: "quiz" | "e
  * after sign-in so the browser prefers DB state from then on. The
  * per-mode `dbc-quizbest-score-*` keys are written from `quizBestScores`
  * when provided.
- */
-export function writeFullProgress(
+ */export function writeFullProgress(
   state: ProgressState,
   quizBestScores?: Record<string, number>,
 ): void {
@@ -273,4 +272,85 @@ export function writeFullProgress(
       }
     }
   }
+}
+
+// ---- A1 lesson improvement bundle — sequential gating + timed exam ----
+
+/** Timed lesson exam rules (same for every lesson). */
+export const EXAM_DURATION_SECONDS = 300; // 5-minute countdown
+export const EXAM_PASS_SCORE = 7; // pass mark: >= 7/10 = 70%
+export const EXAM_TOTAL_QUESTIONS = 10;
+
+/**
+ * Sequential lesson gating. Lesson 1 is always open. Lesson N+1 unlocks
+ * only when lesson N is in `lessonsDone` (i.e. its exam was passed).
+ * A lesson that is itself done is always open, so existing users keep
+ * every lesson they already completed — no retroactive lockout.
+ * Guests and logged-in users both read `lessonsDone` from localStorage
+ * (logged-in users get the merged DB state via <ProgressSync />).
+ */
+export function isLessonUnlocked(lessonId: number, lessonsDone: number[]): boolean {
+  if (lessonId <= 1) return true;
+  return lessonsDone.includes(lessonId) || lessonsDone.includes(lessonId - 1);
+}
+
+/**
+ * First incomplete prerequisite blocking `lessonId`, or null when the
+ * lesson is unlocked. The lock screen links to this lesson.
+ */
+export function blockingLessonId(lessonId: number, lessonsDone: number[]): number | null {
+  if (isLessonUnlocked(lessonId, lessonsDone)) return null;
+  for (let j = 1; j < lessonId; j++) {
+    if (!lessonsDone.includes(j)) return j;
+  }
+  return lessonId - 1;
+}
+
+/**
+ * Best exam score (out of 10) per lesson. Stored under the same
+ * `dbc-quizbest-score-*` key pattern the quiz page uses for per-mode best
+ * scores, so <ProgressSync /> already collects it and merges it into the
+ * DB `quizBestScores` (per-key MAX) with NO schema/migration change.
+ * The key is namespaced `exam-<id>` so it never collides with quiz modes
+ * (`vocab-<diff>` / `grammar-<diff>` / `mixed-<diff>`) and the
+ * grammar-master badge filter (`grammar-` prefix) ignores it.
+ */
+export function examBestKey(lessonId: number): string {
+  return `dbc-quizbest-score-exam-${lessonId}`;
+}
+
+/** Best exam score for a lesson, or null when never attempted. */
+export function getExamBest(lessonId: number): number | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(examBestKey(lessonId));
+    if (raw === null) return null;
+    const n = Number(raw);
+    return Number.isFinite(n) ? Math.max(0, Math.min(EXAM_TOTAL_QUESTIONS, Math.floor(n))) : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Record an exam attempt. Keeps the best score only (max wins) — failed
+ * attempts never overwrite a better earlier score. Returns the stored
+ * best and whether this attempt set a new best.
+ */
+export function recordExamScore(
+  lessonId: number,
+  score: number,
+): { best: number; isNewBest: boolean } {
+  const clamped = Math.max(0, Math.min(EXAM_TOTAL_QUESTIONS, Math.floor(score)));
+  const prev = getExamBest(lessonId);
+  const best = Math.max(prev ?? 0, clamped);
+  const isNewBest = prev === null ? clamped > 0 : clamped > prev;
+  if (typeof window !== "undefined") {
+    try {
+      localStorage.setItem(examBestKey(lessonId), String(best));
+    } catch {
+      /* storage unavailable */
+    }
+  }
+  return { best, isNewBest };
 }

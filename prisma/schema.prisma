@@ -46,6 +46,7 @@ model User {
   wordReviews     WordReview[]
   certificates    Certificate[]
   submissions     Submission[]
+  chatMessages    ChatMessage[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -353,4 +354,21 @@ model UserSettings {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// ── Global Community Chat (one shared room for everyone) ──────────────
+
+model ChatMessage {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Plain text only (max 500 chars, enforced in the API). Rendered as
+  // plain text — never dangerouslySetInnerHTML.
+  content String
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([createdAt])
 }
